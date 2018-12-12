@@ -19,7 +19,7 @@
         android:layout_marginRight="@dimen/dip_16"
         android:layout_marginBottom="@dimen/dip_16">
         <Button
-            android:id="@+id/login_button"
+            android:id="@+id/button_sign_up"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_rounded_soft_green"
@@ -28,6 +28,7 @@
             android:textAllCaps="false"
             app:elevation="@dimen/dip_4"/>
         <LinearLayout
+            android:id="@+id/layout_login_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -46,7 +47,7 @@
                 android:layout_marginLeft="@dimen/dip_8"
                 android:layout_marginStart="@dimen/dip_8"
                 android:text="@string/text_login_here"
-                android:textColor="@color/colorGrey"/>
+                android:textColor="@color/colorBlue"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

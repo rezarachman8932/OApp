@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".home.HomeActivity" />
+        <activity android:name=".user.login.LoginActivity" />
 
         <service
             android:name=".notification.OAppMessagingService">
