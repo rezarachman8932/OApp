@@ -67,13 +67,14 @@
             android:inputType="textPassword"
             android:background="@android:color/transparent"/>
         <ImageView
+            android:id="@+id/icon_password_preview"
             android:layout_width="@dimen/dip_12"
             android:layout_height="@dimen/dip_12"
             android:layout_gravity="center_vertical"
             app:srcCompat="@drawable/ic_vector_preview"/>
     </LinearLayout>
     <Button
-        android:id="@+id/button_sign_up"
+        android:id="@+id/button_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
