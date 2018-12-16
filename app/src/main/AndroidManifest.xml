@@ -18,8 +18,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".home.HomeActivity" />
-        <activity android:name=".user.login.LoginActivity" />
-        <activity android:name=".user.register.RegisterActivity" />
+        <activity
+            android:name=".user.login.LoginActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity
+            android:name=".user.register.RegisterActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
 
         <service
             android:name=".notification.OAppMessagingService">

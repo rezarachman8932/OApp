@@ -6,6 +6,7 @@ import android.view.View
 import com.app.o.R
 import com.app.o.base.page.OAppActivity
 import com.app.o.user.login.LoginActivity
+import com.app.o.user.register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_user_register_login.*
 
 class UserRegisterLoginActivity : OAppActivity(), View.OnClickListener {
@@ -21,7 +22,10 @@ class UserRegisterLoginActivity : OAppActivity(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when(view.id) {
-            R.id.button_sign_up -> {}
+            R.id.button_sign_up -> {
+                val intent = Intent(this, RegisterActivity::class.java)
+                startActivity(intent)
+            }
             R.id.layout_login_text -> {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
