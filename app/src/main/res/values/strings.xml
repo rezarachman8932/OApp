@@ -9,4 +9,8 @@
     <string name="text_hint_phone_number">Phone Number</string>
     <string name="text_hint_email">Email</string>
     <string name="text_already_have_account">Already have account?</string>
+    <string name="text_error_submit_login">Please check your username and password correctly</string>
+    <string name="text_error_submit_login_username">Minimum username characters must be 6</string>
+    <string name="text_error_submit_login_password">Minimum password characters must be 6</string>
+    <string name="text_error_after_login">Unexpected things was happened</string>
 </resources>

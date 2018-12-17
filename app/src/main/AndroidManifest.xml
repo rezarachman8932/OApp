@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.app.o">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:name=".OApplication"
         android:allowBackup="true"
@@ -23,7 +26,7 @@
             android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity
             android:name=".user.register.RegisterActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
 
         <service
             android:name=".notification.OAppMessagingService">
