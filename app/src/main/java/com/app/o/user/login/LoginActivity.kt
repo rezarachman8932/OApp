@@ -39,10 +39,11 @@ class LoginActivity : OAppActivity(),
     }
 
     override fun onDataResponse(data: LoginResponse) {
-        if (isSuccess(data.message, data.status)) {
+        if (isSuccess(data.status)) {
             OAppUtil.setToken(data.token)
 
             val intent = Intent(this, HomeActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         } else {
             showSnackBar(root_login, getString(R.string.text_error_after_login))

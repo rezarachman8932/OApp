@@ -37,12 +37,14 @@ class RegisterActivity : OAppActivity(),
     }
 
     override fun onDataResponse(data: RegisterResponse) {
-        if (isSuccess(data.message, data.status)) {
+        if (isSuccess(data.status)) {
             showSnackBar(scroll_root_register, getString(R.string.text_success_register))
 
             val intent = Intent(this, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
+            finish()
+        } else {
+            showSnackBar(scroll_root_register, getString(R.string.text_error_register_already_existed))
         }
     }
 
@@ -81,7 +83,7 @@ class RegisterActivity : OAppActivity(),
                 setPasswordPreview(shouldShowPassword, input_sign_up_password)
             }
 
-            R.id.button_sign_up -> {
+            R.id.button_register -> {
                 register()
             }
         }

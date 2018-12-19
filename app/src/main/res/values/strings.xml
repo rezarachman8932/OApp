@@ -11,11 +11,12 @@
     <string name="text_already_have_account">Already have account?</string>
     <string name="text_error_submit_login">Please check your username and password correctly</string>
     <string name="text_error_submit_register">Please check your input  correctly</string>
-    <string name="text_error_submit_name">Minimum username characters must be 6</string>
+    <string name="text_error_submit_name">Minimum name characters must be 6</string>
     <string name="text_error_submit_phone">Minimum username characters must be 11</string>
     <string name="text_error_submit_email">Invalid email</string>
     <string name="text_error_submit_username">Minimum username characters must be 6</string>
     <string name="text_error_submit_password">Minimum password characters must be 6</string>
     <string name="text_error_after_login">Unexpected things was happened</string>
-    <string name="text_success_register">Your registration was successful</string>
+    <string name="text_error_register_already_existed">User has already existed</string>
+    <string name="text_success_register">Your registration was succeed</string>
 </resources>

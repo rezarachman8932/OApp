@@ -7,6 +7,7 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.EditText
+import com.app.o.shared.OAppUtil
 import io.reactivex.disposables.CompositeDisposable
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -44,8 +45,8 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         Snackbar.make(root, message, Snackbar.LENGTH_SHORT).show()
     }
 
-    protected fun isSuccess(message: String, status:String): Boolean {
-        return (message.equals("", true) && status.equals("", true))
+    protected fun isSuccess(status: Int): Boolean {
+        return (status == OAppUtil.SUCCESS_STATUS)
     }
 
     protected fun setPasswordPreview(showPassword: Boolean, editText: EditText) {

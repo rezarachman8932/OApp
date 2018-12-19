@@ -6,5 +6,5 @@ data class LoginResponse (
         val username: String,
         val token: String,
         val email: String,
-        override val status: String,
+        override val status: Int,
         override val message: String) : OAppResponse

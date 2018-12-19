@@ -12,6 +12,8 @@ class OAppUtil {
         const val ON_FINISH_SUCCEED = 0
         const val ON_FINISH_FAILED  = 1
 
+        const val SUCCESS_STATUS = 0
+
         fun isValidEmail(email: String): Boolean =
                 email.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
 

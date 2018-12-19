@@ -1,6 +1,6 @@
 package com.app.o.base.data
 
 interface OAppResponse {
-    val status: String
+    val status: Int
     val message: String
 }
