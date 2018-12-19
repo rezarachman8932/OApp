@@ -6,8 +6,6 @@
     <dimen name="dip_12">12dp</dimen>
     <dimen name="dip_16">16dp</dimen>
     <dimen name="dip_24">24dp</dimen>
-    <dimen name="dip_40">40dp</dimen>
-    <dimen name="dip_48">48dp</dimen>
-    <dimen name="dip_80">80dp</dimen>
+    <dimen name="dip_180">180dp</dimen>
     <dimen name="dip_240">240dp</dimen>
 </resources>

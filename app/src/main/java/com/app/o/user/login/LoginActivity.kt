@@ -46,20 +46,20 @@ class LoginActivity : OAppActivity(),
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         } else {
-            showSnackBar(root_login, getString(R.string.text_error_after_login))
+            showSnackBar(scroll_root_login, getString(R.string.text_error_after_login))
         }
     }
 
     override fun onEmptyInput() {
-        showSnackBar(root_login, getString(R.string.text_error_submit_login))
+        showSnackBar(scroll_root_login, getString(R.string.text_error_submit_login))
     }
 
     override fun onPasswordNotComplete() {
-        showSnackBar(root_login, getString(R.string.text_error_submit_password))
+        showSnackBar(scroll_root_login, getString(R.string.text_error_submit_password))
     }
 
     override fun onUsernameNotComplete() {
-        showSnackBar(root_login, getString(R.string.text_error_submit_username))
+        showSnackBar(scroll_root_login, getString(R.string.text_error_submit_username))
     }
 
     override fun onClick(view: View) {

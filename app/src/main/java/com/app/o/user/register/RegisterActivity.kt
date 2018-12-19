@@ -2,18 +2,21 @@ package com.app.o.user.register
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import com.app.o.R
 import com.app.o.api.register.RegisterResponse
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
+import com.app.o.shared.OAppUtil
 import com.app.o.user.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : OAppActivity(),
         View.OnClickListener,
         OAppViewService<RegisterResponse>,
-        RegisterCallback {
+        RegisterCallback, TextWatcher {
 
     private var shouldShowPassword = false
     private lateinit var presenter: RegisterPresenter
@@ -74,10 +77,6 @@ class RegisterActivity : OAppActivity(),
 
     override fun onClick(view: View) {
         when(view.id) {
-            R.id.layout_image_profile -> {
-
-            }
-
             R.id.icon_password_preview -> {
                 shouldShowPassword = !shouldShowPassword
                 setPasswordPreview(shouldShowPassword, input_sign_up_password)
@@ -86,6 +85,18 @@ class RegisterActivity : OAppActivity(),
             R.id.button_register -> {
                 register()
             }
+        }
+    }
+
+    override fun afterTextChanged(p0: Editable?) {}
+
+    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+    override fun onTextChanged(input: CharSequence, p1: Int, p2: Int, p3: Int) {
+        if (!input.isEmpty() && input.length >= OAppUtil.MINIMUM_CHARS) {
+            icon_username_checklist.visibility = View.VISIBLE
+        } else {
+            icon_username_checklist.visibility = View.GONE
         }
     }
 
@@ -100,9 +111,9 @@ class RegisterActivity : OAppActivity(),
     }
 
     private fun setViewListener() {
-        layout_image_profile.setOnClickListener(this)
         icon_password_preview.setOnClickListener(this)
         button_register.setOnClickListener(this)
+        input_username.addTextChangedListener(this)
     }
 
 }

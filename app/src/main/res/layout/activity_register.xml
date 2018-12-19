@@ -5,34 +5,23 @@
     android:id="@+id/scroll_root_register"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fillViewport="true"
-    android:background="@drawable/bg_vector_main">
+    android:fillViewport="true">
     <LinearLayout
-        android:id="@+id/layout_image_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:padding="@dimen/dip_16"
         android:orientation="vertical">
-        <android.support.v7.widget.CardView
-            android:layout_width="@dimen/dip_80"
-            android:layout_height="@dimen/dip_80"
+        <ImageView
+            android:id="@+id/image_logo"
+            android:layout_width="@dimen/dip_180"
+            android:layout_height="@dimen/dip_180"
             android:layout_gravity="center_horizontal"
-            app:elevation="@dimen/dip_12"
-            app:cardCornerRadius="@dimen/dip_40">
-            <ImageView
-                android:id="@+id/image_profile_register"
-                android:layout_height="@dimen/dip_48"
-                android:layout_width="@dimen/dip_48"
-                android:layout_gravity="center"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_vector_username"/>
-        </android.support.v7.widget.CardView>
+            android:src="@drawable/ic_logo" />
         <LinearLayout
             android:id="@+id/layout_register_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dip_24"
             android:background="@drawable/bg_rounded_border"
             android:orientation="horizontal"
             android:padding="@dimen/dip_12">
@@ -133,6 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:visibility="gone"
                 app:srcCompat="@drawable/ic_vector_check"/>
         </LinearLayout>
         <LinearLayout
