@@ -8,7 +8,7 @@ object APIRepository {
 
     fun create(): APIService {
         val requestInterface = Retrofit.Builder()
-                .baseUrl("")
+                .baseUrl("http://api.ademuhammad.or.id/")
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()

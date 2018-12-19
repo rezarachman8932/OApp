@@ -4,4 +4,5 @@ data class RegisterSpec (
         val name: String,
         val phone_number: String,
         val email: String,
+        val username: String,
         val password: String)

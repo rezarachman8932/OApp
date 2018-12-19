@@ -8,6 +8,7 @@ import com.app.o.api.login.LoginResponse
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.home.HomeActivity
+import com.app.o.shared.OAppUtil
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : OAppActivity(),
@@ -33,13 +34,14 @@ class LoginActivity : OAppActivity(),
 
     }
 
-    override fun hideLoading() {
+    override fun hideLoading(statusCode: Int) {
 
     }
 
     override fun onDataResponse(data: LoginResponse) {
         if (isSuccess(data.message, data.status)) {
-            setToken(data.token)
+            OAppUtil.setToken(data.token)
+
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         } else {
@@ -52,11 +54,11 @@ class LoginActivity : OAppActivity(),
     }
 
     override fun onPasswordNotComplete() {
-        showSnackBar(root_login, getString(R.string.text_error_submit_login_password))
+        showSnackBar(root_login, getString(R.string.text_error_submit_password))
     }
 
     override fun onUsernameNotComplete() {
-        showSnackBar(root_login, getString(R.string.text_error_submit_login_username))
+        showSnackBar(root_login, getString(R.string.text_error_submit_username))
     }
 
     override fun onClick(view: View) {
@@ -67,11 +69,16 @@ class LoginActivity : OAppActivity(),
             }
 
             R.id.button_login -> {
-                val username = input_username.text.toString()
-                val password = input_password.text.toString()
-                presenter.validateLogin(username, password)
+                login()
             }
         }
+    }
+
+    private fun login() {
+        val username = input_username.text.toString()
+        val password = input_password.text.toString()
+
+        presenter.validateLogin(username, password)
     }
 
 }

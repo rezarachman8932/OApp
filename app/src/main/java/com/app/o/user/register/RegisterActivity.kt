@@ -1,14 +1,22 @@
 package com.app.o.user.register
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.app.o.R
+import com.app.o.api.register.RegisterResponse
 import com.app.o.base.page.OAppActivity
+import com.app.o.base.service.OAppViewService
+import com.app.o.user.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_register.*
 
-class RegisterActivity : OAppActivity(), View.OnClickListener {
+class RegisterActivity : OAppActivity(),
+        View.OnClickListener,
+        OAppViewService<RegisterResponse>,
+        RegisterCallback {
 
     private var shouldShowPassword = false
+    private lateinit var presenter: RegisterPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,12 +24,50 @@ class RegisterActivity : OAppActivity(), View.OnClickListener {
         supportActionBar?.hide()
 
         setViewListener()
+
+        presenter = RegisterPresenter(this, this, mCompositeDisposable)
     }
 
-    private fun setViewListener() {
-        layout_image_profile.setOnClickListener(this)
-        icon_password_preview.setOnClickListener(this)
-        button_register.setOnClickListener(this)
+    override fun showLoading() {
+
+    }
+
+    override fun hideLoading(statusCode: Int) {
+
+    }
+
+    override fun onDataResponse(data: RegisterResponse) {
+        if (isSuccess(data.message, data.status)) {
+            showSnackBar(scroll_root_register, getString(R.string.text_success_register))
+
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+        }
+    }
+
+    override fun onAllInputEmpty() {
+        showSnackBar(scroll_root_register, getString(R.string.text_error_submit_register))
+    }
+
+    override fun onNameNotComplete() {
+        showSnackBar(scroll_root_register, getString(R.string.text_error_submit_name))
+    }
+
+    override fun onPhoneNumberNotComplete() {
+        showSnackBar(scroll_root_register, getString(R.string.text_error_submit_phone))
+    }
+
+    override fun onEmailNotValid() {
+        showSnackBar(scroll_root_register, getString(R.string.text_error_submit_email))
+    }
+
+    override fun onUsernameNotComplete() {
+        showSnackBar(scroll_root_register, getString(R.string.text_error_submit_username))
+    }
+
+    override fun onPasswordNotComplete() {
+        showSnackBar(scroll_root_register, getString(R.string.text_error_submit_password))
     }
 
     override fun onClick(view: View) {
@@ -36,9 +82,25 @@ class RegisterActivity : OAppActivity(), View.OnClickListener {
             }
 
             R.id.button_sign_up -> {
-
+                register()
             }
         }
+    }
+
+    private fun register() {
+        val name = input_name.text.toString()
+        val phone = input_phone.text.toString()
+        val email = input_email.text.toString()
+        val username = input_username.text.toString()
+        val password = input_sign_up_password.text.toString()
+
+        presenter.validateSignUp(name, phone, email, username, password)
+    }
+
+    private fun setViewListener() {
+        layout_image_profile.setOnClickListener(this)
+        icon_password_preview.setOnClickListener(this)
+        button_register.setOnClickListener(this)
     }
 
 }

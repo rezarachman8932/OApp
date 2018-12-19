@@ -4,6 +4,7 @@ import com.app.o.api.APIRepository
 import com.app.o.api.login.LoginResponse
 import com.app.o.api.login.LoginSpec
 import com.app.o.base.service.OAppViewService
+import com.app.o.shared.OAppUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
@@ -14,7 +15,7 @@ class LoginPresenter(private val view: OAppViewService<LoginResponse>,
                      private val compositeDisposable: CompositeDisposable) {
 
     private fun doLogin(loginSpec: LoginSpec) {
-        compositeDisposable.add(APIRepository.create().login(loginSpec)
+        compositeDisposable.add(APIRepository.create().login(loginSpec, OAppUtil.getToken())
                 .subscribeOn(Schedulers.io())
                 .compose {
                     it.observeOn(AndroidSchedulers.mainThread())
@@ -24,11 +25,12 @@ class LoginPresenter(private val view: OAppViewService<LoginResponse>,
                     view.showLoading()
                 }
                 .doOnError{
-                    view.hideLoading()
+                    view.hideLoading(OAppUtil.ON_FINISH_FAILED)
+                    it.printStackTrace()
                 }
                 .subscribe(Consumer {
                     view.onDataResponse(it)
-                    view.hideLoading()
+                    view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
                 }))
     }
 
@@ -38,12 +40,12 @@ class LoginPresenter(private val view: OAppViewService<LoginResponse>,
             return
         }
 
-        if (username.length < 6) {
+        if (username.length < OAppUtil.MINIMUM_CHARS) {
             callback.onUsernameNotComplete()
             return
         }
 
-        if (password.length < 6) {
+        if (password.length < OAppUtil.MINIMUM_CHARS) {
             callback.onPasswordNotComplete()
             return
         }

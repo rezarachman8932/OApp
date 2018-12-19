@@ -2,6 +2,6 @@ package com.app.o.base.service
 
 interface OAppViewService<in T> {
     fun showLoading()
-    fun hideLoading()
+    fun hideLoading(statusCode: Int)
     fun onDataResponse(data: T)
 }
