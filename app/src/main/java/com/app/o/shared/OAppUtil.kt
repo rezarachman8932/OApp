@@ -14,6 +14,8 @@ class OAppUtil {
 
         const val SUCCESS_STATUS = 0
 
+        const val SPLASH_DELAY: Long = 3000
+
         fun isValidEmail(email: String): Boolean =
                 email.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
 
@@ -23,6 +25,14 @@ class OAppUtil {
 
         fun setToken(token: String) {
             OApplication.prefHelper.deviceToken = token
+        }
+
+        fun isLoggedIn(): Boolean {
+            return OApplication.prefHelper.isLoggedIn
+        }
+
+        fun setLoggedIn(loggedIn: Boolean) {
+            OApplication.prefHelper.isLoggedIn = loggedIn
         }
     }
 
