@@ -1,21 +1,37 @@
 package com.app.o.shared
 
 import android.content.Context
-import android.preference.PreferenceManager
+import android.content.SharedPreferences
 
-class OAppPreferencesHelper(context: Context) {
+object OAppPreferencesHelper {
 
-    companion object {
-        private const val DEVICE_TOKEN = "data.source.prefs.DEVICE_TOKEN"
-        private const val LOGGED_IN = "data.source.prefs.LOGGED_IN"
+    private const val NAME = "OAppSharePreference"
+    private const val MODE = Context.MODE_PRIVATE
+    private lateinit var preferences: SharedPreferences
+
+    private val LOGGED_IN = Pair("is_logged_in", false)
+    private val TOKEN = Pair("token", "")
+
+    fun init(context: Context) {
+        preferences = context.getSharedPreferences(NAME, MODE)
     }
 
-    private val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private inline fun SharedPreferences.edit(operation: (SharedPreferences.Editor) -> Unit) {
+        val editor = edit()
+        operation(editor)
+        editor.apply()
+    }
 
-    var deviceToken: String? = preferences.getString(DEVICE_TOKEN, "")
-        set(value) = preferences.edit().putString(DEVICE_TOKEN, value).apply()
+    var isLoggedIn: Boolean
+        get() = preferences.getBoolean(LOGGED_IN.first, LOGGED_IN.second)
+        set(value) = preferences.edit {
+            it.putBoolean(LOGGED_IN.first, value)
+        }
 
-    var isLoggedIn: Boolean = preferences.getBoolean(LOGGED_IN, false)
-        set(value) = preferences.edit().putBoolean(LOGGED_IN, value).apply()
+    var tokenAuth: String?
+        get() = preferences.getString(TOKEN.first, TOKEN.second)
+        set(value) = preferences.edit {
+            it.putString(TOKEN.first, value)
+        }
 
 }

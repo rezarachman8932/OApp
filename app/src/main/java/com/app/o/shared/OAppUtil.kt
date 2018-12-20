@@ -1,7 +1,6 @@
 package com.app.o.shared
 
 import android.util.Patterns
-import com.app.o.OApplication
 
 class OAppUtil {
 
@@ -20,19 +19,19 @@ class OAppUtil {
                 email.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
 
         fun getToken(): String? {
-            return OApplication.prefHelper.deviceToken
+            return OAppPreferencesHelper.tokenAuth
         }
 
         fun setToken(token: String) {
-            OApplication.prefHelper.deviceToken = token
+            OAppPreferencesHelper.tokenAuth = token
         }
 
         fun isLoggedIn(): Boolean {
-            return OApplication.prefHelper.isLoggedIn
+            return OAppPreferencesHelper.isLoggedIn
         }
 
         fun setLoggedIn(loggedIn: Boolean) {
-            OApplication.prefHelper.isLoggedIn = loggedIn
+            OAppPreferencesHelper.isLoggedIn = loggedIn
         }
     }
 
