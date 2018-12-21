@@ -3,16 +3,20 @@ package com.app.o.home
 import android.content.Context
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.app.o.R
+import com.app.o.api.home.HomePostItem
+import com.app.o.base.page.OAppActivity
+import com.app.o.base.service.OAppViewService
 import com.app.o.custom.CountDrawable
 import kotlinx.android.synthetic.main.activity_home.*
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : OAppActivity(), OAppViewService<List<HomePostItem>> {
 
     private var count = 1
+    private lateinit var presenter: HomePresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +25,23 @@ class HomeActivity : AppCompatActivity() {
         text_home.setOnClickListener {
             count += 1
             invalidateOptionsMenu()
+        }
+
+        presenter = HomePresenter(this, mCompositeDisposable)
+        presenter.getPostedTimeline("107.613795", "-6.881773")
+    }
+
+    override fun showLoading() {
+
+    }
+
+    override fun hideLoading(statusCode: Int) {
+
+    }
+
+    override fun onDataResponse(data: List<HomePostItem>) {
+        if (data.isNotEmpty()) {
+            Log.d("RESULT >>>", data[0].title)
         }
     }
 
