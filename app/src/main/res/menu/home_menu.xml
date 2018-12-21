@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_friend"
-        android:icon="@drawable/ic_vector_friend"
+        android:icon="@drawable/ic_friend_count"
         android:title="@string/text_menu_friend"
         app:showAsAction="ifRoom"/>
     <item
