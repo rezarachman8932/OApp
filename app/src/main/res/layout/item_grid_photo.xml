@@ -25,7 +25,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxHeight="@dimen/dip_180"
-                    android:background="@color/colorPrimary"
                     android:scaleType="fitXY"/>
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -42,8 +41,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:textSize="@dimen/sp_14"
-                        android:textStyle="bold"
-                        android:text="14k"/>
+                        android:textStyle="bold" />
                     <ImageView
                         android:id="@+id/item_icon_love_status"
                         android:layout_width="wrap_content"
@@ -51,7 +49,7 @@
                         android:layout_marginLeft="@dimen/dip_4"
                         android:layout_marginStart="@dimen/dip_4"
                         android:layout_gravity="center_vertical"
-                        app:srcCompat="@drawable/ic_vector_heart_active" />
+                        app:srcCompat="@drawable/ic_vector_heart_inactive" />
                 </LinearLayout>
                 <ImageView
                     android:id="@+id/item_icon_type_post"
@@ -76,8 +74,7 @@
                 android:maxLines="3"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
-                android:textSize="@dimen/sp_16"
-                android:text="hdhshsdhsdhsdksdjshdkjshsdsjdjshdsjhdsjhds"/>
+                android:textSize="@dimen/sp_16" />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
@@ -105,16 +102,14 @@
                     android:layout_marginStart="@dimen/dip_8"
                     android:textSize="@dimen/sp_16"
                     android:textColor="@color/colorGreen"
-                    android:textStyle="bold"
-                    android:text="Rp 5.000.000" />
+                    android:textStyle="bold" />
                 <TextView
                     android:id="@+id/item_text_post_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:text="32m"/>
+                    android:layout_alignParentEnd="true" />
             </RelativeLayout>
             <View
                 android:layout_width="match_parent"
@@ -147,8 +142,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/dip_8"
                     android:layout_marginStart="@dimen/dip_8"
-                    android:textSize="@dimen/sp_14"
-                    android:text="20"/>
+                    android:textSize="@dimen/sp_14" />
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
