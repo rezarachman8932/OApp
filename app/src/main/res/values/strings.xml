@@ -20,4 +20,6 @@
     <string name="text_error_after_login">Unexpected things was happened</string>
     <string name="text_error_register_already_existed">User has already existed</string>
     <string name="text_success_register">Your registration was succeed</string>
+    <string name="text_menu_search">Search</string>
+    <string name="text_menu_friend">Friend</string>
 </resources>
