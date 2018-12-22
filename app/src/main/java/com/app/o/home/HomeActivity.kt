@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import com.app.o.R
@@ -80,7 +80,7 @@ class HomeActivity : OAppActivity(), OAppViewService<List<HomePostItem>> {
     }
 
     private fun initGrid() {
-        val layoutManager = GridLayoutManager(this, 2)
+        val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         recycler_view.layoutManager = layoutManager
         recycler_view.addItemDecoration(GridSpacingItemDecoration(
                 2,

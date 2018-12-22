@@ -23,4 +23,11 @@
     <string name="text_menu_search">Search</string>
     <string name="text_menu_friend">Friend</string>
     <string name="text_label_comment">Comment</string>
+    <string name="text_label_recently">recently</string>
+    <string name="text_label_one_minute_ago">1minute</string>
+    <string name="text_label_minutes_ago">minutes</string>
+    <string name="text_label_one_hour_ago">1hour</string>
+    <string name="text_label_hours_ago">hours</string>
+    <string name="text_label_yesterday">yesterday</string>
+    <string name="text_label_days_ago">days</string>
 </resources>
