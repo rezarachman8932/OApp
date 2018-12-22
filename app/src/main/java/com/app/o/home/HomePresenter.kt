@@ -14,7 +14,7 @@ class HomePresenter(
         private val compositeDisposable: CompositeDisposable) {
 
     fun getPostedTimeline(longitude: String, latitude: String) {
-        compositeDisposable.add(APIRepository.create().post(longitude, latitude, OAppUtil.getToken())
+        compositeDisposable.add(APIRepository.create().post(longitude, latitude, getJWTToken(OAppUtil.getUserName(), OAppUtil.getToken()))
                 .subscribeOn(Schedulers.io())
                 .compose {
                     it.observeOn(AndroidSchedulers.mainThread())
@@ -31,6 +31,10 @@ class HomePresenter(
                     view.onDataResponse(it)
                     view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
                 }))
+    }
+
+    private fun getJWTToken(username: String?, token: String?): String {
+        return OAppUtil.generateJWTToken(username, token)
     }
 
 }

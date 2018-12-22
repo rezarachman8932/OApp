@@ -11,6 +11,7 @@ object OAppPreferencesHelper {
 
     private val LOGGED_IN = Pair("is_logged_in", false)
     private val TOKEN = Pair("token", "")
+    private val USER_NAME = Pair("username", "")
 
     fun init(context: Context) {
         preferences = context.getSharedPreferences(NAME, MODE)
@@ -32,6 +33,12 @@ object OAppPreferencesHelper {
         get() = preferences.getString(TOKEN.first, TOKEN.second)
         set(value) = preferences.edit {
             it.putString(TOKEN.first, value)
+        }
+
+    var username: String?
+        get() = preferences.getString(USER_NAME.first, USER_NAME.second)
+        set(value) = preferences.edit {
+            it.putString(USER_NAME.first, value)
         }
 
 }

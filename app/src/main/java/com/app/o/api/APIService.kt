@@ -17,7 +17,6 @@ interface APIService {
     fun register(@Body spec: RegisterSpec): Single<RegisterResponse>
 
     @FormUrlEncoded
-    @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("posts")
     fun post(
             @Field("longitude") longitude: String,

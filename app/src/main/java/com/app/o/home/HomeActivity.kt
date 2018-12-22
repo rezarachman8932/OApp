@@ -3,7 +3,8 @@ package com.app.o.home
 import android.content.Context
 import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
-import android.util.Log
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.GridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import com.app.o.R
@@ -11,21 +12,26 @@ import com.app.o.api.home.HomePostItem
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.custom.CountDrawable
+import com.app.o.custom.GridSpacingItemDecoration
+import com.app.o.shared.OAppUtil
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : OAppActivity(), OAppViewService<List<HomePostItem>> {
 
     private var count = 1
     private lateinit var presenter: HomePresenter
+    private lateinit var adapter: HomeGridAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        text_home.setOnClickListener {
-            count += 1
-            invalidateOptionsMenu()
-        }
+//        text_home.setOnClickListener {
+//            count += 1
+//            invalidateOptionsMenu()
+//        }
+
+        initGrid()
 
         presenter = HomePresenter(this, mCompositeDisposable)
         presenter.getPostedTimeline("107.613795", "-6.881773")
@@ -41,7 +47,11 @@ class HomeActivity : OAppActivity(), OAppViewService<List<HomePostItem>> {
 
     override fun onDataResponse(data: List<HomePostItem>) {
         if (data.isNotEmpty()) {
-            Log.d("RESULT >>>", data[0].title)
+            adapter = HomeGridAdapter(data, listener = {
+
+            })
+            recycler_view.adapter = adapter
+            adapter.notifyDataSetChanged()
         }
     }
 
@@ -67,6 +77,16 @@ class HomeActivity : OAppActivity(), OAppViewService<List<HomePostItem>> {
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         setCount(this, count.toString(), menu)
         return true
+    }
+
+    private fun initGrid() {
+        val layoutManager = GridLayoutManager(this, 2)
+        recycler_view.layoutManager = layoutManager
+        recycler_view.addItemDecoration(GridSpacingItemDecoration(
+                2,
+                OAppUtil.dpToPx(this, 10),
+                true))
+        recycler_view.itemAnimator = DefaultItemAnimator()
     }
 
     private fun setCount(context: Context, count: String, homeMenu: Menu) {

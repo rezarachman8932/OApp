@@ -34,6 +34,12 @@ class LoginPresenter(private val view: OAppViewService<LoginResponse>,
                 }))
     }
 
+    fun saveDataPref(data: LoginResponse) {
+        OAppUtil.setToken(data.token)
+        OAppUtil.setUserName(data.username)
+        OAppUtil.setLoggedIn(true)
+    }
+
     fun validateLogin(username: String, password: String) {
         if (username.isEmpty() || password.isEmpty()) {
             callback.onEmptyInput()
