@@ -33,8 +33,16 @@ class HomeActivity : OAppActivity(), OAppViewService<List<HomePostItem>> {
 
         initGrid()
 
+        requestCurrentLocation()
+
         presenter = HomePresenter(this, mCompositeDisposable)
         presenter.getPostedTimeline("107.613795", "-6.881773")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        removeUpdateLocation()
     }
 
     override fun showLoading() {
