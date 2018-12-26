@@ -33,6 +33,11 @@ class HomePresenter(
                 }))
     }
 
+    fun saveLastLocation(longitude: String, latitude: String) {
+        OAppUtil.setLongitude(longitude)
+        OAppUtil.setLatitude(latitude)
+    }
+
     private fun getJWTToken(username: String?, token: String?): String {
         return OAppUtil.generateJWTToken(username, token)
     }

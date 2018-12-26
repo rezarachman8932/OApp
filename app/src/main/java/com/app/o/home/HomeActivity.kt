@@ -2,6 +2,7 @@ package com.app.o.home
 
 import android.content.Context
 import android.graphics.drawable.LayerDrawable
+import android.location.Location
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.StaggeredGridLayoutManager
@@ -32,17 +33,24 @@ class HomeActivity : OAppActivity(), OAppViewService<List<HomePostItem>> {
 //        }
 
         initGrid()
-
-        requestCurrentLocation()
-
         presenter = HomePresenter(this, mCompositeDisposable)
-        presenter.getPostedTimeline("107.613795", "-6.881773")
+        requestCurrentLocation()
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
         removeUpdateLocation()
+    }
+
+    override fun onLocationUpdated(location: Location) {
+        super.onLocationUpdated(location)
+
+        val longitude = location.longitude.toString()
+        val latitude = location.latitude.toString()
+
+        presenter.saveLastLocation(longitude, latitude)
+        presenter.getPostedTimeline(longitude, latitude)
     }
 
     override fun showLoading() {
@@ -55,9 +63,7 @@ class HomeActivity : OAppActivity(), OAppViewService<List<HomePostItem>> {
 
     override fun onDataResponse(data: List<HomePostItem>) {
         if (data.isNotEmpty()) {
-            adapter = HomeGridAdapter(data, listener = {
-
-            })
+            adapter = HomeGridAdapter(data, listener = {})
             recycler_view.adapter = adapter
             adapter.notifyDataSetChanged()
         }

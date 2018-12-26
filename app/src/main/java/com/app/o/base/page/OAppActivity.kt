@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.location.Criteria
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -14,13 +13,13 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import android.util.Log
 import android.view.View
 import android.widget.EditText
+import com.app.o.R
 import com.app.o.shared.OAppUtil
 import io.reactivex.disposables.CompositeDisposable
+import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
-
 
 abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
@@ -48,18 +47,28 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        Log.d("Permission", "onPermissionsGranted")
-        //TODO Get current location
+        requestCurrentLocation()
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
-        Log.d("Permission", "onPermissionsDenied")
-        //TODO Check after user not allow their permission
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            AppSettingsDialog.Builder(this).build().show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
+
+        } else if (requestCode == OAppUtil.ON_ENABLE_GPS_SETTING) {
+            requestCurrentLocation()
+        }
     }
 
     private val locationListener: LocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
-            Log.d("Location >>>", location.longitude.toString() + " " + location.latitude.toString())
+            onLocationUpdated(location)
         }
         override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
         override fun onProviderEnabled(provider: String) {}
@@ -87,10 +96,6 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         val permissions = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
 
         if (EasyPermissions.hasPermissions(this, *permissions)) {
-            val criteria = Criteria()
-            criteria.accuracy = Criteria.ACCURACY_FINE
-            criteria.isCostAllowed = false
-
             try {
                 val location = getLastKnownLocation()
 
@@ -98,15 +103,15 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
                     locationListener.onLocationChanged(location)
                 } else {
                     val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                    startActivity(intent)
+                    startActivityForResult(intent, OAppUtil.ON_ENABLE_GPS_SETTING)
                 }
 
-                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, locationListener)
+                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 1f, locationListener)
             } catch (securityException: SecurityException) {
                 securityException.message
             }
         } else {
-            EasyPermissions.requestPermissions(this, "Need Test", 1, *permissions)
+            EasyPermissions.requestPermissions(this, getString(R.string.text_label_dialog_request_dialog_title), 1, *permissions)
         }
     }
 
@@ -129,5 +134,7 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
             editText.transformationMethod = PasswordTransformationMethod.getInstance()
         }
     }
+
+    open fun onLocationUpdated(location: Location) {}
 
 }

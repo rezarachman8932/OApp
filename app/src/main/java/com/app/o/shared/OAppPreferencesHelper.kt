@@ -12,6 +12,8 @@ object OAppPreferencesHelper {
     private val LOGGED_IN = Pair("is_logged_in", false)
     private val TOKEN = Pair("token", "")
     private val USER_NAME = Pair("username", "")
+    private val LAST_LOCATION_LONGITUDE = Pair("longitude", "")
+    private val LAST_LOCATION_LATITUDE = Pair("latitude", "")
 
     fun init(context: Context) {
         preferences = context.getSharedPreferences(NAME, MODE)
@@ -39,6 +41,18 @@ object OAppPreferencesHelper {
         get() = preferences.getString(USER_NAME.first, USER_NAME.second)
         set(value) = preferences.edit {
             it.putString(USER_NAME.first, value)
+        }
+
+    var longitude: String?
+        get() = preferences.getString(LAST_LOCATION_LONGITUDE.first, LAST_LOCATION_LONGITUDE.second)
+        set(value) = preferences.edit {
+            it.putString(LAST_LOCATION_LONGITUDE.first, value)
+        }
+
+    var latitude: String?
+        get() = preferences.getString(LAST_LOCATION_LATITUDE.first, LAST_LOCATION_LATITUDE.second)
+        set(value) = preferences.edit {
+            it.putString(LAST_LOCATION_LATITUDE.first, value)
         }
 
 }

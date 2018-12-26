@@ -23,6 +23,8 @@ class OAppUtil {
 
         const val SPLASH_DELAY: Long = 3000
 
+        const val ON_ENABLE_GPS_SETTING = 99
+
         private const val SECOND_MILLIS = 1000
         private const val MINUTE_MILLIS = 60 * SECOND_MILLIS
         private const val HOUR_MILLIS = 60 * MINUTE_MILLIS
@@ -45,6 +47,22 @@ class OAppUtil {
 
         fun setUserName(username: String) {
             OAppPreferencesHelper.username = username
+        }
+
+        fun getLongitude(): String? {
+            return OAppPreferencesHelper.longitude
+        }
+
+        fun setLongitude(longitude: String) {
+            OAppPreferencesHelper.longitude = longitude
+        }
+
+        fun getLatitude(): String? {
+            return OAppPreferencesHelper.latitude
+        }
+
+        fun setLatitude(latitude: String) {
+            OAppPreferencesHelper.latitude = latitude
         }
 
         fun isLoggedIn(): Boolean {
