@@ -1,10 +1,12 @@
 package com.app.o.home
 
+import android.app.SearchManager
 import android.content.Context
 import android.graphics.drawable.LayerDrawable
 import android.location.Location
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.SearchView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
@@ -27,18 +29,19 @@ class HomeActivity : OAppActivity(), OAppViewService<List<HomePostItem>> {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-//        text_home.setOnClickListener {
-//            count += 1
-//            invalidateOptionsMenu()
-//        }
-
         initGrid()
+
         presenter = HomePresenter(this, mCompositeDisposable)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
         requestCurrentLocation()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
 
         removeUpdateLocation()
     }
@@ -69,16 +72,15 @@ class HomeActivity : OAppActivity(), OAppViewService<List<HomePostItem>> {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.home_menu, menu)
+
+        setSearchView(menu)
+
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.action_search -> {
-            true
-        }
-
         R.id.action_friend -> {
             true
         }
@@ -119,6 +121,23 @@ class HomeActivity : OAppActivity(), OAppViewService<List<HomePostItem>> {
         badge.setCount(count)
         icon.mutate()
         icon.setDrawableByLayerId(R.id.ic_group_count, badge)
+    }
+
+    private fun setSearchView(menu: Menu?) {
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+
+        val searchView = menu?.findItem(R.id.action_search)?.actionView as SearchView
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                searchView.onActionViewCollapsed()
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return false
+            }
+        })
     }
 
 }
