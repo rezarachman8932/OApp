@@ -8,13 +8,14 @@ import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.StaggeredGridLayoutManager
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.app.o.R
 import com.app.o.api.home.HomePostItem
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
-import com.app.o.custom.CountDrawable
+import com.app.o.custom.BottomMenuView
 import com.app.o.custom.GridSpacingItemDecoration
 import com.app.o.shared.OAppUtil
 import kotlinx.android.synthetic.main.activity_home.*
@@ -30,6 +31,24 @@ class HomeActivity : OAppActivity(), OAppViewService<List<HomePostItem>> {
         setContentView(R.layout.activity_home)
 
         initGrid()
+
+        bottom_menu.isShowBadge = true
+        bottom_menu.imageURL = "http://api.ademuhammad.or.id/uploads/post/sunday-sale201812220713180.JPG"
+        bottom_menu.setMenuListener { _, type ->
+            when (type) {
+                BottomMenuView.MESSAGE -> {
+                    Log.d("BottomMenuView", "MESSAGE")
+                }
+
+                BottomMenuView.POST -> {
+                    Log.d("BottomMenuView", "POST")
+                }
+
+                BottomMenuView.PROFILE -> {
+                    Log.d("BottomMenuView", "PROFILE")
+                }
+            }
+        }
 
         presenter = HomePresenter(this, mCompositeDisposable)
     }
@@ -91,7 +110,11 @@ class HomeActivity : OAppActivity(), OAppViewService<List<HomePostItem>> {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        setCount(this, count.toString(), menu)
+        val menuItem = menu.findItem(R.id.action_friend)
+        val icon = menuItem.icon as LayerDrawable
+
+        OAppUtil.setIconCount(this, count.toString(), icon, R.id.ic_group_count)
+
         return true
     }
 
@@ -103,24 +126,6 @@ class HomeActivity : OAppActivity(), OAppViewService<List<HomePostItem>> {
                 OAppUtil.dpToPx(this, 10),
                 true))
         recycler_view.itemAnimator = DefaultItemAnimator()
-    }
-
-    private fun setCount(context: Context, count: String, homeMenu: Menu) {
-        val menuItem = homeMenu.findItem(R.id.action_friend)
-        val icon = menuItem.icon as LayerDrawable
-
-        val badge: CountDrawable
-        val reuse = icon.findDrawableByLayerId(R.id.ic_group_count)
-
-        badge = if (reuse != null && reuse is CountDrawable) {
-            reuse
-        } else {
-            CountDrawable(context)
-        }
-
-        badge.setCount(count)
-        icon.mutate()
-        icon.setDrawableByLayerId(R.id.ic_group_count, badge)
     }
 
     private fun setSearchView(menu: Menu?) {

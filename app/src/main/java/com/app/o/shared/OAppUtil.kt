@@ -1,10 +1,12 @@
 package com.app.o.shared
 
 import android.content.Context
+import android.graphics.drawable.LayerDrawable
 import android.util.Patterns
 import android.util.TypedValue
 import com.app.o.OApplication
 import com.app.o.R
+import com.app.o.custom.CountDrawable
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import java.text.SimpleDateFormat
@@ -115,10 +117,25 @@ class OAppUtil {
             }
         }
 
-        fun generateStringToTimestamp(date: String): Long {
+        fun generateStringToTimestamp(dateString: String): Long {
             val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-            val date = formatter.parse(date)
+            val date = formatter.parse(dateString)
             return date.time
+        }
+
+        fun setIconCount(context: Context, count: String, icon: LayerDrawable, layerId: Int) {
+            val badge: CountDrawable
+            val reuse = icon.findDrawableByLayerId(layerId)
+
+            badge = if (reuse != null && reuse is CountDrawable) {
+                reuse
+            } else {
+                CountDrawable(context)
+            }
+
+            badge.setCount(count)
+            icon.mutate()
+            icon.setDrawableByLayerId(layerId, badge)
         }
     }
 
