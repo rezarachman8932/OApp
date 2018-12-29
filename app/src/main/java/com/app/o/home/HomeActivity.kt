@@ -17,7 +17,6 @@ import com.app.o.api.location.LocationSpec
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.custom.BottomMenuView
-import com.app.o.custom.GridSpacingItemDecoration
 import com.app.o.shared.OAppUtil
 import kotlinx.android.synthetic.main.activity_home.*
 
@@ -128,10 +127,7 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip> {
     private fun initGrid() {
         val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         recycler_view.layoutManager = layoutManager
-        recycler_view.addItemDecoration(GridSpacingItemDecoration(
-                2,
-                OAppUtil.dpToPx(this, 10),
-                true))
+        recycler_view.setHasFixedSize(true)
         recycler_view.itemAnimator = DefaultItemAnimator()
     }
 
