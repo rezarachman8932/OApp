@@ -1,10 +1,13 @@
 package com.app.o.api
 
-import com.app.o.api.home.HomePostItem
+import com.app.o.api.home.HomeResponse
+import com.app.o.api.location.LocationSpec
 import com.app.o.api.login.LoginResponse
 import com.app.o.api.login.LoginSpec
 import com.app.o.api.register.RegisterResponse
 import com.app.o.api.register.RegisterSpec
+import com.app.o.api.relation.UserConnectedCountResponse
+import com.app.o.api.relation.UserConnectedResponse
 import io.reactivex.Single
 import retrofit2.http.*
 
@@ -16,11 +19,13 @@ interface APIService {
     @POST("register")
     fun register(@Body spec: RegisterSpec): Single<RegisterResponse>
 
-    @FormUrlEncoded
     @POST("posts")
-    fun post(
-            @Field("longitude") longitude: String,
-            @Field("latitude") latitude: String,
-            @Header("Authorization") tokenAuth: String?): Single<List<HomePostItem>>
+    fun post(@Body spec: LocationSpec, @Header("Authorization") tokenAuth: String?): Single<HomeResponse>
+
+    @POST("people_connected")
+    fun getPeopleConnected(@Body spec: LocationSpec, @Header("Authorization") tokenAuth: String?): Single<UserConnectedResponse>
+
+    @POST("people_connected_amount")
+    fun getPeopleConnectedCount(@Body spec: LocationSpec, @Header("Authorization") tokenAuth: String?): Single<UserConnectedCountResponse>
 
 }

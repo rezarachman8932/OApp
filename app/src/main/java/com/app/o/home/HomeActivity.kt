@@ -12,7 +12,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.app.o.R
-import com.app.o.api.home.HomePostItem
+import com.app.o.api.home.HomeResponseZip
+import com.app.o.api.location.LocationSpec
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.custom.BottomMenuView
@@ -20,9 +21,9 @@ import com.app.o.custom.GridSpacingItemDecoration
 import com.app.o.shared.OAppUtil
 import kotlinx.android.synthetic.main.activity_home.*
 
-class HomeActivity : OAppActivity(), OAppViewService<List<HomePostItem>> {
+class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip> {
 
-    private var count = 1
+    private var connectedCount = 0
     private lateinit var presenter: HomePresenter
     private lateinit var adapter: HomeGridAdapter
 
@@ -70,9 +71,10 @@ class HomeActivity : OAppActivity(), OAppViewService<List<HomePostItem>> {
 
         val longitude = location.longitude.toString()
         val latitude = location.latitude.toString()
+        val locationSpec = LocationSpec(latitude, longitude)
 
         presenter.saveLastLocation(longitude, latitude)
-        presenter.getPostedTimeline(longitude, latitude)
+        presenter.getPostedTimeline(locationSpec)
     }
 
     override fun showLoading() {
@@ -83,11 +85,16 @@ class HomeActivity : OAppActivity(), OAppViewService<List<HomePostItem>> {
 
     }
 
-    override fun onDataResponse(data: List<HomePostItem>) {
-        if (data.isNotEmpty()) {
-            adapter = HomeGridAdapter(data, listener = {})
-            recycler_view.adapter = adapter
-            adapter.notifyDataSetChanged()
+    override fun onDataResponse(data: HomeResponseZip) {
+        connectedCount = data.userConnectedCount.amount
+        invalidateOptionsMenu()
+
+        if (isSuccess(data.homeResponse.status)) {
+            if (data.homeResponse.data.isNotEmpty()) {
+                adapter = HomeGridAdapter(data.homeResponse.data, listener = {})
+                recycler_view.adapter = adapter
+                adapter.notifyDataSetChanged()
+            }
         }
     }
 
@@ -113,7 +120,7 @@ class HomeActivity : OAppActivity(), OAppViewService<List<HomePostItem>> {
         val menuItem = menu.findItem(R.id.action_friend)
         val icon = menuItem.icon as LayerDrawable
 
-        OAppUtil.setIconCount(this, count.toString(), icon, R.id.ic_group_count)
+        OAppUtil.setIconCount(this, connectedCount.toString(), icon, R.id.ic_group_count)
 
         return true
     }

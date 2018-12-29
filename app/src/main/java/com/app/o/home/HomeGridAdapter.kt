@@ -38,12 +38,12 @@ class HomeGridAdapter(private val items: List<HomePostItem>, private val listene
                 item_separator_header.visibility = View.VISIBLE
             }
 
-//            if (item.like_count > 0) {
-//                item_layout_love.visibility = View.VISIBLE
+            if (item.like_count > 0) {
+                item_layout_love.visibility = View.VISIBLE
                 item_text_love_count.text = item.like_count.toString()
-//            } else {
-//                item_layout_love.visibility = View.GONE
-//            }
+            } else {
+                item_layout_love.visibility = View.GONE
+            }
 
             if (item.type == "image") {
                 item_icon_type_post.setImageResource(R.drawable.ic_type_bag)
