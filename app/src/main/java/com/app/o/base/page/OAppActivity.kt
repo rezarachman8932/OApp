@@ -17,6 +17,8 @@ import android.view.View
 import android.widget.EditText
 import com.app.o.R
 import com.app.o.shared.OAppUtil
+import com.fxn.pix.Pix
+import com.fxn.utility.PermUtil
 import io.reactivex.disposables.CompositeDisposable
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -47,7 +49,11 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        requestCurrentLocation()
+        if (requestCode == PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS) {
+            openMedia()
+        } else {
+            requestCurrentLocation()
+        }
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
@@ -59,10 +65,16 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE) {
-
-        } else if (requestCode == OAppUtil.ON_ENABLE_GPS_SETTING) {
-            requestCurrentLocation()
+        if (resultCode == RESULT_OK) {
+            when (requestCode) {
+                AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE -> {}
+                OAppUtil.ON_ENABLE_GPS_SETTING -> requestCurrentLocation()
+                PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS -> {
+                    if (data != null) {
+                        val returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+                    }
+                }
+            }
         }
     }
 
@@ -133,6 +145,10 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         } else {
             editText.transformationMethod = PasswordTransformationMethod.getInstance()
         }
+    }
+
+    protected fun openMedia() {
+        Pix.start(this, PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS)
     }
 
     open fun onLocationUpdated(location: Location) {}

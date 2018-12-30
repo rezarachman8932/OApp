@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.StaggeredGridLayoutManager
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.app.o.R
@@ -36,17 +35,13 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip> {
         bottom_menu.imageURL = "http://api.ademuhammad.or.id/uploads/post/sunday-sale201812220713180.JPG"
         bottom_menu.setMenuListener { _, type ->
             when (type) {
-                BottomMenuView.MESSAGE -> {
-                    Log.d("BottomMenuView", "MESSAGE")
-                }
+                BottomMenuView.MESSAGE -> {}
 
                 BottomMenuView.POST -> {
-                    Log.d("BottomMenuView", "POST")
+                    openMedia()
                 }
 
-                BottomMenuView.PROFILE -> {
-                    Log.d("BottomMenuView", "PROFILE")
-                }
+                BottomMenuView.PROFILE -> {}
             }
         }
 

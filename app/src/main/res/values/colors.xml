@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Default Color -->
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
+    <!-- Custom Color -->
     <color name="colorGreen">#10A99E</color>
     <color name="colorGreen2">#29A79E</color>
     <color name="colorBlue">#13606F</color>
     <color name="colorGrey">#B1BCBE</color>
     <color name="colorWhiteSmoke">#F5F5F5</color>
     <color name="colorRed">#f20000</color>
+
+    <!-- Pix Color -->
+    <color name="colorPrimaryPix">#075e54</color>
+    <color name="colorPrimaryLightPix">#80075e54</color>
 </resources>
