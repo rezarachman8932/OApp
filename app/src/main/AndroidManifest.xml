@@ -26,10 +26,16 @@
         <activity android:name=".home.HomeActivity" />
         <activity
             android:name=".user.login.LoginActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:parentActivityName=".user.front.UserRegisterLoginActivity"/>
         <activity
             android:name=".user.register.RegisterActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:parentActivityName=".user.front.UserRegisterLoginActivity"/>
+        <activity
+            android:name=".post.PostActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:parentActivityName=".home.HomeActivity"/>
 
         <service
             android:name=".notification.OAppMessagingService">

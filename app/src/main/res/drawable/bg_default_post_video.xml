@@ -1,0 +1,11 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/ic_vector_oval_big"
+        android:gravity="center" />
+    <item
+        android:drawable="@drawable/ic_vector_oval_small"
+        android:gravity="center"/>
+    <item
+        android:drawable="@drawable/ic_vector_video"
+        android:gravity="center"/>
+</layer-list>

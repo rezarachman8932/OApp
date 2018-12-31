@@ -2,6 +2,7 @@ package com.app.o.home
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.LayerDrawable
 import android.location.Location
 import android.os.Bundle
@@ -16,6 +17,7 @@ import com.app.o.api.location.LocationSpec
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.custom.BottomMenuView
+import com.app.o.post.PostActivity
 import com.app.o.shared.OAppUtil
 import kotlinx.android.synthetic.main.activity_home.*
 
@@ -38,7 +40,8 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip> {
                 BottomMenuView.MESSAGE -> {}
 
                 BottomMenuView.POST -> {
-                    openMedia()
+                    val intent = Intent(this, PostActivity::class.java)
+                    startActivity(intent)
                 }
 
                 BottomMenuView.PROFILE -> {}
