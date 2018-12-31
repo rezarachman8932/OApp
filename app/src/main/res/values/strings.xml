@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">OApp</string>
     <string name="text_loading">Please Wait</string>
+    <string name="text_loading_subtitle">Preparing content for you</string>
     <string name="text_sign_up">Sign Up</string>
     <string name="text_login">Login</string>
     <string name="text_login_here">Login here</string>

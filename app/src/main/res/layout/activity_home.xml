@@ -1,22 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/colorWhiteSmoke">
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <com.app.o.custom.ProgressBarWithText
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:progressTitle="@string/text_loading"
+        app:progressSubTitle="@string/text_loading_subtitle"/>
+    <LinearLayout
+        android:id="@+id/layout_content_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:layout_marginTop="@dimen/dip_4"
-        android:layout_marginLeft="@dimen/dip_8"
-        android:layout_marginRight="@dimen/dip_8"
-        android:clipToPadding="false"
-        android:scrollbars="vertical" />
-    <com.app.o.custom.BottomMenuView
-        android:id="@+id/bottom_menu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:layout_marginTop="@dimen/dip_4"
+            android:layout_marginLeft="@dimen/dip_8"
+            android:layout_marginRight="@dimen/dip_8"
+            android:clipToPadding="false"
+            android:scrollbars="vertical" />
+        <com.app.o.custom.BottomMenuView
+            android:id="@+id/bottom_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</RelativeLayout>

@@ -8,6 +8,7 @@
     <dimen name="dip_16">16dp</dimen>
     <dimen name="dip_24">24dp</dimen>
     <dimen name="dip_28">28dp</dimen>
+    <dimen name="dip_72">72dp</dimen>
     <dimen name="dip_180">180dp</dimen>
     <dimen name="dip_240">240dp</dimen>
 

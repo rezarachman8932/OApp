@@ -11,6 +11,7 @@ import android.support.v7.widget.SearchView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.app.o.R
 import com.app.o.api.home.HomeResponseZip
 import com.app.o.api.location.LocationSpec
@@ -32,27 +33,9 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip> {
         setContentView(R.layout.activity_home)
 
         initGrid()
-
-        bottom_menu.isShowBadge = true
-        bottom_menu.imageURL = "http://api.ademuhammad.or.id/uploads/post/sunday-sale201812220713180.JPG"
-        bottom_menu.setMenuListener { _, type ->
-            when (type) {
-                BottomMenuView.MESSAGE -> {}
-
-                BottomMenuView.POST -> {
-                    val intent = Intent(this, PostActivity::class.java)
-                    startActivity(intent)
-                }
-
-                BottomMenuView.PROFILE -> {}
-            }
-        }
+        initBottomView()
 
         presenter = HomePresenter(this, mCompositeDisposable)
-    }
-
-    override fun onResume() {
-        super.onResume()
 
         requestCurrentLocation()
     }
@@ -75,11 +58,13 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip> {
     }
 
     override fun showLoading() {
-
+        progress_bar.visibility = View.VISIBLE
+        layout_content_view.visibility = View.INVISIBLE
     }
 
     override fun hideLoading(statusCode: Int) {
-
+        progress_bar.visibility = View.GONE
+        layout_content_view.visibility = View.VISIBLE
     }
 
     override fun onDataResponse(data: HomeResponseZip) {
@@ -127,6 +112,23 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip> {
         recycler_view.layoutManager = layoutManager
         recycler_view.setHasFixedSize(true)
         recycler_view.itemAnimator = DefaultItemAnimator()
+    }
+
+    private fun initBottomView() {
+        bottom_menu.isShowBadge = true
+        bottom_menu.imageURL = "http://api.ademuhammad.or.id/uploads/post/sunday-sale201812220713180.JPG"
+        bottom_menu.setMenuListener { _, type ->
+            when (type) {
+                BottomMenuView.MESSAGE -> {}
+
+                BottomMenuView.POST -> {
+                    val intent = Intent(this, PostActivity::class.java)
+                    startActivity(intent)
+                }
+
+                BottomMenuView.PROFILE -> {}
+            }
+        }
     }
 
     private fun setSearchView(menu: Menu?) {

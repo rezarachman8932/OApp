@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <declare-styleable name="BottomMenuView">
         <attr name="showBadge" format="boolean" />
         <attr name="imageUrl" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="ProgressBarWithText">
+        <attr name="progressTitle" format="string" />
+        <attr name="progressSubTitle" format="string"/>
+    </declare-styleable>
+
 </resources>
