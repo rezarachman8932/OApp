@@ -1,12 +1,12 @@
 package com.app.o.post
 
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import com.app.o.R
-import com.app.o.base.page.OAppActivity
 import com.app.o.post.adapter.PostPagerAdapter
 import kotlinx.android.synthetic.main.activity_post.*
 
-class PostActivity : OAppActivity() {
+class PostActivity : AppCompatActivity() {
 
     private lateinit var pagerAdapter: PostPagerAdapter
 

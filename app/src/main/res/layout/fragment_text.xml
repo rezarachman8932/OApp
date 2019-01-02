@@ -34,7 +34,7 @@
             android:layout_height="@dimen/dip_2"
             android:background="@color/colorWhiteSmoke"/>
         <EditText
-            android:id="@+id/input_price"
+            android:id="@+id/input_note"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dip_12"

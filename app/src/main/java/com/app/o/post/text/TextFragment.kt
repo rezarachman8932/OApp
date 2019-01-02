@@ -1,59 +1,65 @@
 package com.app.o.post.text
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import com.app.o.R
+import com.app.o.api.post.CreatedPostResponse
+import com.app.o.base.page.OAppFragment
+import com.app.o.base.service.OAppViewService
+import com.app.o.shared.OAppUtil
 import kotlinx.android.synthetic.main.fragment_text.*
 
-class TextFragment : Fragment() {
+class TextFragment : OAppFragment(), OAppViewService<CreatedPostResponse> {
+
+    private lateinit var presenter: TextPresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_text, container, false)
 
         val buttonPost = view.findViewById(R.id.button_post) as Button
-
         val inputTitle = view.findViewById(R.id.input_title_product) as EditText
         val inputDescription = view.findViewById(R.id.input_description) as EditText
-        val inputPrice = view.findViewById(R.id.input_price) as EditText
+        val inputNote = view.findViewById(R.id.input_note) as EditText
 
         buttonPost.setOnClickListener {
             val titleProduct = inputTitle.text.toString()
             val description = inputDescription.text.toString()
-            val price = inputPrice.text.toString()
+            val note = inputNote.text.toString()
 
-            validateInput(titleProduct, description, price)
+            if (validateInput(scroll_root_post, titleProduct, description, note)) {
+                val requestTitle = createPartFromString(titleProduct)
+                val requestDescription = createPartFromString(description)
+                val requestNote = createPartFromString(note)
+                val requestLongitude = createPartFromString(OAppUtil.getLongitude()!!)
+                val requestLatitude = createPartFromString(OAppUtil.getLatitude()!!)
+                val requestType = createPartFromString("text")
+
+                presenter.createPost(requestTitle, requestDescription, requestType, requestLatitude, requestLongitude, requestNote)
+            }
         }
 
         return view
     }
 
-    private fun showSnackBar(message: String) {
-        Snackbar.make(scroll_root_post, message, Snackbar.LENGTH_SHORT).show()
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        presenter = TextPresenter(this, mCompositeDisposable)
     }
 
-    private fun validateInput(titleProduct: String, description: String, price: String) {
-        if (titleProduct.isEmpty()) {
-            showSnackBar(getString(R.string.text_label_title_is_empty))
-            return
-        }
+    override fun showLoading() {}
 
-        if (description.isEmpty()) {
-            showSnackBar(getString(R.string.text_label_description_is_empty))
-            return
-        }
+    override fun hideLoading(statusCode: Int) {}
 
-        if (price.isEmpty()) {
-            showSnackBar(getString(R.string.text_label_note_is_empty))
-            return
+    override fun onDataResponse(data: CreatedPostResponse) {
+        if (isSuccess(data.status)) {
+            activity?.supportFragmentManager?.popBackStack()
+            activity?.finish()
         }
-
-        //TODO Go to next page
     }
 
 }

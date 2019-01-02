@@ -1,14 +1,14 @@
 package com.app.o.post.multimedia
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.app.o.R
+import com.app.o.base.page.OAppFragment
 
-class PhotoVideoFragment : Fragment() {
+class PhotoVideoFragment : OAppFragment() {
 
     var index: Int? = -1
 
