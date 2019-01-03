@@ -1,14 +1,18 @@
 package com.app.o.shared
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.drawable.LayerDrawable
 import android.util.Patterns
-import android.util.TypedValue
 import com.app.o.OApplication
 import com.app.o.R
 import com.app.o.custom.CountDrawable
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -88,11 +92,6 @@ class OAppUtil {
                     .compact()
         }
 
-        fun dpToPx(context: Context, dp: Int): Int {
-            val r = context.resources
-            return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), r.getDisplayMetrics()))
-        }
-
         fun getTimeAgo(time: Long): String? {
             var timestamp: Long = time
             val now = System.currentTimeMillis()
@@ -108,7 +107,7 @@ class OAppUtil {
 
             return when {
                 diff < MINUTE_MILLIS -> OApplication.applicationContext().getString(R.string.text_label_recently)
-                diff < 2 * MINUTE_MILLIS -> OApplication.applicationContext().getString(R.string.text_label_one_minute_ago)
+                diff < 2 * MINUTE_MILLIS -> OApplication.applicationContext().getString(R.string.text_label_one_minute_ago) 
                 diff < 50 * MINUTE_MILLIS -> (diff / MINUTE_MILLIS).toString() + OApplication.applicationContext().getString(R.string.text_label_minutes_ago)
                 diff < 90 * MINUTE_MILLIS -> OApplication.applicationContext().getString(R.string.text_label_one_hour_ago)
                 diff < 24 * HOUR_MILLIS -> (diff / HOUR_MILLIS).toString() + OApplication.applicationContext().getString(R.string.text_label_hours_ago)
@@ -136,6 +135,26 @@ class OAppUtil {
             badge.setCount(count)
             icon.mutate()
             icon.setDrawableByLayerId(layerId, badge)
+        }
+
+        fun createFileFromPath(bitmap: Bitmap?, path: String?): File {
+            val file = File(path)
+            val bos = ByteArrayOutputStream()
+
+            bitmap?.compress(Bitmap.CompressFormat.WEBP, 0, bos)
+
+            val bitmapData = bos.toByteArray()
+
+            try {
+                val fos = FileOutputStream(file)
+                fos.write(bitmapData)
+                fos.flush()
+                fos.close()
+            } catch (exception: IOException) {
+                exception.printStackTrace()
+            }
+
+            return file
         }
     }
 

@@ -34,7 +34,7 @@ interface APIService {
     @Multipart
     @POST("create_post")
     fun createPost(
-            @Part mediaList: List<MultipartBody.Part>?,
+            @Part multimedia: List<MultipartBody.Part>?,
             @Part("title") title: RequestBody,
             @Part("subtitle") subtitle: RequestBody,
             @Part("type") type: RequestBody,

@@ -1,4 +1,4 @@
-package com.app.o.post.text
+package com.app.o.post.multimedia
 
 import com.app.o.api.APIRepository
 import com.app.o.api.post.CreatedPostResponse
@@ -11,18 +11,19 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-class TextPresenter(private val view: OAppViewService<CreatedPostResponse>,
-                    private val compositeDisposable: CompositeDisposable) {
+abstract class MultimediaPresenter(
+        private val view: OAppViewService<CreatedPostResponse>,
+        private val compositeDisposable: CompositeDisposable) {
 
-    fun createPost(
+    open val files = arrayListOf<MultipartBody.Part>()
+
+    open fun createPost(
             title: RequestBody,
             subtitle: RequestBody,
             type: RequestBody,
             latitude: RequestBody,
             longitude: RequestBody,
             content: RequestBody) {
-
-        val files = arrayListOf<MultipartBody.Part>()
 
         compositeDisposable.add(APIRepository.create().createPost(files, title, subtitle, type, latitude, longitude, content, getJWTToken(OAppUtil.getUserName(), OAppUtil.getToken()))
                 .subscribeOn(Schedulers.io())

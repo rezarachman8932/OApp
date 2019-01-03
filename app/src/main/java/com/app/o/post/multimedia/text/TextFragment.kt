@@ -1,4 +1,4 @@
-package com.app.o.post.text
+package com.app.o.post.multimedia.text
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -56,10 +56,7 @@ class TextFragment : OAppFragment(), OAppViewService<CreatedPostResponse> {
     override fun hideLoading(statusCode: Int) {}
 
     override fun onDataResponse(data: CreatedPostResponse) {
-        if (isSuccess(data.status)) {
-            activity?.supportFragmentManager?.popBackStack()
-            activity?.finish()
-        }
+        closePage(data.status)
     }
 
 }

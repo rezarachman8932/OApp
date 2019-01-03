@@ -1,6 +1,7 @@
 package com.app.o.base.page
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -16,8 +17,6 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import pub.devrel.easypermissions.EasyPermissions
-import java.io.File
-
 
 abstract class OAppFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
@@ -66,28 +65,35 @@ abstract class OAppFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         //TODO Force user to enable permission
     }
 
-    private fun openMedia() {
-        Pix.start(this, PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS)
-    }
-
     private fun showSnackBar(message: String, root: ScrollView) {
         Snackbar.make(root, message, Snackbar.LENGTH_SHORT).show()
     }
 
-    protected fun isSuccess(status: Int): Boolean {
+    private fun isSuccess(status: Int): Boolean {
         return (status == OAppUtil.SUCCESS_STATUS)
+    }
+
+    protected fun closePage(status: Int) {
+        if (isSuccess(status)) {
+            activity?.supportFragmentManager?.popBackStack()
+            activity?.finish()
+        }
+    }
+
+    protected fun openMedia() {
+        Pix.start(this, PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS)
     }
 
     @NonNull
     protected fun createPartFromString(descriptionString: String): RequestBody {
-        return RequestBody.create(MediaType.parse("text/plain"), descriptionString)
+        return RequestBody.create(okhttp3.MultipartBody.FORM, descriptionString)
     }
 
     @NonNull
-    protected fun prepareFilePart(partName: String, filePath: String): MultipartBody.Part {
-        val file = File(filePath)
-        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-        return MultipartBody.Part.createFormData(partName, file.name, requestFile)
+    protected fun prepareFilePart(bitmap: Bitmap?, filePath: String?): MultipartBody.Part {
+        val file = OAppUtil.createFileFromPath(bitmap, filePath)
+        val requestFile = RequestBody.create(MediaType.parse("image/*"), file)
+        return MultipartBody.Part.createFormData("media[0]", file.name, requestFile)
     }
 
     protected fun validateInput(scrollView: ScrollView, titleProduct: String, description: String, note: String): Boolean {

@@ -5,8 +5,8 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import com.app.o.R
-import com.app.o.post.multimedia.PhotoVideoFragment
-import com.app.o.post.text.TextFragment
+import com.app.o.post.multimedia.photo_video.PhotoVideoFragment
+import com.app.o.post.multimedia.text.TextFragment
 
 class PostPagerAdapter(fragmentManager: FragmentManager, val context: Context) : FragmentPagerAdapter(fragmentManager) {
 

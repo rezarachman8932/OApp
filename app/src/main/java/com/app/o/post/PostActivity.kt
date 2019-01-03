@@ -17,6 +17,7 @@ class PostActivity : AppCompatActivity() {
         supportActionBar?.title = getString(R.string.text_label_post)
 
         pagerAdapter = PostPagerAdapter(supportFragmentManager, this)
+        view_pager_main.offscreenPageLimit = 2
         view_pager_main.adapter = pagerAdapter
         tab_main.setupWithViewPager(view_pager_main)
     }
