@@ -2,6 +2,7 @@ package com.app.o.api
 
 import com.app.o.api.home.HomeResponse
 import com.app.o.api.location.LocationSpec
+import com.app.o.api.location.LocationWithQuerySpec
 import com.app.o.api.login.LoginResponse
 import com.app.o.api.login.LoginSpec
 import com.app.o.api.post.CreatedPostResponse
@@ -24,6 +25,9 @@ interface APIService {
 
     @POST("posts")
     fun post(@Body spec: LocationSpec, @Header("Authorization") tokenAuth: String?): Single<HomeResponse>
+
+    @POST("post_search")
+    fun postSearch(@Body spec: LocationWithQuerySpec, @Header("Authorization") tokenAuth: String?): Single<HomeResponse>
 
     @POST("people_connected")
     fun getPeopleConnected(@Body spec: LocationSpec, @Header("Authorization") tokenAuth: String?): Single<UserConnectedResponse>

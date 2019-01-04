@@ -26,6 +26,8 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     protected lateinit var mCompositeDisposable: CompositeDisposable
     private lateinit var mLocationManager: LocationManager
 
+    private val permissions = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,6 +55,8 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             AppSettingsDialog.Builder(this).build().show()
+        } else {
+            finish()
         }
     }
 
@@ -94,8 +98,6 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 
     @SuppressLint("MissingPermission")
     protected fun requestCurrentLocation() {
-        val permissions = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
-
         if (EasyPermissions.hasPermissions(this, *permissions)) {
             try {
                 val location = getLastKnownLocation()
@@ -103,17 +105,17 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
                 if (location != null) {
                     locationListener.onLocationChanged(location)
                 } else {
-                    //TODO Get from preference location first
+                    //TODO Give an option for user either use last location or get new location
                     val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                     startActivityForResult(intent, OAppUtil.ON_ENABLE_GPS_SETTING)
                 }
 
-                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 1f, locationListener)
+                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10f, locationListener)
             } catch (securityException: SecurityException) {
                 securityException.message
             }
         } else {
-            EasyPermissions.requestPermissions(this, getString(R.string.text_label_dialog_request_dialog_title), 1, *permissions)
+            EasyPermissions.requestPermissions(this, getString(R.string.text_label_dialog_request_dialog_title), OAppUtil.REQUEST_CODE_FOR_LOCATION, *permissions)
         }
     }
 

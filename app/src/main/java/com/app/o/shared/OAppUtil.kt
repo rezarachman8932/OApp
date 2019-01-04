@@ -6,6 +6,7 @@ import android.graphics.drawable.LayerDrawable
 import android.util.Patterns
 import com.app.o.OApplication
 import com.app.o.R
+import com.app.o.api.location.LocationSpec
 import com.app.o.custom.CountDrawable
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -30,6 +31,7 @@ class OAppUtil {
         const val SPLASH_DELAY: Long = 3000
 
         const val ON_ENABLE_GPS_SETTING = 99
+        const val REQUEST_CODE_FOR_LOCATION = 1
 
         private const val SECOND_MILLIS = 1000
         private const val MINUTE_MILLIS = 60 * SECOND_MILLIS
@@ -155,6 +157,10 @@ class OAppUtil {
             }
 
             return file
+        }
+
+        fun generateLocationSpec(longitude: String, latitude: String): LocationSpec {
+            return LocationSpec(latitude, longitude)
         }
     }
 

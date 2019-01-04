@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.drawable.LayerDrawable
 import android.location.Location
 import android.os.Bundle
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.StaggeredGridLayoutManager
@@ -13,20 +14,26 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.app.o.R
+import com.app.o.api.home.HomePostItem
+import com.app.o.api.home.HomeResponse
 import com.app.o.api.home.HomeResponseZip
-import com.app.o.api.location.LocationSpec
+import com.app.o.api.location.LocationWithQuerySpec
 import com.app.o.base.page.OAppActivity
+import com.app.o.base.service.OAppSearchService
 import com.app.o.base.service.OAppViewService
 import com.app.o.custom.BottomMenuView
 import com.app.o.post.PostActivity
 import com.app.o.shared.OAppUtil
 import kotlinx.android.synthetic.main.activity_home.*
 
-class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip> {
+class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearchService {
 
     private var connectedCount = 0
+    private var shouldLoadDefaultData: Boolean = false
+
     private lateinit var presenter: HomePresenter
     private lateinit var adapter: HomeGridAdapter
+    private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +42,7 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip> {
         initGrid()
         initBottomView()
 
-        presenter = HomePresenter(this, mCompositeDisposable)
+        presenter = HomePresenter(this, this, mCompositeDisposable)
 
         requestCurrentLocation()
     }
@@ -51,33 +58,42 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip> {
 
         val longitude = location.longitude.toString()
         val latitude = location.latitude.toString()
-        val locationSpec = LocationSpec(latitude, longitude)
 
         presenter.saveLastLocation(longitude, latitude)
-        presenter.getPostedTimeline(locationSpec)
+        presenter.getPostedTimeline(OAppUtil.generateLocationSpec(longitude, latitude))
     }
 
     override fun showLoading() {
-        progress_bar.visibility = View.VISIBLE
-        layout_content_view.visibility = View.INVISIBLE
+        setDataListVisibility(false)
     }
 
     override fun hideLoading(statusCode: Int) {
-        progress_bar.visibility = View.GONE
-        layout_content_view.visibility = View.VISIBLE
+        setDataListVisibility(true)
     }
 
     override fun onDataResponse(data: HomeResponseZip) {
         connectedCount = data.userConnectedCount.amount
         invalidateOptionsMenu()
+        setData(data.homeResponse.data, data.homeResponse.status)
+    }
 
-        if (isSuccess(data.homeResponse.status)) {
-            if (data.homeResponse.data.isNotEmpty()) {
-                adapter = HomeGridAdapter(data.homeResponse.data, listener = {})
-                recycler_view.adapter = adapter
-                adapter.notifyDataSetChanged()
-            }
-        }
+    override fun onQueryProcessed() {
+        setDataListVisibility(false)
+    }
+
+    override fun onQueryFailed() {
+        setDataListVisibility(true)
+        searchView.onActionViewCollapsed()
+        presenter.getPostedTimeline(OAppUtil.generateLocationSpec(OAppUtil.getLongitude()!!, OAppUtil.getLatitude()!!))
+    }
+
+    override fun onQueryCompleted(response: HomeResponse) {
+        setDataListVisibility(true)
+
+        val oldData = adapter.getItems()
+        val result = DiffUtil.calculateDiff(HomeDiffUtilCallback(oldData, response.data))
+        adapter.setData(response.data)
+        result.dispatchUpdatesTo(adapter)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -134,11 +150,26 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip> {
     private fun setSearchView(menu: Menu?) {
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
-        val searchView = menu?.findItem(R.id.action_search)?.actionView as SearchView
+        searchView = menu?.findItem(R.id.action_search)?.actionView as SearchView
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.setOnCloseListener {
+            if (shouldLoadDefaultData) {
+                if (searchView.query.isEmpty()) {
+                    shouldLoadDefaultData = false
+
+                    presenter.getPostedTimeline(OAppUtil.generateLocationSpec(OAppUtil.getLongitude()!!, OAppUtil.getLatitude()!!))
+                }
+            }
+
+            false
+        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                searchView.onActionViewCollapsed()
+                shouldLoadDefaultData = true
+
+                val locationWithQuerySpec = LocationWithQuerySpec(query, OAppUtil.getLatitude()!!, OAppUtil.getLongitude()!!)
+                presenter.getSearchPost(locationWithQuerySpec)
+
                 return false
             }
 
@@ -146,6 +177,30 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip> {
                 return false
             }
         })
+    }
+
+    private fun setDataListVisibility(showed: Boolean) {
+        if (showed) {
+            progress_bar.visibility = View.GONE
+            layout_content_view.visibility = View.VISIBLE
+        } else {
+            progress_bar.visibility = View.VISIBLE
+            layout_content_view.visibility = View.INVISIBLE
+        }
+    }
+
+    private fun setData(data: List<HomePostItem>, status: Int) {
+        if (isSuccess(status)) {
+            if (data.isNotEmpty()) {
+                adapter = HomeGridAdapter()
+                adapter.setData(data)
+                adapter.setListener {}
+                recycler_view.adapter = adapter
+                adapter.notifyDataSetChanged()
+            } else {
+                //TODO Show empty state
+            }
+        }
     }
 
 }

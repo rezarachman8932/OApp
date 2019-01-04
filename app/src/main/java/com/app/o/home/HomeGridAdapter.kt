@@ -12,7 +12,28 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_grid_photo.*
 
-class HomeGridAdapter(private val items: List<HomePostItem>, private val listener: (HomePostItem) -> Unit) : RecyclerView.Adapter<HomeGridAdapter.ViewHolder>() {
+class HomeGridAdapter : RecyclerView.Adapter<HomeGridAdapter.ViewHolder>() {
+
+    private lateinit var dataItems: List<HomePostItem>
+    private lateinit var listener: (HomePostItem) -> Unit
+
+    companion object {
+        const val TYPE_IMAGE = "image"
+        const val TYPE_TEXT = "text"
+        const val TYPE_VIDEO = "video"
+    }
+
+    fun setData(data: List<HomePostItem>) {
+        dataItems = data
+    }
+
+    fun setListener(adapterListener: (HomePostItem) -> Unit) {
+        listener = adapterListener
+    }
+
+    fun getItems(): List<HomePostItem> {
+        return dataItems
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
         val item = LayoutInflater.from(parent.context).inflate(R.layout.item_grid_photo, parent, false) as LinearLayout
@@ -20,11 +41,11 @@ class HomeGridAdapter(private val items: List<HomePostItem>, private val listene
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return dataItems.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItem(items[position], listener)
+        holder.bindItem(dataItems[position], listener)
     }
 
     class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
@@ -45,10 +66,10 @@ class HomeGridAdapter(private val items: List<HomePostItem>, private val listene
                 item_layout_love.visibility = View.GONE
             }
 
-            if (item.type == "image") {
-                item_icon_type_post.setImageResource(R.drawable.ic_type_bag)
-            } else if (item.type == "audio") {
-                item_icon_type_post.setImageResource(R.drawable.ic_vector_speaker)
+            when {
+                item.type == TYPE_IMAGE -> item_icon_type_post.setImageResource(R.drawable.ic_type_bag)
+                item.type == TYPE_TEXT -> item_icon_type_post.setImageResource(R.drawable.ic_vector_speaker)
+                item.type == TYPE_VIDEO -> item_icon_type_post.setImageResource(R.drawable.ic_type_audio)
             }
 
             item_text_post_title.text = item.title
