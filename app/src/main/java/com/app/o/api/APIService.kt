@@ -1,5 +1,7 @@
 package com.app.o.api
 
+import com.app.o.api.detail.DetailResponse
+import com.app.o.api.detail.DetailSpec
 import com.app.o.api.home.HomeResponse
 import com.app.o.api.location.LocationSpec
 import com.app.o.api.location.LocationWithQuerySpec
@@ -46,5 +48,8 @@ interface APIService {
             @Part("longitude") longitude: RequestBody,
             @Part("content") content: RequestBody,
             @Header("Authorization") tokenAuth: String?): Single<CreatedPostResponse>
+
+    @POST("post_detail")
+    fun getDetailContent(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<DetailResponse>
 
 }

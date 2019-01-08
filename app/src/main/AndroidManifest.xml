@@ -37,6 +37,7 @@
             android:name=".post.PostActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:parentActivityName=".home.HomeActivity"/>
+        <activity android:name=".detail.DetailActivity" />
 
         <service
             android:name=".notification.OAppMessagingService">
