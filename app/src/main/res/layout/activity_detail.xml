@@ -39,6 +39,8 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/dip_8"
+                android:layout_marginLeft="@dimen/dip_8"
+                android:layout_marginRight="@dimen/dip_8"
                 app:elevation="@dimen/dip_8"
                 app:cardCornerRadius="@dimen/dip_4"
                 app:cardUseCompatPadding="true"
@@ -79,6 +81,13 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/sp_12" />
                         </LinearLayout>
+                        <TextView
+                            android:id="@+id/text_detail_time_ago"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:textSize="@dimen/sp_10"/>
                     </RelativeLayout>
                     <View
                         android:id="@+id/separator_header"
@@ -124,8 +133,8 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/dip_12"
-                            android:layout_marginStart="@dimen/dip_12"
+                            android:layout_marginLeft="@dimen/dip_16"
+                            android:layout_marginStart="@dimen/dip_16"
                             android:layout_gravity="center_vertical"
                             android:orientation="horizontal">
                             <TextView
@@ -177,6 +186,9 @@
                 android:id="@+id/card_view_comments"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dip_8"
+                android:layout_marginRight="@dimen/dip_8"
+                android:layout_marginBottom="@dimen/dip_8"
                 android:layout_gravity="center"
                 app:elevation="@dimen/dip_8"
                 app:cardCornerRadius="@dimen/dip_4"

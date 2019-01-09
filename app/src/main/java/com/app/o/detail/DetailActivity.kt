@@ -11,6 +11,7 @@ import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.custom.RecyclerViewDecorator
 import com.app.o.shared.ImageUtil
+import com.app.o.shared.OAppUtil
 import kotlinx.android.synthetic.main.activity_detail.*
 
 class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
@@ -59,6 +60,7 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
     private fun invalidateData(data: DetailResponseZip) {
         val contentData = data.detailContent
         val comments = data.commentListOptional.data
+        val userProfile = data.userProfile
 
         when {
             contentData.type == "text" -> {
@@ -80,12 +82,13 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
 
         ImageUtil.setImage(null, R.drawable.ic_logo, image_detail_photo)
 
-        text_detail_name.text = contentData.type
-        text_detail_location_name.text = contentData.created_at
+        text_detail_name.text = userProfile.name
+        text_detail_location_name.text = userProfile.location
         text_detail_notes_tag.text = contentData.subtitle
         text_detail_love_count.text = contentData.like_count.toString()
         text_detail_title.text = contentData.title
         text_detail_content.text = contentData.content
+        text_detail_time_ago.text = OAppUtil.getTimeAgo(OAppUtil.generateStringToTimestamp(contentData.created_at))
 
         if (comments.isNotEmpty()) {
             text_detail_comment_count.text = comments.size.toString()

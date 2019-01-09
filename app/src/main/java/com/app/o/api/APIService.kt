@@ -13,6 +13,7 @@ import com.app.o.api.register.RegisterResponse
 import com.app.o.api.register.RegisterSpec
 import com.app.o.api.relation.UserConnectedCountResponse
 import com.app.o.api.relation.UserConnectedResponse
+import com.app.o.api.user.UserProfileResponse
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -55,5 +56,8 @@ interface APIService {
 
     @POST("post_comment")
     fun getDetailCommentList(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<CommentResponse>
+
+    @POST("profile")
+    fun getUserProfile(@Header("Authorization") tokenAuth: String?): Single<UserProfileResponse>
 
 }

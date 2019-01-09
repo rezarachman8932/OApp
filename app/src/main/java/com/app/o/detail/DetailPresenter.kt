@@ -5,6 +5,7 @@ import com.app.o.api.comment.CommentResponse
 import com.app.o.api.detail.DetailResponse
 import com.app.o.api.detail.DetailResponseZip
 import com.app.o.api.detail.DetailSpec
+import com.app.o.api.user.UserProfileResponse
 import com.app.o.base.service.OAppViewService
 import com.app.o.shared.OAppUtil
 import io.reactivex.Single
@@ -40,16 +41,16 @@ class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
     private fun getAllContent(detailSpec: DetailSpec) : Single<DetailResponseZip> {
         return Single.zip(
                 APIRepository.create().getDetailContent(detailSpec, getJWTToken(OAppUtil.getUserName(), OAppUtil.getToken())),
+                APIRepository.create().getUserProfile(getJWTToken(OAppUtil.getUserName(), OAppUtil.getToken())),
                 APIRepository.create().getDetailCommentList(detailSpec, getJWTToken(OAppUtil.getUserName(), OAppUtil.getToken())),
-                APIRepository.create().getDetailCommentList(detailSpec, getJWTToken(OAppUtil.getUserName(), OAppUtil.getToken())),
-                Function3<DetailResponse, CommentResponse, CommentResponse, DetailResponseZip> {
+                Function3<DetailResponse, UserProfileResponse, CommentResponse, DetailResponseZip> {
                     t1, t2, t3 ->
                     createDetailModel(t1, t2, t3)
                 })
     }
 
-    private fun createDetailModel(detailResponse: DetailResponse, commentResponse: CommentResponse, commentResponseOptional: CommentResponse) : DetailResponseZip {
-        return DetailResponseZip(detailResponse, commentResponse, commentResponseOptional)
+    private fun createDetailModel(detailResponse: DetailResponse, userProfileResponse: UserProfileResponse, commentResponseOptional: CommentResponse) : DetailResponseZip {
+        return DetailResponseZip(detailResponse, userProfileResponse, commentResponseOptional)
     }
 
     private fun getJWTToken(username: String?, token: String?): String {
