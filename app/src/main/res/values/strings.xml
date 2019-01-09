@@ -42,4 +42,5 @@
     <string name="text_label_photo">PHOTO</string>
     <string name="text_label_video">VIDEO</string>
     <string name="text_label_text">TEXT</string>
+    <string name="text_label_detail_header">Detail Post</string>
 </resources>

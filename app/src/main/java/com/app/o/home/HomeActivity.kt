@@ -22,6 +22,7 @@ import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppSearchService
 import com.app.o.base.service.OAppViewService
 import com.app.o.custom.BottomMenuView
+import com.app.o.detail.DetailActivity
 import com.app.o.post.PostActivity
 import com.app.o.shared.OAppUtil
 import kotlinx.android.synthetic.main.activity_home.*
@@ -194,7 +195,11 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
             if (data.isNotEmpty()) {
                 adapter = HomeGridAdapter()
                 adapter.setData(data)
-                adapter.setListener {}
+                adapter.setListener {
+                    val intent = Intent(this, DetailActivity::class.java)
+                    intent.putExtra("postId", it.post_id.toString())
+                    startActivity(intent)
+                }
                 recycler_view.adapter = adapter
                 adapter.notifyDataSetChanged()
             } else {

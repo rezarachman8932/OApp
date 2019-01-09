@@ -10,12 +10,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <RelativeLayout
+            android:id="@+id/layout_view_multimedia_content"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dip_180">
             <ImageView
                 android:id="@+id/image_detail_thumb"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"/>
             <VideoView
                 android:id="@+id/video_detail_thumb"
                 android:layout_width="match_parent"
@@ -26,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_marginTop="@dimen/dip_8"
             app:elevation="@dimen/dip_8"
             app:cardCornerRadius="@dimen/dip_4"
             app:cardUseCompatPadding="true"
@@ -147,20 +150,28 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dip_12"
                     android:layout_marginRight="@dimen/dip_12"
+                    android:layout_marginBottom="@dimen/dip_16"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/sp_12" />
-                <View
-                    android:id="@+id/separator_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginTop="@dimen/dip_16"
-                    android:layout_marginBottom="@dimen/dip_16"
-                    android:background="@color/colorWhiteSmoke"/>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view_comments"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            app:elevation="@dimen/dip_8"
+            app:cardCornerRadius="@dimen/dip_4"
+            app:cardUseCompatPadding="true"
+            app:cardElevation="@dimen/dip_4">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dip_12"
-                    android:layout_marginStart="@dimen/dip_12"
+                    android:layout_margin="@dimen/dip_12"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="wrap_content"
@@ -182,7 +193,6 @@
                     android:id="@+id/list_comment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dip_8"
                     android:layout_marginLeft="@dimen/dip_12"
                     android:layout_marginRight="@dimen/dip_12"
                     android:layout_marginBottom="@dimen/dip_12"

@@ -1,5 +1,6 @@
 package com.app.o.api
 
+import com.app.o.api.comment.CommentResponse
 import com.app.o.api.detail.DetailResponse
 import com.app.o.api.detail.DetailSpec
 import com.app.o.api.home.HomeResponse
@@ -51,5 +52,8 @@ interface APIService {
 
     @POST("post_detail")
     fun getDetailContent(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<DetailResponse>
+
+    @POST("post_comment")
+    fun getDetailCommentList(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<CommentResponse>
 
 }
