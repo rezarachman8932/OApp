@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.app.o.R
+import com.app.o.api.detail.DetailResponse
 import com.app.o.api.detail.DetailResponseZip
 import com.app.o.api.detail.DetailSpec
-import com.app.o.api.media.MediaItem
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.custom.RecyclerViewDecorator
@@ -33,9 +33,15 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
         presenter.geDetailPageContent(DetailSpec(postId))
     }
 
-    override fun showLoading() {}
+    override fun showLoading() {
+        progress_bar.visibility = View.VISIBLE
+        layout_content_view.visibility = View.INVISIBLE
+    }
 
-    override fun hideLoading(statusCode: Int) {}
+    override fun hideLoading(statusCode: Int) {
+        progress_bar.visibility = View.INVISIBLE
+        layout_content_view.visibility = View.VISIBLE
+    }
 
     override fun onDataResponse(data: DetailResponseZip) {
         invalidateData(data)
@@ -51,7 +57,6 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
     }
 
     private fun invalidateData(data: DetailResponseZip) {
-        val media = data.detailContent.media[0]
         val contentData = data.detailContent
         val comments = data.commentListOptional.data
 
@@ -63,13 +68,13 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
             contentData.type == "image" -> {
                 image_detail_thumb.visibility = View.VISIBLE
                 video_detail_thumb.visibility = View.GONE
-                setMedia(media)
+                setMedia(contentData)
             }
 
             contentData.type == "video" -> {
                 image_detail_thumb.visibility = View.GONE
                 video_detail_thumb.visibility = View.VISIBLE
-                setMedia(media)
+                setMedia(contentData)
             }
         }
 
@@ -97,12 +102,14 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
         }
     }
 
-    private fun setMedia(media: MediaItem) {
-        media.url?.let {
-            if (media.type.equals("image", true)) {
-                ImageUtil.setImage(it, null, image_detail_thumb)
-            } else {
-                //TODO Handle video content
+    private fun setMedia(detailResponse: DetailResponse) {
+        if (!detailResponse.media.isNullOrEmpty()) {
+            detailResponse.media[0].url.let {
+                if (detailResponse.media[0].type.equals("image", true)) {
+                    ImageUtil.setImage(it, null, image_detail_thumb)
+                } else {
+                    //TODO Handle video content
+                }
             }
         }
     }
