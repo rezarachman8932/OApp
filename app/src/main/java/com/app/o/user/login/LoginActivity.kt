@@ -8,6 +8,7 @@ import com.app.o.api.login.LoginResponse
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.home.HomeActivity
+import com.app.o.shared.OAppUtil
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : OAppActivity(),
@@ -30,11 +31,15 @@ class LoginActivity : OAppActivity(),
     }
 
     override fun showLoading() {
-
+        shouldShowProgress(true)
     }
 
     override fun hideLoading(statusCode: Int) {
+        shouldShowProgress(false)
 
+        if (statusCode == OAppUtil.ON_FINISH_FAILED) {
+            showSnackBar(scroll_root_login, getString(R.string.text_error_after_login))
+        }
     }
 
     override fun onDataResponse(data: LoginResponse) {

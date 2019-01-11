@@ -10,11 +10,13 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.EditText
+import android.widget.TextView
 import com.app.o.R
 import com.app.o.shared.OAppUtil
 import io.reactivex.disposables.CompositeDisposable
@@ -24,9 +26,11 @@ import pub.devrel.easypermissions.EasyPermissions
 abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
     protected lateinit var mCompositeDisposable: CompositeDisposable
-    private lateinit var mLocationManager: LocationManager
 
-    private val permissions = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+    private lateinit var mLocationManager: LocationManager
+    private lateinit var mAlert: AlertDialog
+
+    private val mPermissions = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,7 +102,7 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 
     @SuppressLint("MissingPermission")
     protected fun requestCurrentLocation() {
-        if (EasyPermissions.hasPermissions(this, *permissions)) {
+        if (EasyPermissions.hasPermissions(this, *mPermissions)) {
             try {
                 val location = getLastKnownLocation()
 
@@ -115,7 +119,7 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
                 securityException.message
             }
         } else {
-            EasyPermissions.requestPermissions(this, getString(R.string.text_label_dialog_request_dialog_title), OAppUtil.REQUEST_CODE_FOR_LOCATION, *permissions)
+            EasyPermissions.requestPermissions(this, getString(R.string.text_label_dialog_request_dialog_title), OAppUtil.REQUEST_CODE_FOR_LOCATION, *mPermissions)
         }
     }
 
@@ -125,6 +129,29 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 
     protected fun showSnackBar(root: View, message: String) {
         Snackbar.make(root, message, Snackbar.LENGTH_SHORT).show()
+    }
+
+    protected fun shouldShowProgress(showed: Boolean) {
+        if (showed) {
+            val loadingProgress = AlertDialog.Builder(this, R.style.CustomDialogTheme)
+            with(loadingProgress) {
+                setTitle(getString(R.string.text_loading_dialog_title))
+                setMessage(getString(R.string.text_loading_dialog_subtitle))
+            }
+
+            mAlert = loadingProgress.create()
+            with(mAlert) {
+                show()
+                window?.attributes
+            }
+
+            val title = mAlert.findViewById<TextView>(android.R.id.title)
+            val message = mAlert.findViewById<TextView>(android.R.id.message)
+            title?.textSize = 12f
+            message?.textSize = 12f
+        } else {
+            mAlert.dismiss()
+        }
     }
 
     protected fun isSuccess(status: Int): Boolean {
