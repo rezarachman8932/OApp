@@ -31,6 +31,7 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
 
     private var connectedCount = 0
     private var shouldLoadDefaultData: Boolean = false
+    private var isFirstTimeLoad: Boolean = true
 
     private lateinit var presenter: HomePresenter
     private lateinit var adapter: HomeGridAdapter
@@ -44,6 +45,10 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
         initBottomView()
 
         presenter = HomePresenter(this, this, mCompositeDisposable)
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         requestCurrentLocation()
     }
@@ -90,18 +95,12 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
 
     override fun onQueryCompleted(response: HomeResponse) {
         setDataListVisibility(true)
-
-        val oldData = adapter.getItems()
-        val result = DiffUtil.calculateDiff(HomeDiffUtilCallback(oldData, response.data))
-        adapter.setData(response.data)
-        result.dispatchUpdatesTo(adapter)
+        updateData(response.data)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.home_menu, menu)
-
         setSearchView(menu)
-
         return true
     }
 
@@ -193,19 +192,33 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
     private fun setData(data: List<HomePostItem>, status: Int) {
         if (isSuccess(status)) {
             if (data.isNotEmpty()) {
-                adapter = HomeGridAdapter()
-                adapter.setData(data)
-                adapter.setListener {
-                    val intent = Intent(this, DetailActivity::class.java)
-                    intent.putExtra("postId", it.post_id.toString())
-                    startActivity(intent)
+                if (isFirstTimeLoad) {
+                    adapter = HomeGridAdapter()
+                    adapter.setData(data)
+                    adapter.setListener {
+                        val intent = Intent(this, DetailActivity::class.java)
+                        intent.putExtra("postId", it.post_id.toString())
+                        startActivity(intent)
+                    }
+
+                    recycler_view.adapter = adapter
+                    adapter.notifyDataSetChanged()
+
+                    isFirstTimeLoad = false
+                } else {
+                    updateData(data)
                 }
-                recycler_view.adapter = adapter
-                adapter.notifyDataSetChanged()
             } else {
                 //TODO Show empty state
             }
         }
+    }
+
+    private fun updateData(newData: List<HomePostItem>) {
+        val oldData = adapter.getItems()
+        val result = DiffUtil.calculateDiff(HomeDiffUtilCallback(oldData, newData))
+        adapter.setData(newData)
+        result.dispatchUpdatesTo(adapter)
     }
 
 }
