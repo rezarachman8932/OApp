@@ -38,7 +38,7 @@ class LoginActivity : OAppActivity(),
         shouldShowProgress(false)
 
         if (statusCode == OAppUtil.ON_FINISH_FAILED) {
-            showSnackBar(scroll_root_login, getString(R.string.text_error_after_login))
+            showSnackBar(scroll_root_login, getString(R.string.text_error_on_login))
         }
     }
 

@@ -32,11 +32,15 @@ class RegisterActivity : OAppActivity(),
     }
 
     override fun showLoading() {
-
+        shouldShowProgress(true)
     }
 
     override fun hideLoading(statusCode: Int) {
+        shouldShowProgress(false)
 
+        if (statusCode == OAppUtil.ON_FINISH_FAILED) {
+            showSnackBar(scroll_root_register, getString(R.string.text_error_register_fetched))
+        }
     }
 
     override fun onDataResponse(data: RegisterResponse) {
