@@ -40,6 +40,9 @@
         <activity
             android:name=".detail.DetailActivity"
             android:parentActivityName=".home.HomeActivity"/>
+        <activity
+            android:name=".message.MessageActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
 
         <service
             android:name=".notification.OAppMessagingService">

@@ -3,6 +3,7 @@
     <!-- DP -->
     <dimen name="dip_2">2dp</dimen>
     <dimen name="dip_4">4dp</dimen>
+    <dimen name="dip_6">6dp</dimen>
     <dimen name="dip_8">8dp</dimen>
     <dimen name="dip_12">12dp</dimen>
     <dimen name="dip_16">16dp</dimen>

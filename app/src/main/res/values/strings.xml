@@ -12,6 +12,7 @@
     <string name="text_hint_name">Name</string>
     <string name="text_hint_phone_number">Phone Number</string>
     <string name="text_hint_email">Email</string>
+    <string name="text_hint_comments">Type your comments</string>
     <string name="text_already_have_account">Already have account?</string>
     <string name="text_error_submit_login">Please check your username and password correctly</string>
     <string name="text_error_submit_register">Please check your input  correctly</string>
@@ -47,4 +48,6 @@
     <string name="text_label_video">VIDEO</string>
     <string name="text_label_text">TEXT</string>
     <string name="text_label_detail_header">Detail Post</string>
+    <string name="text_label_empty_comments">No conversation</string>
+    <string name="text_label_send">Send</string>
 </resources>

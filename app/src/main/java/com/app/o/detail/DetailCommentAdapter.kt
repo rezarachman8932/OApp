@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import com.app.o.R
 import com.app.o.api.comment.Comment
-import com.app.o.shared.ImageUtil
+import com.app.o.shared.OAppImageUtil
 import com.app.o.shared.OAppUtil
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_list_comment.*
@@ -44,7 +44,7 @@ class DetailCommentAdapter : RecyclerView.Adapter<DetailCommentAdapter.ViewHolde
             item_text_comment_content.text = item.content
             item_text_time_post.text = OAppUtil.getTimeAgo(OAppUtil.generateStringToTimestamp(item.created_at))
 
-            ImageUtil.setImage(item.avatar, R.drawable.ic_logo, item_image_comment_avatar)
+            OAppImageUtil.setImage(item.avatar, R.drawable.ic_logo, item_image_comment_avatar)
 
             containerView.setOnClickListener { listener(item) }
         }

@@ -10,7 +10,7 @@ import com.app.o.api.detail.DetailSpec
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.custom.RecyclerViewDecorator
-import com.app.o.shared.ImageUtil
+import com.app.o.shared.OAppImageUtil
 import com.app.o.shared.OAppUtil
 import kotlinx.android.synthetic.main.activity_detail.*
 
@@ -80,7 +80,7 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
             }
         }
 
-        ImageUtil.setImage(null, R.drawable.ic_logo, image_detail_photo)
+        OAppImageUtil.setImage(null, R.drawable.ic_logo, image_detail_photo)
 
         text_detail_name.text = userProfile.name
         text_detail_location_name.text = userProfile.location
@@ -109,7 +109,7 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
         if (!detailResponse.media.isNullOrEmpty()) {
             detailResponse.media[0].url.let {
                 if (detailResponse.media[0].type.equals("image", true)) {
-                    ImageUtil.setImage(it, null, image_detail_thumb)
+                    OAppImageUtil.setImage(it, null, image_detail_thumb)
                 } else {
                     //TODO Handle video content
                 }

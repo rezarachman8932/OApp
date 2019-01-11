@@ -3,7 +3,7 @@ package com.app.o.shared
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
 
-class ImageUtil {
+class OAppImageUtil {
 
     companion object {
         fun setImage(url: String?, holderSrc: Int?, imageView: ImageView) {
