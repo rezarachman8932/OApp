@@ -51,9 +51,17 @@ class TextFragment : OAppFragment(), OAppViewService<CreatedPostResponse> {
         presenter = TextPresenter(this, mCompositeDisposable)
     }
 
-    override fun showLoading() {}
+    override fun showLoading() {
+        shouldShowProgress(true)
+    }
 
-    override fun hideLoading(statusCode: Int) {}
+    override fun hideLoading(statusCode: Int) {
+        shouldShowProgress(false)
+
+        if (statusCode == OAppUtil.ON_FINISH_FAILED) {
+            showSnackBar(getString(R.string.text_label_error_posting), scroll_root_post)
+        }
+    }
 
     override fun onDataResponse(data: CreatedPostResponse) {
         closePage(data.status)

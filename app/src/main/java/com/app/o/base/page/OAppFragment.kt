@@ -5,8 +5,10 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.widget.ScrollView
+import android.widget.TextView
 import com.app.o.R
 import com.app.o.shared.OAppUtil
 import com.fxn.pix.Pix
@@ -21,6 +23,7 @@ import pub.devrel.easypermissions.EasyPermissions
 abstract class OAppFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     protected lateinit var mCompositeDisposable: CompositeDisposable
+    private lateinit var mAlert: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,18 +68,41 @@ abstract class OAppFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         //TODO Force user to enable permission
     }
 
-    private fun showSnackBar(message: String, root: ScrollView) {
-        Snackbar.make(root, message, Snackbar.LENGTH_SHORT).show()
-    }
-
     private fun isSuccess(status: Int): Boolean {
         return (status == OAppUtil.SUCCESS_STATUS)
+    }
+
+    protected fun showSnackBar(message: String, root: ScrollView) {
+        Snackbar.make(root, message, Snackbar.LENGTH_SHORT).show()
     }
 
     protected fun closePage(status: Int) {
         if (isSuccess(status)) {
             activity?.supportFragmentManager?.popBackStack()
             activity?.finish()
+        }
+    }
+
+    protected fun shouldShowProgress(showed: Boolean) {
+        if (showed) {
+            val loadingProgress = AlertDialog.Builder(context!!, R.style.CustomDialogTheme)
+            with(loadingProgress) {
+                setTitle(getString(R.string.text_loading_posting_dialog_title))
+                setMessage(getString(R.string.text_loading_posting_dialog_subtitle))
+            }
+
+            mAlert = loadingProgress.create()
+            with(mAlert) {
+                show()
+                window?.attributes
+            }
+
+            val title = mAlert.findViewById<TextView>(android.R.id.title)
+            val message = mAlert.findViewById<TextView>(android.R.id.message)
+            title?.textSize = 12f
+            message?.textSize = 12f
+        } else {
+            mAlert.dismiss()
         }
     }
 
