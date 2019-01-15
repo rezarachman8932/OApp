@@ -32,6 +32,11 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 
     private val mPermissions = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
 
+    companion object {
+        private const val MIN_REFRESH_LOCATION: Long = 30000
+        private const val MIN_DISTANCE:Float = 10f
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -114,7 +119,7 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
                     startActivityForResult(intent, OAppUtil.ON_ENABLE_GPS_SETTING)
                 }
 
-                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10f, locationListener)
+                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_REFRESH_LOCATION, MIN_DISTANCE, locationListener)
             } catch (securityException: SecurityException) {
                 securityException.message
             }
