@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_text.*
 class TextFragment : OAppFragment(), OAppViewService<CreatedPostResponse> {
 
     private lateinit var presenter: TextPresenter
+    private var isSubmittingItem: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_text, container, false)
@@ -38,7 +39,9 @@ class TextFragment : OAppFragment(), OAppViewService<CreatedPostResponse> {
                 val requestLatitude = createPartFromString(OAppUtil.getLatitude()!!)
                 val requestType = createPartFromString("text")
 
-                presenter.createPost(requestTitle, requestDescription, requestType, requestLatitude, requestLongitude, requestNote)
+                if (!isSubmittingItem) {
+                    presenter.createPost(requestTitle, requestDescription, requestType, requestLatitude, requestLongitude, requestNote)
+                }
             }
         }
 
@@ -52,10 +55,12 @@ class TextFragment : OAppFragment(), OAppViewService<CreatedPostResponse> {
     }
 
     override fun showLoading() {
+        isSubmittingItem = true
         shouldShowProgress(true)
     }
 
     override fun hideLoading(statusCode: Int) {
+        isSubmittingItem = false
         shouldShowProgress(false)
 
         if (statusCode == OAppUtil.ON_FINISH_FAILED) {

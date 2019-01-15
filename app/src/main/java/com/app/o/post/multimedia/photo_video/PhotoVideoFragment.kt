@@ -23,6 +23,7 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
     private var index: Int? = -1
     private var bitmap: Bitmap? = null
     private var imagePath: String? = null
+    private var isSubmittingItem: Boolean = false
 
     private lateinit var imagePreview: ImageView
     private lateinit var backgroundImageLayout: RelativeLayout
@@ -82,10 +83,12 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
     }
 
     override fun showLoading() {
+        isSubmittingItem = true
         shouldShowProgress(true)
     }
 
     override fun hideLoading(statusCode: Int) {
+        isSubmittingItem = false
         shouldShowProgress(false)
 
         if (statusCode == OAppUtil.ON_FINISH_FAILED) {
@@ -125,7 +128,9 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
                 presenter.files.add(body)
             }
 
-            presenter.createPost(requestTitle, requestDescription, requestType, requestLatitude, requestLongitude, requestNote)
+            if (!isSubmittingItem) {
+                presenter.createPost(requestTitle, requestDescription, requestType, requestLatitude, requestLongitude, requestNote)
+            }
         }
     }
 
