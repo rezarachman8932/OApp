@@ -1,5 +1,6 @@
 package com.app.o.detail
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
@@ -10,6 +11,7 @@ import com.app.o.api.detail.DetailSpec
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.custom.RecyclerViewDecorator
+import com.app.o.message.MessageActivity
 import com.app.o.shared.OAppImageUtil
 import com.app.o.shared.OAppUtil
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -94,8 +96,14 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
             text_detail_comment_count.text = comments.size.toString()
 
             adapter = DetailCommentAdapter()
-            adapter.setListener {}
             adapter.setData(comments)
+            adapter.setListener {
+                val bundle = Bundle()
+                val intent = Intent(this, MessageActivity::class.java)
+                bundle.putParcelable("selectedComment", it)
+                intent.putExtra("bundle", bundle)
+                startActivity(intent)
+            }
 
             list_comment.adapter = adapter
 

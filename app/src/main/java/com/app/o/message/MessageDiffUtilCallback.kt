@@ -1,10 +1,10 @@
-package com.app.o.home
+package com.app.o.message
 
 import android.support.annotation.Nullable
 import android.support.v7.util.DiffUtil
-import com.app.o.api.home.HomePostItem
+import com.app.o.api.comment.Comment
 
-class HomeDiffUtilCallback(private val oldList: List<HomePostItem>, private val newList: List<HomePostItem>) : DiffUtil.Callback() {
+class MessageDiffUtilCallback(private val oldList: List<Comment>, private val newList: List<Comment>) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int {
         return oldList.size
@@ -15,7 +15,8 @@ class HomeDiffUtilCallback(private val oldList: List<HomePostItem>, private val 
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].post_id == newList[newItemPosition].post_id
+        //TODO Change to comment id
+        return oldList[oldItemPosition].content == newList[newItemPosition].content
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

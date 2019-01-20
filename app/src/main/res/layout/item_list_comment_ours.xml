@@ -10,4 +10,14 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:textSize="@dimen/sp_14" />
+    <TextView
+        android:id="@+id/item_text_comment_ours_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_text_comment_ours"
+        android:layout_alignRight="@id/item_text_comment_ours"
+        android:layout_alignEnd="@id/item_text_comment_ours"
+        android:layout_marginTop="@dimen/dip_12"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/sp_12" />
 </RelativeLayout>

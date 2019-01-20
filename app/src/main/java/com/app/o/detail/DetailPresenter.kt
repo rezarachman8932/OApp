@@ -6,6 +6,7 @@ import com.app.o.api.detail.DetailResponse
 import com.app.o.api.detail.DetailResponseZip
 import com.app.o.api.detail.DetailSpec
 import com.app.o.api.user.UserProfileResponse
+import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppViewService
 import com.app.o.shared.OAppUtil
 import io.reactivex.Single
@@ -16,7 +17,7 @@ import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
-                      private val compositeDisposable: CompositeDisposable) {
+                      private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
 
     fun geDetailPageContent(spec: DetailSpec) {
         compositeDisposable.add(getAllContent(spec)
@@ -40,9 +41,9 @@ class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
 
     private fun getAllContent(detailSpec: DetailSpec) : Single<DetailResponseZip> {
         return Single.zip(
-                APIRepository.create().getDetailContent(detailSpec, getJWTToken(OAppUtil.getUserName(), OAppUtil.getToken())),
-                APIRepository.create().getUserProfile(getJWTToken(OAppUtil.getUserName(), OAppUtil.getToken())),
-                APIRepository.create().getDetailCommentList(detailSpec, getJWTToken(OAppUtil.getUserName(), OAppUtil.getToken())),
+                APIRepository.create().getDetailContent(detailSpec, getHeaderAuth()),
+                APIRepository.create().getUserProfile(getHeaderAuth()),
+                APIRepository.create().getDetailCommentList(detailSpec, getHeaderAuth()),
                 Function3<DetailResponse, UserProfileResponse, CommentResponse, DetailResponseZip> {
                     t1, t2, t3 ->
                     createDetailModel(t1, t2, t3)
@@ -51,10 +52,6 @@ class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
 
     private fun createDetailModel(detailResponse: DetailResponse, userProfileResponse: UserProfileResponse, commentResponseOptional: CommentResponse) : DetailResponseZip {
         return DetailResponseZip(detailResponse, userProfileResponse, commentResponseOptional)
-    }
-
-    private fun getJWTToken(username: String?, token: String?): String {
-        return OAppUtil.generateJWTToken(username, token)
     }
 
 }

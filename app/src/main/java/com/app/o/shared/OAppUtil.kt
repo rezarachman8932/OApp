@@ -3,6 +3,7 @@ package com.app.o.shared
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.LayerDrawable
+import android.text.format.DateFormat
 import android.util.Patterns
 import com.app.o.OApplication
 import com.app.o.R
@@ -122,6 +123,12 @@ class OAppUtil {
             val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
             val date = formatter.parse(dateString)
             return date.time
+        }
+
+        fun generateFormatDateFromTimestamp(timestamp: Long): String {
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = timestamp
+            return DateFormat.format("yyyy-MM-dd HH:mm:ss", calendar).toString()
         }
 
         fun setIconCount(context: Context, count: String, icon: LayerDrawable, layerId: Int) {
