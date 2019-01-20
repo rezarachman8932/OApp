@@ -33,6 +33,11 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
         initViewContent()
 
         presenter = DetailPresenter(this, mCompositeDisposable)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
         presenter.geDetailPageContent(DetailSpec(postId))
     }
 

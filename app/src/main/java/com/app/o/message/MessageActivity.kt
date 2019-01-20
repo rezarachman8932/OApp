@@ -3,6 +3,7 @@ package com.app.o.message
 import android.os.Bundle
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
+import android.view.MenuItem
 import com.app.o.R
 import com.app.o.api.comment.Comment
 import com.app.o.api.comment.CommentResponse
@@ -34,7 +35,49 @@ class MessageActivity : OAppActivity(), OAppViewService<CommentResponse>, OAppSu
         presenter.getCommentReplies(parentComment.post_id.toString())
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            } else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun showLoading() {}
+
+    override fun hideLoading(statusCode: Int) {}
+
+    override fun onDataResponse(data: CommentResponse) {
+        invalidateData(data)
+    }
+
+    override fun onMessageBeingProcessed() {
+        isSubmittingComment = true
+    }
+
+    override fun onMessageNotSent() {
+        isSubmittingComment = false
+    }
+
+    override fun onMessageSent() {
+        isSubmittingComment = false
+
+        //TODO Update new comment from new user
+        val newComment = parentComment.copy(
+                content = parentComment.post_id.toString(),
+                created_at = OAppUtil.generateFormatDateFromTimestamp(System.currentTimeMillis())
+        )
+
+        comments.add(newComment)
+
+        updateData(comments)
+    }
+
     private fun initView() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = parentComment.username
+
         recycler_view_message.layoutManager = LinearLayoutManager(this)
         recycler_view_message.addItemDecoration(RecyclerViewMargin())
 
@@ -67,36 +110,6 @@ class MessageActivity : OAppActivity(), OAppViewService<CommentResponse>, OAppSu
         val result = DiffUtil.calculateDiff(MessageDiffUtilCallback(oldData, newData))
         adapter.setMessages(newData)
         result.dispatchUpdatesTo(adapter)
-    }
-
-    override fun showLoading() {}
-
-    override fun hideLoading(statusCode: Int) {}
-
-    override fun onDataResponse(data: CommentResponse) {
-        invalidateData(data)
-    }
-
-    override fun onMessageBeingProcessed() {
-        isSubmittingComment = true
-    }
-
-    override fun onMessageNotSent() {
-        isSubmittingComment = false
-    }
-
-    override fun onMessageSent() {
-        isSubmittingComment = false
-
-        //TODO Update new comment from new user
-        val newComment = parentComment.copy(
-                content = parentComment.post_id.toString(),
-                created_at = OAppUtil.generateFormatDateFromTimestamp(System.currentTimeMillis())
-        )
-
-        comments.add(newComment)
-
-        updateData(comments)
     }
 
 }
