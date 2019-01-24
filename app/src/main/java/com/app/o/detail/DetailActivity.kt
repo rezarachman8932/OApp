@@ -100,7 +100,7 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
         if (comments.isNotEmpty()) {
             text_detail_comment_count.text = comments.size.toString()
 
-            adapter = DetailCommentAdapter()
+            adapter = DetailCommentAdapter(this)
             adapter.setData(comments)
             adapter.setListener {
                 val bundle = Bundle()

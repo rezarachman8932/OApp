@@ -84,7 +84,7 @@ class MessageActivity : OAppActivity(), OAppSubmitMessageService {
         button_send_comment.setOnClickListener {
             val inputString = input_comment.text.toString()
 
-            if (!isSubmittingComment || inputString.isNotEmpty()) {
+            if (!isSubmittingComment && !inputString.isEmpty()) {
                 val spec = CommentSpec(parentComment.post_id.toString(), inputString, parentComment.comment_id.toString())
                 presenter.postReplyComment(spec)
             }

@@ -52,4 +52,8 @@
     <string name="text_label_detail_header">Detail Post</string>
     <string name="text_label_send">Send</string>
     <string name="text_label_error_posting">Failed posting your thoughts</string>
+    <plurals name="numberOfReplies">
+        <item quantity="one">%d reply</item>
+        <item quantity="other">%d replies</item>
+    </plurals>
 </resources>

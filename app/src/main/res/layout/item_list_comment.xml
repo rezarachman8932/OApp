@@ -13,6 +13,7 @@
         app:civ_border_width="@dimen/dip_2"
         app:civ_border_color="@color/colorWhiteSmoke"/>
     <LinearLayout
+        android:id="@+id/item_layout_content_detail_comment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -34,6 +35,12 @@
             android:maxLines="3"
             android:ellipsize="end"
             android:textSize="@dimen/sp_12" />
+        <TextView
+            android:id="@+id/item_text_comment_replies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dip_8"
+            android:textSize="@dimen/sp_10"/>
     </LinearLayout>
     <TextView
         android:id="@+id/item_text_time_post"
