@@ -18,14 +18,10 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
         const val TYPE_THEIRS = 2
     }
 
-    private lateinit var dataItems: List<Comment>
+    private var dataItems: List<Comment> = arrayListOf()
 
     fun setMessages(data: List<Comment>) {
         dataItems = data
-    }
-
-    fun getItems(): List<Comment> {
-        return dataItems
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -45,8 +41,7 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int {
-        //TODO Fix with correct case
-        return if (dataItems[position].content.length > 5) {
+        return if (dataItems[position].username.equals(OAppUtil.getUserName(), false)) {
             TYPE_OURS
         } else {
             TYPE_THEIRS
@@ -69,7 +64,7 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
     inner class ViewHolderOurs(override val containerView: View) : ViewHolder(containerView), LayoutContainer {
         fun bindItem(item: Comment) {
             item_text_comment_ours.text = item.content
-            item_text_comment_ours_time.text = OAppUtil.getTimeAgo(OAppUtil.generateStringToTimestamp(item.created_at))
+            item_text_comment_ours_time.text = item.created_at
         }
     }
 

@@ -1,10 +1,8 @@
 package com.app.o.api.comment
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import com.app.o.base.data.OAppResponse
 
-@Parcelize
-data class Comment (
+data class SubmitCommentResponse(
         val comment_id: Int,
         val post_id: Int,
         val user_id: Int,
@@ -12,5 +10,5 @@ data class Comment (
         val avatar: String?,
         val content: String,
         val created_at: String,
-        val reply_count: Int?,
-        val reply: MutableList<Comment>?) : Parcelable
+        override val status: Int,
+        override val message: String) : OAppResponse

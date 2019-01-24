@@ -2,7 +2,7 @@ package com.app.o.api
 
 import com.app.o.api.comment.CommentResponse
 import com.app.o.api.comment.CommentSpec
-import com.app.o.api.comment.SubmitNewCommentResponse
+import com.app.o.api.comment.SubmitCommentResponse
 import com.app.o.api.detail.DetailResponse
 import com.app.o.api.detail.DetailSpec
 import com.app.o.api.home.HomeResponse
@@ -60,7 +60,10 @@ interface APIService {
     fun getDetailCommentList(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<CommentResponse>
 
     @POST("post_comment_create")
-    fun submitNewComment(@Body spec: CommentSpec, @Header("Authorization") tokenAuth: String?): Single<SubmitNewCommentResponse>
+    fun submitNewComment(@Body spec: CommentSpec, @Header("Authorization") tokenAuth: String?): Single<SubmitCommentResponse>
+
+    @POST("post_comment_reply")
+    fun submitReplyComment(@Body spec: CommentSpec, @Header("Authorization") tokenAuth: String?): Single<SubmitCommentResponse>
 
     @POST("profile")
     fun getUserProfile(@Header("Authorization") tokenAuth: String?): Single<UserProfileResponse>

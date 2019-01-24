@@ -1,21 +1,18 @@
 package com.app.o.message
 
 import android.os.Bundle
-import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import com.app.o.R
 import com.app.o.api.comment.Comment
-import com.app.o.api.comment.CommentResponse
 import com.app.o.api.comment.CommentSpec
+import com.app.o.api.comment.SubmitCommentResponse
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppSubmitMessageService
-import com.app.o.base.service.OAppViewService
 import com.app.o.custom.RecyclerViewMargin
-import com.app.o.shared.OAppUtil
 import kotlinx.android.synthetic.main.activity_message.*
 
-class MessageActivity : OAppActivity(), OAppViewService<CommentResponse>, OAppSubmitMessageService {
+class MessageActivity : OAppActivity(), OAppSubmitMessageService {
 
     private lateinit var presenter: MessagePresenter
     private lateinit var adapter: MessageAdapter
@@ -30,9 +27,9 @@ class MessageActivity : OAppActivity(), OAppViewService<CommentResponse>, OAppSu
         getParam()
 
         initView()
+        invalidateData()
 
-        presenter = MessagePresenter(this, this, mCompositeDisposable)
-        presenter.getCommentReplies(parentComment.post_id.toString())
+        presenter = MessagePresenter(this, mCompositeDisposable)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -44,14 +41,6 @@ class MessageActivity : OAppActivity(), OAppViewService<CommentResponse>, OAppSu
         }
     }
 
-    override fun showLoading() {}
-
-    override fun hideLoading(statusCode: Int) {}
-
-    override fun onDataResponse(data: CommentResponse) {
-        invalidateData(data)
-    }
-
     override fun onMessageBeingProcessed() {
         isSubmittingComment = true
     }
@@ -60,31 +49,43 @@ class MessageActivity : OAppActivity(), OAppViewService<CommentResponse>, OAppSu
         isSubmittingComment = false
     }
 
-    override fun onMessageSent() {
+    override fun onMessageSent(submitMessageResponse: SubmitCommentResponse) {
         isSubmittingComment = false
 
-        //TODO Update new comment from new user
-        val newComment = parentComment.copy(
-                content = parentComment.post_id.toString(),
-                created_at = OAppUtil.generateFormatDateFromTimestamp(System.currentTimeMillis())
-        )
+        val newRepliedComment = Comment(
+                submitMessageResponse.comment_id,
+                submitMessageResponse.post_id,
+                submitMessageResponse.user_id,
+                submitMessageResponse.username,
+                submitMessageResponse.avatar,
+                submitMessageResponse.content,
+                submitMessageResponse.created_at,
+                null, null)
 
-        comments.add(newComment)
+        comments.add(newRepliedComment)
 
-        updateData(comments)
+        adapter.setMessages(comments)
+        adapter.notifyDataSetChanged()
+
+        input_comment.setText("")
+        recycler_view_message.smoothScrollToPosition(comments.size - 1)
     }
 
     private fun initView() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = parentComment.username
 
+        adapter = MessageAdapter()
+        recycler_view_message.adapter = adapter
+
         recycler_view_message.layoutManager = LinearLayoutManager(this)
         recycler_view_message.addItemDecoration(RecyclerViewMargin())
 
         button_send_comment.setOnClickListener {
-            if (!isSubmittingComment) {
-                val newComment = input_comment.text.toString()
-                val spec = CommentSpec(parentComment.post_id.toString(), newComment)
+            val inputString = input_comment.text.toString()
+
+            if (!isSubmittingComment || inputString.isNotEmpty()) {
+                val spec = CommentSpec(parentComment.post_id.toString(), inputString, parentComment.comment_id.toString())
                 presenter.postReplyComment(spec)
             }
         }
@@ -95,21 +96,14 @@ class MessageActivity : OAppActivity(), OAppViewService<CommentResponse>, OAppSu
         parentComment = bundle.getParcelable("selectedComment") as Comment
     }
 
-    private fun invalidateData(response: CommentResponse) {
-        if (response.data.isNotEmpty()) {
-            comments = response.data
-            adapter = MessageAdapter()
-            adapter.setMessages(comments)
-            recycler_view_message.adapter = adapter
-            adapter.notifyDataSetChanged()
-        }
-    }
+    private fun invalidateData() {
+        comments = parentComment.reply!!
 
-    private fun updateData(newData: List<Comment>) {
-        val oldData = adapter.getItems()
-        val result = DiffUtil.calculateDiff(MessageDiffUtilCallback(oldData, newData))
-        adapter.setMessages(newData)
-        result.dispatchUpdatesTo(adapter)
+        if (comments.size > 0) {
+            adapter.setMessages(comments)
+            adapter.notifyDataSetChanged()
+            recycler_view_message.scrollToPosition(comments.size - 1)
+        }
     }
 
 }
