@@ -8,4 +8,9 @@ abstract class OAppPresenter {
         return OAppUtil.generateJWTToken(OAppUtil.getUserName(), OAppUtil.getToken())
     }
 
+    fun saveLastLocation(longitude: String, latitude: String) {
+        OAppUtil.setLongitude(longitude)
+        OAppUtil.setLatitude(latitude)
+    }
+
 }

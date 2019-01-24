@@ -52,8 +52,15 @@
     <string name="text_label_detail_header">Detail Post</string>
     <string name="text_label_send">Send</string>
     <string name="text_label_error_posting">Failed posting your thoughts</string>
+    <string name="text_label_verified">Verified</string>
+    <string name="text_label_people_around_you">People Around You</string>
+
     <plurals name="numberOfReplies">
         <item quantity="one">%d reply</item>
         <item quantity="other">%d replies</item>
+    </plurals>
+    <plurals name="numberOfConnectedUsers">
+        <item quantity="one">%d Connected User</item>
+        <item quantity="other">%d Connected Users</item>
     </plurals>
 </resources>

@@ -25,6 +25,7 @@ import com.app.o.custom.BottomMenuView
 import com.app.o.detail.DetailActivity
 import com.app.o.post.PostActivity
 import com.app.o.shared.OAppUtil
+import com.app.o.user.connected.ConnectedUsersActivity
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearchService {
@@ -106,10 +107,10 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_friend -> {
+            val intent = Intent(this, ConnectedUsersActivity::class.java)
+            startActivity(intent)
             true
-        }
-
-        else -> {
+        } else -> {
             super.onOptionsItemSelected(item)
         }
     }

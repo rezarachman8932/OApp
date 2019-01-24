@@ -7,6 +7,7 @@ import com.app.o.api.location.LocationSpec
 import com.app.o.api.location.LocationWithQuerySpec
 import com.app.o.api.relation.UserConnectedCountResponse
 import com.app.o.api.relation.UserConnectedResponse
+import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppSearchService
 import com.app.o.base.service.OAppViewService
 import com.app.o.shared.OAppUtil
@@ -20,10 +21,10 @@ import io.reactivex.schedulers.Schedulers
 class HomePresenter(
         private val view: OAppViewService<HomeResponseZip>,
         private val viewSearchService: OAppSearchService,
-        private val compositeDisposable: CompositeDisposable) {
+        private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
 
     fun getPostedTimeline(spec: LocationSpec) {
-        compositeDisposable.add(getHomeContent(spec, getJWTToken(OAppUtil.getUserName(), OAppUtil.getToken()))
+        compositeDisposable.add(getHomeContent(spec, getHeaderAuth())
                 .subscribeOn(Schedulers.io())
                 .compose {
                     it.observeOn(AndroidSchedulers.mainThread())
@@ -43,7 +44,7 @@ class HomePresenter(
     }
 
     fun getSearchPost(spec: LocationWithQuerySpec) {
-        compositeDisposable.add(APIRepository.create().postSearch(spec, getJWTToken(OAppUtil.getUserName(), OAppUtil.getToken()))
+        compositeDisposable.add(APIRepository.create().postSearch(spec, getHeaderAuth())
                 .subscribeOn(Schedulers.io())
                 .compose {
                     it.observeOn(AndroidSchedulers.mainThread())
@@ -61,11 +62,6 @@ class HomePresenter(
                 }))
     }
 
-    fun saveLastLocation(longitude: String, latitude: String) {
-        OAppUtil.setLongitude(longitude)
-        OAppUtil.setLatitude(latitude)
-    }
-
     private fun getHomeContent(locationSpec: LocationSpec, token: String) : Single<HomeResponseZip> {
         return Single.zip(
                 APIRepository.create().post(locationSpec, token),
@@ -79,10 +75,6 @@ class HomePresenter(
 
     private fun createDetailModel(homeResponse: HomeResponse, userConnectedResponse: UserConnectedResponse, userConnectedCountResponse: UserConnectedCountResponse) : HomeResponseZip {
         return HomeResponseZip(homeResponse, userConnectedResponse, userConnectedCountResponse)
-    }
-
-    private fun getJWTToken(username: String?, token: String?): String {
-        return OAppUtil.generateJWTToken(username, token)
     }
 
 }
