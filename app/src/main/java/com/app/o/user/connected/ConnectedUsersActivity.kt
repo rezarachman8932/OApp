@@ -70,7 +70,7 @@ class ConnectedUsersActivity : OAppActivity(), OAppViewService<UserConnectedResp
         supportActionBar?.title = getString(R.string.text_label_people_around_you)
 
         recycler_view_connected_users.layoutManager = LinearLayoutManager(this)
-        recycler_view_connected_users.addItemDecoration(RecyclerViewMargin())
+        recycler_view_connected_users.addItemDecoration(RecyclerViewMargin(RecyclerViewMargin.DP_16))
     }
 
 }

@@ -79,7 +79,7 @@ class MessageActivity : OAppActivity(), OAppSubmitMessageService {
         recycler_view_message.adapter = adapter
 
         recycler_view_message.layoutManager = LinearLayoutManager(this)
-        recycler_view_message.addItemDecoration(RecyclerViewMargin())
+        recycler_view_message.addItemDecoration(RecyclerViewMargin(RecyclerViewMargin.DP_16))
 
         button_send_comment.setOnClickListener {
             val inputString = input_comment.text.toString()
