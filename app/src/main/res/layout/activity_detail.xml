@@ -153,6 +153,7 @@
                                 app:srcCompat="@drawable/ic_vector_heart_green"/>
                         </LinearLayout>
                         <ImageView
+                            android:id="@+id/icon_detail_post_new_comment"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dip_12"

@@ -11,7 +11,8 @@ import com.app.o.api.detail.DetailSpec
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.custom.RecyclerViewDecorator
-import com.app.o.message.MessageActivity
+import com.app.o.message.room.MessageActivity
+import com.app.o.message.submit.NewCommentActivity
 import com.app.o.shared.OAppImageUtil
 import com.app.o.shared.OAppUtil
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -21,12 +22,11 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
     private lateinit var presenter: DetailPresenter
     private lateinit var adapter: DetailCommentAdapter
     private lateinit var postId: String
+    private lateinit var contentData: DetailResponse
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
-
-        supportActionBar?.title = getString(R.string.text_label_detail_header)
 
         getParam()
 
@@ -60,12 +60,25 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
     }
 
     private fun initViewContent() {
+        supportActionBar?.title = getString(R.string.text_label_detail_header)
+
         list_comment.layoutManager = LinearLayoutManager(this)
         list_comment.addItemDecoration(RecyclerViewDecorator(this))
+
+        icon_detail_post_new_comment.setOnClickListener {
+            contentData.let { response ->
+                val intent = Intent(this, NewCommentActivity::class.java)
+                intent.putExtra("posted_id", response.post_id)
+                intent.putExtra("posted_title", response.title)
+                intent.putExtra("posted_subtitle", response.content)
+                startActivity(intent)
+            }
+        }
     }
 
     private fun invalidateData(data: DetailResponseZip) {
-        val contentData = data.detailContent
+        contentData = data.detailContent
+
         val comments = data.commentListOptional.data
         val userProfile = data.userProfile
 

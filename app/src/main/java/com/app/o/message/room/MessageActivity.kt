@@ -1,4 +1,4 @@
-package com.app.o.message
+package com.app.o.message.room
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager

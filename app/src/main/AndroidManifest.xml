@@ -41,12 +41,15 @@
             android:name=".detail.DetailActivity"
             android:parentActivityName=".home.HomeActivity"/>
         <activity
-            android:name=".message.MessageActivity"
+            android:name=".message.room.MessageActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
         <activity
             android:name=".user.connected.ConnectedUsersActivity"
             android:parentActivityName=".home.HomeActivity"/>
         <activity android:name=".user.detail.UserProfileActivity" />
+        <activity
+            android:name=".message.submit.NewCommentActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <service
             android:name=".notification.OAppMessagingService">

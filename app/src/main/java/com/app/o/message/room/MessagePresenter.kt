@@ -1,4 +1,4 @@
-package com.app.o.message
+package com.app.o.message.room
 
 import com.app.o.api.APIRepository
 import com.app.o.api.comment.CommentSpec
