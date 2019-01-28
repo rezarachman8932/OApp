@@ -18,8 +18,8 @@ import io.reactivex.schedulers.Schedulers
 class UserProfilePresenter(private val view: OAppViewService<UserProfileResponseZip>,
                            private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
 
-    fun getProfile(spec: UserProfileSpec?) {
-        compositeDisposable.add(getAllContent(spec)
+    fun getProfile(userId: Int) {
+        compositeDisposable.add(getAllContent(userId)
                 .subscribeOn(Schedulers.io())
                 .compose {
                     it.observeOn(AndroidSchedulers.mainThread())
@@ -38,18 +38,26 @@ class UserProfilePresenter(private val view: OAppViewService<UserProfileResponse
                 }))
     }
 
-    private fun getAllContent(spec: UserProfileSpec?) : Single<UserProfileResponseZip> {
+    private fun getAllContent(userId: Int) : Single<UserProfileResponseZip> {
         return Single.zip(
-                getUserDetailContent(spec),
-                APIRepository.create().getUserPostedItems(spec, getHeaderAuth()),
+                getUserDetailContent(userId),
+                getPostedItems(userId),
                 BiFunction<UserProfileResponse, HomeResponse, UserProfileResponseZip> {
                     t1, t2 -> UserProfileResponseZip(t1, t2)
                 })
     }
 
-    private fun getUserDetailContent(spec: UserProfileSpec?) : Single<UserProfileResponse> {
-        return if (spec != null) {
-            APIRepository.create().getUserProfile(spec, getHeaderAuth())
+    private fun getPostedItems(userId: Int) : Single<HomeResponse> {
+        return if (userId > 0) {
+            APIRepository.create().getUserPostedItems(UserProfileSpec(userId), getHeaderAuth())
+        } else {
+            APIRepository.create().getOwnPostedItems(getHeaderAuth())
+        }
+    }
+
+    private fun getUserDetailContent(userId: Int) : Single<UserProfileResponse> {
+        return if (userId > 0) {
+            APIRepository.create().getUserProfile(UserProfileSpec(userId), getHeaderAuth())
         } else {
             APIRepository.create().getOwnProfile(getHeaderAuth())
         }

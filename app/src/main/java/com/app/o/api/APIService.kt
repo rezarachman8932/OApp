@@ -73,6 +73,9 @@ interface APIService {
     fun getOwnProfile(@Header("Authorization") tokenAuth: String?): Single<UserProfileResponse>
 
     @POST("user_posts")
-    fun getUserPostedItems(@Body spec: UserProfileSpec?, @Header("Authorization") tokenAuth: String?): Single<HomeResponse>
+    fun getUserPostedItems(@Body spec: UserProfileSpec, @Header("Authorization") tokenAuth: String?): Single<HomeResponse>
+
+    @POST("user_posts")
+    fun getOwnPostedItems(@Header("Authorization") tokenAuth: String?): Single<HomeResponse>
 
 }

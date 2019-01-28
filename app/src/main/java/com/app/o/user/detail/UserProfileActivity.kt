@@ -6,7 +6,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.MenuItem
 import com.app.o.R
 import com.app.o.api.user.UserProfileResponseZip
-import com.app.o.api.user.UserProfileSpec
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.home.HomeGridAdapter
@@ -17,7 +16,7 @@ class UserProfileActivity : OAppActivity(), OAppViewService<UserProfileResponseZ
 
     private lateinit var presenter: UserProfilePresenter
     private lateinit var adapter: HomeGridAdapter
-    private var userId: Int = -1
+    private var userId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +27,7 @@ class UserProfileActivity : OAppActivity(), OAppViewService<UserProfileResponseZ
         initView()
 
         presenter = UserProfilePresenter(this, mCompositeDisposable)
-        presenter.getProfile(UserProfileSpec(userId))
+        presenter.getProfile(userId)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -76,7 +75,7 @@ class UserProfileActivity : OAppActivity(), OAppViewService<UserProfileResponseZ
     }
 
     private fun getParam() {
-        userId = intent.getIntExtra("userId", -1)
+        userId = intent.getIntExtra("userId", 0)
     }
 
 }
