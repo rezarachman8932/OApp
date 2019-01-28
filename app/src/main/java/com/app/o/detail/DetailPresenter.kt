@@ -42,7 +42,7 @@ class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
     private fun getAllContent(detailSpec: DetailSpec) : Single<DetailResponseZip> {
         return Single.zip(
                 APIRepository.create().getDetailContent(detailSpec, getHeaderAuth()),
-                APIRepository.create().getUserProfile(getHeaderAuth()),
+                APIRepository.create().getOwnProfile(getHeaderAuth()),
                 APIRepository.create().getDetailCommentList(detailSpec, getHeaderAuth()),
                 Function3<DetailResponse, UserProfileResponse, CommentResponse, DetailResponseZip> {
                     t1, t2, t3 ->

@@ -26,6 +26,7 @@ import com.app.o.detail.DetailActivity
 import com.app.o.post.PostActivity
 import com.app.o.shared.OAppUtil
 import com.app.o.user.connected.ConnectedUsersActivity
+import com.app.o.user.detail.UserProfileActivity
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearchService {
@@ -143,7 +144,10 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
                     startActivity(intent)
                 }
 
-                BottomMenuView.PROFILE -> {}
+                BottomMenuView.PROFILE -> {
+                    val intent = Intent(this, UserProfileActivity::class.java)
+                    startActivity(intent)
+                }
             }
         }
     }

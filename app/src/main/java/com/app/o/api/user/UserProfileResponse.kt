@@ -11,6 +11,7 @@ data class UserProfileResponse (
         val instagram: String,
         val facebook: String,
         val twitter: String,
-        val range_finder: String,
+        val range_finder: Int,
+        val avatar: String,
         override val status: Int,
         override val message: String) : OAppResponse

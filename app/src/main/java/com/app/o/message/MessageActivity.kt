@@ -60,7 +60,7 @@ class MessageActivity : OAppActivity(), OAppSubmitMessageService {
                 submitMessageResponse.avatar,
                 submitMessageResponse.content,
                 submitMessageResponse.created_at,
-                null, null)
+                null, null, null)
 
         comments.add(newRepliedComment)
 

@@ -16,6 +16,7 @@ import com.app.o.api.register.RegisterSpec
 import com.app.o.api.relation.UserConnectedCountResponse
 import com.app.o.api.relation.UserConnectedResponse
 import com.app.o.api.user.UserProfileResponse
+import com.app.o.api.user.UserProfileSpec
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -66,6 +67,12 @@ interface APIService {
     fun submitReplyComment(@Body spec: CommentSpec, @Header("Authorization") tokenAuth: String?): Single<SubmitCommentResponse>
 
     @POST("profile")
-    fun getUserProfile(@Header("Authorization") tokenAuth: String?): Single<UserProfileResponse>
+    fun getUserProfile(@Body spec: UserProfileSpec, @Header("Authorization") tokenAuth: String?): Single<UserProfileResponse>
+
+    @POST("profile")
+    fun getOwnProfile(@Header("Authorization") tokenAuth: String?): Single<UserProfileResponse>
+
+    @POST("user_posts")
+    fun getUserPostedItems(@Body spec: UserProfileSpec?, @Header("Authorization") tokenAuth: String?): Single<HomeResponse>
 
 }

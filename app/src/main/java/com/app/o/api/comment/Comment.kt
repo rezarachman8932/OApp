@@ -12,5 +12,6 @@ data class Comment (
         val avatar: String?,
         val content: String,
         val created_at: String,
+        val time_string: String?,
         val reply_count: Int?,
         val reply: MutableList<Comment>?) : Parcelable

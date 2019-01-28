@@ -46,6 +46,7 @@
         <activity
             android:name=".user.connected.ConnectedUsersActivity"
             android:parentActivityName=".home.HomeActivity"/>
+        <activity android:name=".user.detail.UserProfileActivity" />
 
         <service
             android:name=".notification.OAppMessagingService">

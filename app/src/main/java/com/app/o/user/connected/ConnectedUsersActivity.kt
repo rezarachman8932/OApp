@@ -1,5 +1,6 @@
 package com.app.o.user.connected
 
+import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -9,6 +10,7 @@ import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.custom.RecyclerViewMargin
 import com.app.o.shared.OAppUtil
+import com.app.o.user.detail.UserProfileActivity
 import kotlinx.android.synthetic.main.activity_connected_users.*
 
 class ConnectedUsersActivity : OAppActivity(), OAppViewService<UserConnectedResponse> {
@@ -58,7 +60,9 @@ class ConnectedUsersActivity : OAppActivity(), OAppViewService<UserConnectedResp
             adapter = ConnectedUsersAdapter(this)
             adapter.setData(data.data)
             adapter.setListener {
-
+                val intent = Intent(this, UserProfileActivity::class.java)
+                intent.putExtra("userId", it.user_id)
+                startActivity(intent)
             }
 
             recycler_view_connected_users.adapter = adapter
