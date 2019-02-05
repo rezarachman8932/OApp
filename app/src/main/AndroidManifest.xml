@@ -23,8 +23,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".user.front.UserRegisterLoginActivity"/>
         <activity android:name=".home.HomeActivity" />
+        <activity android:name=".user.detail.UserProfileActivity" />
+
         <activity
             android:name=".user.login.LoginActivity"
             android:windowSoftInputMode="stateHidden|adjustPan"
@@ -46,11 +49,12 @@
         <activity
             android:name=".user.connected.ConnectedUsersActivity"
             android:parentActivityName=".home.HomeActivity"/>
-        <activity android:name=".user.detail.UserProfileActivity" />
         <activity
             android:name=".message.submit.NewCommentActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".user.update_profile.UpdateProfileActivity" />
+        <activity
+            android:name=".user.update_profile.UpdateProfileActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <service
             android:name=".notification.OAppMessagingService">

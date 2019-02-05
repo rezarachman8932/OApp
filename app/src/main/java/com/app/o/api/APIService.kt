@@ -17,6 +17,8 @@ import com.app.o.api.relation.UserConnectedCountResponse
 import com.app.o.api.relation.UserConnectedResponse
 import com.app.o.api.user.UserProfileResponse
 import com.app.o.api.user.UserProfileSpec
+import com.app.o.api.user.UserUpdateProfileResponse
+import com.app.o.api.user.update.UserUpdateProfileSpec
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -77,5 +79,8 @@ interface APIService {
 
     @POST("user_posts")
     fun getOwnPostedItems(@Header("Authorization") tokenAuth: String?): Single<HomeResponse>
+
+    @POST("update_profile")
+    fun updateProfile(@Body spec: UserUpdateProfileSpec, @Header("Authorization") tokenAuth: String?): Single<UserUpdateProfileResponse>
 
 }

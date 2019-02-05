@@ -48,6 +48,14 @@ class OAppUtil {
             OAppPreferencesHelper.tokenAuth = token
         }
 
+        fun getEmail(): String? {
+            return OAppPreferencesHelper.email
+        }
+
+        fun setEmail(email: String) {
+            OAppPreferencesHelper.email = email
+        }
+
         fun getUserName(): String? {
             return OAppPreferencesHelper.username
         }

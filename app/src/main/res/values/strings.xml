@@ -7,6 +7,7 @@
     <string name="text_loading_posting_dialog_title">Posting...</string>
     <string name="text_loading_posting_dialog_subtitle">Processing your thoughts</string>
     <string name="text_sign_up">Sign Up</string>
+    <string name="text_update">Update</string>
     <string name="text_login">Login</string>
     <string name="text_login_here">Login here</string>
     <string name="text_hint_username">Username</string>
@@ -15,6 +16,10 @@
     <string name="text_hint_phone_number">Phone Number</string>
     <string name="text_hint_email">Email</string>
     <string name="text_hint_comments">Type your comments</string>
+    <string name="text_hint_location">Location</string>
+    <string name="text_hint_facebook">Facebook</string>
+    <string name="text_hint_twitter">Twitter</string>
+    <string name="text_hint_instagram">Instagram</string>
     <string name="text_already_have_account">Already have account?</string>
     <string name="text_error_submit_login">Please check your username and password correctly</string>
     <string name="text_error_submit_register">Please check your input  correctly</string>
@@ -28,6 +33,8 @@
     <string name="text_error_register_already_existed">User has already existed</string>
     <string name="text_error_register_fetched">Registration failed</string>
     <string name="text_success_register">Your registration was succeed</string>
+    <string name="text_update_failed">Update profile failed</string>
+    <string name="text_update_succeed">Update profile succeed</string>
     <string name="text_menu_search">Search</string>
     <string name="text_menu_friend">Friend</string>
     <string name="text_menu_settings">Settings</string>
@@ -53,6 +60,7 @@
     <string name="text_label_video">VIDEO</string>
     <string name="text_label_text">TEXT</string>
     <string name="text_label_detail_header">Detail Post</string>
+    <string name="text_label_update_profile_header">Update Profile</string>
     <string name="text_label_send">Send</string>
     <string name="text_label_error_posting">Failed posting your thoughts</string>
     <string name="text_label_verified">Verified</string>
@@ -64,6 +72,8 @@
     <string name="text_label_create_comment_header">Create Comment</string>
     <string name="text_label_personal_information">Personal Information</string>
     <string name="text_label_my_profile">My Profile</string>
+    <string name="text_update_profile_not_valid_phone">Please check your updated phone number</string>
+    <string name="text_update_profile_not_valid_location">Please check your location</string>
 
     <plurals name="numberOfReplies">
         <item quantity="one">%d reply</item>

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scroll_root_update_profile"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:fillViewport="true">
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,6 +47,7 @@
                 android:layout_marginLeft="@dimen/dip_8"
                 android:layout_marginStart="@dimen/dip_8"
                 android:textSize="@dimen/sp_12"
+                android:textColor="@android:color/black"
                 android:inputType="textPersonName"
                 android:hint="@string/text_hint_name"
                 android:background="@android:color/transparent"/>
@@ -78,6 +79,7 @@
                 android:layout_marginLeft="@dimen/dip_8"
                 android:layout_marginStart="@dimen/dip_8"
                 android:textSize="@dimen/sp_12"
+                android:textColor="@android:color/black"
                 android:inputType="phone"
                 android:hint="@string/text_hint_phone_number"
                 android:background="@android:color/transparent"/>
@@ -109,6 +111,7 @@
                 android:layout_marginLeft="@dimen/dip_8"
                 android:layout_marginStart="@dimen/dip_8"
                 android:textSize="@dimen/sp_12"
+                android:textColor="@android:color/black"
                 android:inputType="textEmailAddress"
                 android:hint="@string/text_hint_email"
                 android:background="@android:color/transparent"/>
@@ -140,26 +143,18 @@
                 app:srcCompat="@drawable/ic_vector_pin_location_green"/>
             <EditText
                 android:id="@+id/input_location"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/dip_8"
-                android:layout_marginStart="@dimen/dip_8"
-                android:textSize="12sp"
-                android:hint="@string/text_hint_username"
-                android:inputType="text"
-                android:background="@android:color/transparent"/>
-            <ImageView
-                android:id="@+id/icon_username_checklist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:visibility="gone"
-                app:srcCompat="@drawable/ic_vector_check"/>
+                android:layout_marginLeft="@dimen/dip_8"
+                android:layout_marginStart="@dimen/dip_8"
+                android:textSize="@dimen/sp_12"
+                android:hint="@string/text_hint_location"
+                android:inputType="text"
+                android:background="@android:color/transparent"/>
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/layout_register_password"
+            android:id="@+id/layout_group_my_profile_facebook"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dip_12"
@@ -170,33 +165,76 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                app:srcCompat="@drawable/ic_vector_password"/>
+                app:srcCompat="@drawable/ic_vector_facebook"/>
             <EditText
-                android:id="@+id/input_sign_up_password"
-                android:layout_width="0dp"
+                android:id="@+id/input_facebook"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/dip_8"
                 android:layout_marginStart="@dimen/dip_8"
                 android:textSize="@dimen/sp_12"
-                android:hint="@string/text_hint_password"
-                android:inputType="textPassword"
+                android:hint="@string/text_hint_facebook"
+                android:inputType="text"
                 android:background="@android:color/transparent"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_group_my_profile_twitter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dip_12"
+            android:background="@drawable/bg_rounded_border"
+            android:orientation="horizontal"
+            android:padding="@dimen/dip_12">
             <ImageView
-                android:id="@+id/icon_password_preview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                app:srcCompat="@drawable/ic_vector_preview"/>
+                app:srcCompat="@drawable/ic_vector_twitter"/>
+            <EditText
+                android:id="@+id/input_twitter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dip_8"
+                android:layout_marginStart="@dimen/dip_8"
+                android:textSize="@dimen/sp_12"
+                android:hint="@string/text_hint_twitter"
+                android:inputType="text"
+                android:background="@android:color/transparent"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_group_my_profile_instagram"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dip_12"
+            android:background="@drawable/bg_rounded_border"
+            android:orientation="horizontal"
+            android:padding="@dimen/dip_12">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/ic_vector_instagram"/>
+            <EditText
+                android:id="@+id/input_instagram"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/dip_8"
+                android:layout_marginStart="@dimen/dip_8"
+                android:textSize="@dimen/sp_12"
+                android:hint="@string/text_hint_instagram"
+                android:inputType="text"
+                android:background="@android:color/transparent"/>
         </LinearLayout>
         <Button
-            android:id="@+id/button_register"
+            android:id="@+id/button_update_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_rounded_soft_green"
             android:layout_marginTop="@dimen/dip_24"
-            android:text="@string/text_sign_up"
+            android:text="@string/text_update"
             android:textColor="@android:color/white"
             android:textAllCaps="false"
             app:elevation="@dimen/dip_4"/>

@@ -131,12 +131,6 @@
                         android:layout_marginLeft="@dimen/dip_4"
                         android:layout_marginStart="@dimen/dip_4"
                         app:srcCompat="@drawable/ic_vector_social_media_instagram"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dip_4"
-                        android:layout_marginStart="@dimen/dip_4"
-                        app:srcCompat="@drawable/ic_vector_social_media_sound_cloud"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
