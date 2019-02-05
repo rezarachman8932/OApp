@@ -2,6 +2,7 @@ package com.app.o.post.multimedia
 
 import com.app.o.api.APIRepository
 import com.app.o.api.post.CreatedPostResponse
+import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppViewService
 import com.app.o.shared.OAppUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -13,7 +14,7 @@ import okhttp3.RequestBody
 
 abstract class MultimediaPresenter(
         private val view: OAppViewService<CreatedPostResponse>,
-        private val compositeDisposable: CompositeDisposable) {
+        private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
 
     open val files = arrayListOf<MultipartBody.Part>()
 
@@ -25,7 +26,7 @@ abstract class MultimediaPresenter(
             longitude: RequestBody,
             content: RequestBody) {
 
-        compositeDisposable.add(APIRepository.create().createPost(files, title, subtitle, type, latitude, longitude, content, getJWTToken(OAppUtil.getUserName(), OAppUtil.getToken()))
+        compositeDisposable.add(APIRepository.create().createPost(files, title, subtitle, type, latitude, longitude, content, getHeaderAuth())
                 .subscribeOn(Schedulers.io())
                 .compose {
                     it.observeOn(AndroidSchedulers.mainThread())
@@ -42,10 +43,6 @@ abstract class MultimediaPresenter(
                     view.onDataResponse(it)
                     view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
                 }))
-    }
-
-    private fun getJWTToken(username: String?, token: String?): String {
-        return OAppUtil.generateJWTToken(username, token)
     }
 
 }

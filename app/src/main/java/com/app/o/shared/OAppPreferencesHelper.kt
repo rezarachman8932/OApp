@@ -12,6 +12,7 @@ object OAppPreferencesHelper {
     private val LOGGED_IN = Pair("is_logged_in", false)
     private val TOKEN = Pair("token", "")
     private val USER_NAME = Pair("username", "")
+    private val USER_ID = Pair("user_id", 0)
     private val LAST_LOCATION_LONGITUDE = Pair("longitude", "")
     private val LAST_LOCATION_LATITUDE = Pair("latitude", "")
 
@@ -35,6 +36,12 @@ object OAppPreferencesHelper {
         get() = preferences.getString(TOKEN.first, TOKEN.second)
         set(value) = preferences.edit {
             it.putString(TOKEN.first, value)
+        }
+
+    var userId: Int
+        get() = preferences.getInt(USER_ID.first, USER_ID.second)
+        set(value) = preferences.edit {
+            it.putInt(USER_ID.first, value)
         }
 
     var username: String?

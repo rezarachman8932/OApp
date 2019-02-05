@@ -30,6 +30,9 @@
     <string name="text_success_register">Your registration was succeed</string>
     <string name="text_menu_search">Search</string>
     <string name="text_menu_friend">Friend</string>
+    <string name="text_menu_settings">Settings</string>
+    <string name="text_sub_menu_setting">Setting</string>
+    <string name="text_sub_menu_update_profile">Update Profile</string>
     <string name="text_label_comment">Comment</string>
     <string name="text_label_recently">recently</string>
     <string name="text_label_one_minute_ago">1minute</string>
@@ -59,6 +62,8 @@
     <string name="text_label_header_user_profile">Profile</string>
     <string name="text_label_posted_items">Posted Items</string>
     <string name="text_label_create_comment_header">Create Comment</string>
+    <string name="text_label_personal_information">Personal Information</string>
+    <string name="text_label_my_profile">My Profile</string>
 
     <plurals name="numberOfReplies">
         <item quantity="one">%d reply</item>

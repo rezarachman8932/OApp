@@ -44,7 +44,7 @@ class LoginActivity : OAppActivity(),
 
     override fun onDataResponse(data: LoginResponse) {
         if (isSuccess(data.status)) {
-            presenter.saveDataPref(data)
+            saveUserState(data)
 
             val intent = Intent(this, HomeActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK

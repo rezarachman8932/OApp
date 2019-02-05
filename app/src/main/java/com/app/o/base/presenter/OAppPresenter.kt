@@ -5,7 +5,11 @@ import com.app.o.shared.OAppUtil
 abstract class OAppPresenter {
 
     protected fun getHeaderAuth(): String {
-        return OAppUtil.generateJWTToken(OAppUtil.getUserName(), OAppUtil.getToken())
+        return OAppUtil.generateJWTToken(OAppUtil.getUserName(), getToken())
+    }
+
+    fun getToken(): String? {
+        return OAppUtil.getToken()
     }
 
     fun saveLastLocation(longitude: String, latitude: String) {

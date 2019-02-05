@@ -38,8 +38,7 @@ class OAppUtil {
         private const val HOUR_MILLIS = 60 * MINUTE_MILLIS
         private const val DAY_MILLIS = 24 * HOUR_MILLIS
 
-        fun isValidEmail(email: String): Boolean =
-                email.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        fun isValidEmail(email: String): Boolean = email.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
 
         fun getToken(): String? {
             return OAppPreferencesHelper.tokenAuth
@@ -55,6 +54,14 @@ class OAppUtil {
 
         fun setUserName(username: String) {
             OAppPreferencesHelper.username = username
+        }
+
+        fun getUserId(): Int {
+            return OAppPreferencesHelper.userId
+        }
+
+        fun setUserId(userId: Int) {
+            OAppPreferencesHelper.userId = userId
         }
 
         fun getLongitude(): String? {

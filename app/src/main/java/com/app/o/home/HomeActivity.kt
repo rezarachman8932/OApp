@@ -27,6 +27,7 @@ import com.app.o.post.PostActivity
 import com.app.o.shared.OAppUtil
 import com.app.o.user.connected.ConnectedUsersActivity
 import com.app.o.user.detail.UserProfileActivity
+import com.app.o.user.update_profile.UpdateProfileActivity
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearchService {
@@ -111,7 +112,19 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
             val intent = Intent(this, ConnectedUsersActivity::class.java)
             startActivity(intent)
             true
-        } else -> {
+        }
+
+        R.id.action_sub_menu_setting -> {
+            true
+        }
+
+        R.id.action_sub_menu_update_profile -> {
+            val intent = Intent(this, UpdateProfileActivity::class.java)
+            startActivity(intent)
+            true
+        }
+
+        else -> {
             super.onOptionsItemSelected(item)
         }
     }

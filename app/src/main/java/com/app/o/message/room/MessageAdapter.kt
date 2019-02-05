@@ -41,7 +41,7 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (dataItems[position].username.equals(OAppUtil.getUserName(), false)) {
+        return if (dataItems[position].user_id == OAppUtil.getUserId()) {
             TYPE_OURS
         } else {
             TYPE_THEIRS

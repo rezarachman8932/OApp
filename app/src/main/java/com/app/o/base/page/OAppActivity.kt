@@ -18,6 +18,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import com.app.o.R
+import com.app.o.api.login.LoginResponse
 import com.app.o.shared.OAppUtil
 import io.reactivex.disposables.CompositeDisposable
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -114,7 +115,6 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
                 if (location != null) {
                     locationListener.onLocationChanged(location)
                 } else {
-                    //TODO Give an option for user either use last location or get new location
                     val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                     startActivityForResult(intent, OAppUtil.ON_ENABLE_GPS_SETTING)
                 }
@@ -169,6 +169,13 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         } else {
             editText.transformationMethod = PasswordTransformationMethod.getInstance()
         }
+    }
+
+    protected fun saveUserState(data: LoginResponse) {
+        OAppUtil.setToken(data.token)
+        OAppUtil.setUserName(data.username)
+        OAppUtil.setUserId(data.user_id)
+        OAppUtil.setLoggedIn(true)
     }
 
     open fun onLocationUpdated(location: Location) {}

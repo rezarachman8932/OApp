@@ -3,6 +3,7 @@ package com.app.o.user.login
 import com.app.o.api.APIRepository
 import com.app.o.api.login.LoginResponse
 import com.app.o.api.login.LoginSpec
+import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppViewService
 import com.app.o.shared.OAppUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,10 +13,10 @@ import io.reactivex.schedulers.Schedulers
 
 class LoginPresenter(private val view: OAppViewService<LoginResponse>,
                      private val callback: LoginCallback,
-                     private val compositeDisposable: CompositeDisposable) {
+                     private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
 
     private fun doLogin(loginSpec: LoginSpec) {
-        compositeDisposable.add(APIRepository.create().login(loginSpec, OAppUtil.getToken())
+        compositeDisposable.add(APIRepository.create().login(loginSpec, getToken())
                 .subscribeOn(Schedulers.io())
                 .compose {
                     it.observeOn(AndroidSchedulers.mainThread())
@@ -32,12 +33,6 @@ class LoginPresenter(private val view: OAppViewService<LoginResponse>,
                     view.onDataResponse(it)
                     view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
                 }))
-    }
-
-    fun saveDataPref(data: LoginResponse) {
-        OAppUtil.setToken(data.token)
-        OAppUtil.setUserName(data.username)
-        OAppUtil.setLoggedIn(true)
     }
 
     fun validateLogin(username: String, password: String) {

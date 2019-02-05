@@ -12,4 +12,16 @@
         android:title="@string/text_menu_search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_vector_setting"
+        android:title="@string/text_menu_settings"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item android:id="@+id/action_sub_menu_update_profile"
+                android:title="@string/text_sub_menu_update_profile" />
+            <item android:id="@+id/action_sub_menu_setting"
+                android:title="@string/text_sub_menu_setting" />
+        </menu>
+    </item>
 </menu>
