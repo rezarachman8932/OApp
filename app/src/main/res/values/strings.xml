@@ -74,6 +74,12 @@
     <string name="text_label_my_profile">My Profile</string>
     <string name="text_update_profile_not_valid_phone">Please check your updated phone number</string>
     <string name="text_update_profile_not_valid_location">Please check your location</string>
+    <string name="text_header_setting">Settings</string>
+    <string name="text_label_setting_notification">Notification</string>
+    <string name="text_label_setting_range_finder">Range Finder</string>
+    <string name="text_label_setting_blocked_account">Blocked Account</string>
+    <string name="text_label_setting_change_password">Change Password</string>
+    <string name="text_label_setting_about">About</string>
 
     <plurals name="numberOfReplies">
         <item quantity="one">%d reply</item>

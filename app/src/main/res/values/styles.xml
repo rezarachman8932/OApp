@@ -19,4 +19,9 @@
         <item name="android:windowBackground">@drawable/bg_loading_dialog</item>
     </style>
 
+    <!-- Switch theme. -->
+    <style name="ColorSwitchStyle">
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
+
 </resources>

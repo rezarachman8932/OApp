@@ -55,6 +55,9 @@
         <activity
             android:name=".user.update_profile.UpdateProfileActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".setting.SettingActivity"
+            android:parentActivityName=".home.HomeActivity"/>
 
         <service
             android:name=".notification.OAppMessagingService">

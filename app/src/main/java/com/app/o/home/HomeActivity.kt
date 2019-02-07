@@ -24,6 +24,7 @@ import com.app.o.base.service.OAppViewService
 import com.app.o.custom.BottomMenuView
 import com.app.o.detail.DetailActivity
 import com.app.o.post.PostActivity
+import com.app.o.setting.SettingActivity
 import com.app.o.shared.OAppUtil
 import com.app.o.user.connected.ConnectedUsersActivity
 import com.app.o.user.detail.UserProfileActivity
@@ -115,6 +116,8 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
         }
 
         R.id.action_sub_menu_setting -> {
+            val intent = Intent(this, SettingActivity::class.java)
+            startActivity(intent)
             true
         }
 
