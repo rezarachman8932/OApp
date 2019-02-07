@@ -73,7 +73,7 @@ class UpdateProfileActivity : OAppActivity(),
     }
 
     private fun initView() {
-        supportActionBar?.hide()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.text_label_update_profile_header)
 
         input_updated_name.isEnabled = false
