@@ -72,6 +72,14 @@ class OAppUtil {
             OAppPreferencesHelper.userId = userId
         }
 
+        fun getPhoneNumber(): String? {
+            return OAppPreferencesHelper.phoneNumber
+        }
+
+        fun setPhoneNumber(phone: String) {
+            OAppPreferencesHelper.phoneNumber = phone
+        }
+
         fun getLongitude(): String? {
             return OAppPreferencesHelper.longitude
         }

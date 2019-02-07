@@ -14,6 +14,7 @@ object OAppPreferencesHelper {
     private val EMAIL = Pair("email", "")
     private val USER_NAME = Pair("username", "")
     private val USER_ID = Pair("user_id", 0)
+    private val PHONE_NUMBER = Pair("phone_number", "")
     private val LAST_LOCATION_LONGITUDE = Pair("longitude", "")
     private val LAST_LOCATION_LATITUDE = Pair("latitude", "")
 
@@ -55,6 +56,12 @@ object OAppPreferencesHelper {
         get() = preferences.getString(USER_NAME.first, USER_NAME.second)
         set(value) = preferences.edit {
             it.putString(USER_NAME.first, value)
+        }
+
+    var phoneNumber: String?
+        get() = preferences.getString(PHONE_NUMBER.first, PHONE_NUMBER.second)
+        set(value) = preferences.edit {
+            it.putString(PHONE_NUMBER.first, value)
         }
 
     var longitude: String?

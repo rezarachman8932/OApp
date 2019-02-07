@@ -176,6 +176,7 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         OAppUtil.setUserName(data.username)
         OAppUtil.setUserId(data.user_id)
         OAppUtil.setEmail(data.email)
+        OAppUtil.setPhoneNumber(data.phonenumber)
         OAppUtil.setLoggedIn(true)
     }
 

@@ -64,7 +64,7 @@ class UpdateProfileActivity : OAppActivity(),
 
     override fun onSucceedGetCurrentProfile(userProfileResponse: UserProfileResponse) {
         input_updated_name.setText(userProfileResponse.name)
-        input_updated_phone.setText("")
+        input_updated_phone.setText(OAppUtil.getPhoneNumber())
         input_updated_email.setText(OAppUtil.getEmail())
         input_location.setText(userProfileResponse.location)
         input_facebook.setText(userProfileResponse.facebook)
