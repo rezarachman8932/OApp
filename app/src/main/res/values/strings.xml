@@ -80,6 +80,7 @@
     <string name="text_label_setting_blocked_account">Blocked Account</string>
     <string name="text_label_setting_change_password">Change Password</string>
     <string name="text_label_setting_about">About</string>
+    <string name="text_label_distance_km">%d KM</string>
 
     <plurals name="numberOfReplies">
         <item quantity="one">%d reply</item>

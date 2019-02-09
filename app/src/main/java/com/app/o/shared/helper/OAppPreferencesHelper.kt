@@ -10,10 +10,12 @@ object OAppPreferencesHelper {
     private lateinit var preferences: SharedPreferences
 
     private val LOGGED_IN = Pair("is_logged_in", false)
+    private val RECEIVED_NOTIFICATION = Pair("should_receive_notification", true)
     private val TOKEN = Pair("token", "")
     private val EMAIL = Pair("email", "")
     private val USER_NAME = Pair("username", "")
     private val USER_ID = Pair("user_id", 0)
+    private val RANGE_FINDER = Pair("range_finder", 1)
     private val PHONE_NUMBER = Pair("phone_number", "")
     private val LAST_LOCATION_LONGITUDE = Pair("longitude", "")
     private val LAST_LOCATION_LATITUDE = Pair("latitude", "")
@@ -27,6 +29,12 @@ object OAppPreferencesHelper {
         operation(editor)
         editor.apply()
     }
+
+    var shouldReceivePushNotification: Boolean
+        get() = preferences.getBoolean(RECEIVED_NOTIFICATION.first, RECEIVED_NOTIFICATION.second)
+        set(value) = preferences.edit {
+            it.putBoolean(RECEIVED_NOTIFICATION.first, value)
+        }
 
     var isLoggedIn: Boolean
         get() = preferences.getBoolean(LOGGED_IN.first, LOGGED_IN.second)
@@ -74,6 +82,12 @@ object OAppPreferencesHelper {
         get() = preferences.getString(LAST_LOCATION_LATITUDE.first, LAST_LOCATION_LATITUDE.second)
         set(value) = preferences.edit {
             it.putString(LAST_LOCATION_LATITUDE.first, value)
+        }
+
+    var rangeFinder: Int
+        get() = preferences.getInt(RANGE_FINDER.first, RANGE_FINDER.second)
+        set(value) = preferences.edit {
+            it.putInt(RANGE_FINDER.first, value)
         }
 
 }

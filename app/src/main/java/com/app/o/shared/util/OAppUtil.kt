@@ -33,6 +33,14 @@ class OAppUtil {
         private const val HOUR_MILLIS = 60 * MINUTE_MILLIS
         private const val DAY_MILLIS = 24 * HOUR_MILLIS
 
+        fun shouldReceiveNotification(): Boolean {
+            return OAppPreferencesHelper.shouldReceivePushNotification
+        }
+
+        fun setReceiveNotification(receivedNotification: Boolean) {
+            OAppPreferencesHelper.shouldReceivePushNotification = receivedNotification
+        }
+
         fun getLongitude(): String? {
             return OAppPreferencesHelper.longitude
         }
@@ -47,6 +55,14 @@ class OAppUtil {
 
         fun setLatitude(latitude: String) {
             OAppPreferencesHelper.latitude = latitude
+        }
+
+        fun getRangeFinder(): Int {
+            return OAppPreferencesHelper.rangeFinder
+        }
+
+        fun setRangeFinder(range: Int) {
+            OAppPreferencesHelper.rangeFinder = range
         }
 
         fun generateJWTToken(username: String?, token: String?): String {
