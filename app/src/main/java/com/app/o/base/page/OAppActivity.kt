@@ -19,7 +19,8 @@ import android.widget.EditText
 import android.widget.TextView
 import com.app.o.R
 import com.app.o.api.login.LoginResponse
-import com.app.o.shared.OAppUtil
+import com.app.o.shared.util.OAppUserUtil
+import com.app.o.shared.util.OAppUtil
 import io.reactivex.disposables.CompositeDisposable
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -172,12 +173,12 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     }
 
     protected fun saveUserState(data: LoginResponse) {
-        OAppUtil.setToken(data.token)
-        OAppUtil.setUserName(data.username)
-        OAppUtil.setUserId(data.user_id)
-        OAppUtil.setEmail(data.email)
-        OAppUtil.setPhoneNumber(data.phonenumber)
-        OAppUtil.setLoggedIn(true)
+        OAppUserUtil.setToken(data.token)
+        OAppUserUtil.setUserName(data.username)
+        OAppUserUtil.setUserId(data.user_id)
+        OAppUserUtil.setEmail(data.email)
+        OAppUserUtil.setPhoneNumber(data.phonenumber)
+        OAppUserUtil.setLoggedIn(true)
     }
 
     open fun onLocationUpdated(location: Location) {}

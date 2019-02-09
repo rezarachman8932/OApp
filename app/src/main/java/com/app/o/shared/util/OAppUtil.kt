@@ -1,19 +1,14 @@
-package com.app.o.shared
+package com.app.o.shared.util
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.drawable.LayerDrawable
-import android.util.Patterns
 import com.app.o.OApplication
 import com.app.o.R
 import com.app.o.api.location.LocationSpec
 import com.app.o.custom.CountDrawable
+import com.app.o.shared.helper.OAppPreferencesHelper
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,48 +33,6 @@ class OAppUtil {
         private const val HOUR_MILLIS = 60 * MINUTE_MILLIS
         private const val DAY_MILLIS = 24 * HOUR_MILLIS
 
-        fun isValidEmail(email: String): Boolean = email.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
-
-        fun getToken(): String? {
-            return OAppPreferencesHelper.tokenAuth
-        }
-
-        fun setToken(token: String) {
-            OAppPreferencesHelper.tokenAuth = token
-        }
-
-        fun getEmail(): String? {
-            return OAppPreferencesHelper.email
-        }
-
-        fun setEmail(email: String) {
-            OAppPreferencesHelper.email = email
-        }
-
-        fun getUserName(): String? {
-            return OAppPreferencesHelper.username
-        }
-
-        fun setUserName(username: String) {
-            OAppPreferencesHelper.username = username
-        }
-
-        fun getUserId(): Int {
-            return OAppPreferencesHelper.userId
-        }
-
-        fun setUserId(userId: Int) {
-            OAppPreferencesHelper.userId = userId
-        }
-
-        fun getPhoneNumber(): String? {
-            return OAppPreferencesHelper.phoneNumber
-        }
-
-        fun setPhoneNumber(phone: String) {
-            OAppPreferencesHelper.phoneNumber = phone
-        }
-
         fun getLongitude(): String? {
             return OAppPreferencesHelper.longitude
         }
@@ -94,14 +47,6 @@ class OAppUtil {
 
         fun setLatitude(latitude: String) {
             OAppPreferencesHelper.latitude = latitude
-        }
-
-        fun isLoggedIn(): Boolean {
-            return OAppPreferencesHelper.isLoggedIn
-        }
-
-        fun setLoggedIn(loggedIn: Boolean) {
-            OAppPreferencesHelper.isLoggedIn = loggedIn
         }
 
         fun generateJWTToken(username: String?, token: String?): String {
@@ -132,7 +77,7 @@ class OAppUtil {
 
             return when {
                 diff < MINUTE_MILLIS -> OApplication.applicationContext().getString(R.string.text_label_recently)
-                diff < 2 * MINUTE_MILLIS -> OApplication.applicationContext().getString(R.string.text_label_one_minute_ago) 
+                diff < 2 * MINUTE_MILLIS -> OApplication.applicationContext().getString(R.string.text_label_one_minute_ago)
                 diff < 50 * MINUTE_MILLIS -> (diff / MINUTE_MILLIS).toString() + OApplication.applicationContext().getString(R.string.text_label_minutes_ago)
                 diff < 90 * MINUTE_MILLIS -> OApplication.applicationContext().getString(R.string.text_label_one_hour_ago)
                 diff < 24 * HOUR_MILLIS -> (diff / HOUR_MILLIS).toString() + OApplication.applicationContext().getString(R.string.text_label_hours_ago)
@@ -160,26 +105,6 @@ class OAppUtil {
             badge.setCount(count)
             icon.mutate()
             icon.setDrawableByLayerId(layerId, badge)
-        }
-
-        fun createFileFromPath(bitmap: Bitmap?, path: String?): File {
-            val file = File(path)
-            val bos = ByteArrayOutputStream()
-
-            bitmap?.compress(Bitmap.CompressFormat.WEBP, 0, bos)
-
-            val bitmapData = bos.toByteArray()
-
-            try {
-                val fos = FileOutputStream(file)
-                fos.write(bitmapData)
-                fos.flush()
-                fos.close()
-            } catch (exception: IOException) {
-                exception.printStackTrace()
-            }
-
-            return file
         }
 
         fun generateLocationSpec(longitude: String, latitude: String): LocationSpec {

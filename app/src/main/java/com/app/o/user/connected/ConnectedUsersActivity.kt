@@ -9,7 +9,7 @@ import com.app.o.api.relation.UserConnectedResponse
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.custom.RecyclerViewMargin
-import com.app.o.shared.OAppUtil
+import com.app.o.shared.util.OAppUtil
 import com.app.o.user.detail.UserProfileActivity
 import kotlinx.android.synthetic.main.activity_connected_users.*
 

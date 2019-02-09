@@ -1,4 +1,4 @@
-package com.app.o.shared
+package com.app.o.shared.helper
 
 import android.content.Context
 import android.content.SharedPreferences

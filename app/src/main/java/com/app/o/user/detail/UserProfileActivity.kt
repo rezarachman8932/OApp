@@ -9,7 +9,7 @@ import com.app.o.api.user.UserProfileResponseZip
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.home.HomeGridAdapter
-import com.app.o.shared.OAppImageUtil
+import com.app.o.shared.util.OAppMultimediaUtil
 import kotlinx.android.synthetic.main.activity_user_detail.*
 
 class UserProfileActivity : OAppActivity(), OAppViewService<UserProfileResponseZip> {
@@ -48,7 +48,7 @@ class UserProfileActivity : OAppActivity(), OAppViewService<UserProfileResponseZ
     }
 
     override fun onDataResponse(data: UserProfileResponseZip) {
-        OAppImageUtil.setImage("http://api.ademuhammad.or.id/uploads/post/sunday-sale201812220713180.JPG", R.drawable.ic_logo, image_user_detail_profile)
+        OAppMultimediaUtil.setImage("http://api.ademuhammad.or.id/uploads/post/sunday-sale201812220713180.JPG", R.drawable.ic_logo, image_user_detail_profile)
 
         text_user_detail_name.text = data.userProfileResponse.name
         text_user_location_name.text = data.userProfileResponse.location

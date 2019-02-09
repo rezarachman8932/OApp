@@ -4,7 +4,8 @@ import com.app.o.api.APIRepository
 import com.app.o.api.register.RegisterResponse
 import com.app.o.api.register.RegisterSpec
 import com.app.o.base.service.OAppViewService
-import com.app.o.shared.OAppUtil
+import com.app.o.shared.util.OAppUserUtil
+import com.app.o.shared.util.OAppUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
@@ -50,7 +51,7 @@ class RegisterPresenter(private val view: OAppViewService<RegisterResponse>,
             return
         }
 
-        if (!OAppUtil.isValidEmail(email)) {
+        if (!OAppUserUtil.isValidEmail(email)) {
             callback.onEmailNotValid()
             return
         }

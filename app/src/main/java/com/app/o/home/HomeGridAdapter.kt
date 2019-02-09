@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.app.o.R
 import com.app.o.api.home.HomePostItem
-import com.app.o.shared.OAppUtil
+import com.app.o.shared.util.OAppUtil
 import com.squareup.picasso.Picasso
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_grid_photo.*

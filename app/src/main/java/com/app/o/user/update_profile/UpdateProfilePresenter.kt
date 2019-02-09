@@ -6,7 +6,8 @@ import com.app.o.api.user.UserUpdateProfileResponse
 import com.app.o.api.user.update.UserUpdateProfileSpec
 import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppViewService
-import com.app.o.shared.OAppUtil
+import com.app.o.shared.util.OAppUserUtil
+import com.app.o.shared.util.OAppUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
@@ -37,7 +38,7 @@ class UpdateProfilePresenter(private val view: OAppViewService<UserUpdateProfile
     }
 
     fun getCurrentProfile() {
-        compositeDisposable.add(APIRepository.create().getUserProfile(UserProfileSpec(OAppUtil.getUserId()), getHeaderAuth())
+        compositeDisposable.add(APIRepository.create().getUserProfile(UserProfileSpec(OAppUserUtil.getUserId()), getHeaderAuth())
                 .subscribeOn(Schedulers.io())
                 .compose {
                     it.observeOn(AndroidSchedulers.mainThread())

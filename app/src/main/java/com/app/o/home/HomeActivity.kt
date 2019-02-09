@@ -25,7 +25,7 @@ import com.app.o.custom.BottomMenuView
 import com.app.o.detail.DetailActivity
 import com.app.o.post.PostActivity
 import com.app.o.setting.SettingActivity
-import com.app.o.shared.OAppUtil
+import com.app.o.shared.util.OAppUtil
 import com.app.o.user.connected.ConnectedUsersActivity
 import com.app.o.user.detail.UserProfileActivity
 import com.app.o.user.update_profile.UpdateProfileActivity

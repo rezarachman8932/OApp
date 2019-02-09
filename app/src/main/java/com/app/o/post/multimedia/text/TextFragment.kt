@@ -10,7 +10,7 @@ import com.app.o.R
 import com.app.o.api.post.CreatedPostResponse
 import com.app.o.base.page.OAppFragment
 import com.app.o.base.service.OAppViewService
-import com.app.o.shared.OAppUtil
+import com.app.o.shared.util.OAppUtil
 import kotlinx.android.synthetic.main.fragment_text.*
 
 class TextFragment : OAppFragment(), OAppViewService<CreatedPostResponse> {

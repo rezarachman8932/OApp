@@ -7,7 +7,8 @@ import com.app.o.api.user.UserProfileResponse
 import com.app.o.api.user.UserUpdateProfileResponse
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
-import com.app.o.shared.OAppUtil
+import com.app.o.shared.util.OAppUserUtil
+import com.app.o.shared.util.OAppUtil
 import kotlinx.android.synthetic.main.activity_update_profile.*
 
 class UpdateProfileActivity : OAppActivity(),
@@ -64,8 +65,8 @@ class UpdateProfileActivity : OAppActivity(),
 
     override fun onSucceedGetCurrentProfile(userProfileResponse: UserProfileResponse) {
         input_updated_name.setText(userProfileResponse.name)
-        input_updated_phone.setText(OAppUtil.getPhoneNumber())
-        input_updated_email.setText(OAppUtil.getEmail())
+        input_updated_phone.setText(OAppUserUtil.getPhoneNumber())
+        input_updated_email.setText(OAppUserUtil.getEmail())
         input_location.setText(userProfileResponse.location)
         input_facebook.setText(userProfileResponse.facebook)
         input_twitter.setText(userProfileResponse.twitter)

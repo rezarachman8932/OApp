@@ -5,7 +5,7 @@ import com.app.o.api.location.LocationSpec
 import com.app.o.api.relation.UserConnectedResponse
 import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppViewService
-import com.app.o.shared.OAppUtil
+import com.app.o.shared.util.OAppUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer

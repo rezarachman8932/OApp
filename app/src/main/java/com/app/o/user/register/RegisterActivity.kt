@@ -9,7 +9,7 @@ import com.app.o.R
 import com.app.o.api.register.RegisterResponse
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
-import com.app.o.shared.OAppUtil
+import com.app.o.shared.util.OAppUtil
 import com.app.o.user.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_register.*
 

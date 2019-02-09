@@ -2,7 +2,7 @@ package com.app.o
 
 import android.app.Application
 import android.content.Context
-import com.app.o.shared.OAppPreferencesHelper
+import com.app.o.shared.helper.OAppPreferencesHelper
 
 class OApplication : Application() {
 

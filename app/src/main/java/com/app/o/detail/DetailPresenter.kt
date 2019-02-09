@@ -8,7 +8,7 @@ import com.app.o.api.detail.DetailSpec
 import com.app.o.api.user.UserProfileResponse
 import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppViewService
-import com.app.o.shared.OAppUtil
+import com.app.o.shared.util.OAppUtil
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function3

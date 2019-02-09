@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.app.o.R
 import com.app.o.api.relation.UserConnected
-import com.app.o.shared.OAppImageUtil
+import com.app.o.shared.util.OAppMultimediaUtil
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_list_connected_users.*
 
@@ -49,7 +49,7 @@ class ConnectedUsersAdapter(var context: Context) : RecyclerView.Adapter<Connect
                 item_text_connected_verified.visibility = View.GONE
             }
 
-            OAppImageUtil.setImage(userConnected.avatar, R.drawable.ic_logo, item_image_connected_user)
+            OAppMultimediaUtil.setImage(userConnected.avatar, R.drawable.ic_logo, item_image_connected_user)
 
             containerView.setOnClickListener { listener(userConnected) }
         }

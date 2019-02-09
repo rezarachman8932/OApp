@@ -1,15 +1,16 @@
 package com.app.o.base.presenter
 
-import com.app.o.shared.OAppUtil
+import com.app.o.shared.util.OAppUserUtil
+import com.app.o.shared.util.OAppUtil
 
 abstract class OAppPresenter {
 
     protected fun getHeaderAuth(): String {
-        return OAppUtil.generateJWTToken(OAppUtil.getUserName(), getToken())
+        return OAppUtil.generateJWTToken(OAppUserUtil.getUserName(), getToken())
     }
 
     fun getToken(): String? {
-        return OAppUtil.getToken()
+        return OAppUserUtil.getToken()
     }
 
     fun saveLastLocation(longitude: String, latitude: String) {

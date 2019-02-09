@@ -13,8 +13,8 @@ import com.app.o.base.service.OAppViewService
 import com.app.o.custom.RecyclerViewDecorator
 import com.app.o.message.room.MessageActivity
 import com.app.o.message.submit.NewCommentActivity
-import com.app.o.shared.OAppImageUtil
-import com.app.o.shared.OAppUtil
+import com.app.o.shared.util.OAppMultimediaUtil
+import com.app.o.shared.util.OAppUtil
 import kotlinx.android.synthetic.main.activity_detail.*
 
 class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
@@ -100,7 +100,7 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
             }
         }
 
-        OAppImageUtil.setImage(null, R.drawable.ic_logo, image_detail_photo)
+        OAppMultimediaUtil.setImage(null, R.drawable.ic_logo, image_detail_photo)
 
         text_detail_name.text = userProfile.name
         text_detail_location_name.text = userProfile.location
@@ -135,7 +135,7 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
         if (!detailResponse.media.isNullOrEmpty()) {
             detailResponse.media[0].url.let {
                 if (detailResponse.media[0].type.equals("image", true)) {
-                    OAppImageUtil.setImage(it, null, image_detail_thumb)
+                    OAppMultimediaUtil.setImage(it, null, image_detail_thumb)
                 } else {
                     //TODO Handle video content
                 }

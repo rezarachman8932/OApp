@@ -10,7 +10,8 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.ScrollView
 import android.widget.TextView
 import com.app.o.R
-import com.app.o.shared.OAppUtil
+import com.app.o.shared.util.OAppMultimediaUtil
+import com.app.o.shared.util.OAppUtil
 import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
 import io.reactivex.annotations.NonNull
@@ -117,7 +118,7 @@ abstract class OAppFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     @NonNull
     protected fun prepareFilePart(bitmap: Bitmap?, filePath: String?): MultipartBody.Part {
-        val file = OAppUtil.createFileFromPath(bitmap, filePath)
+        val file = OAppMultimediaUtil.createFileFromPath(bitmap, filePath)
         val requestFile = RequestBody.create(MediaType.parse("image/*"), file)
         return MultipartBody.Part.createFormData("media[0]", file.name, requestFile)
     }

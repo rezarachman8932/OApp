@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import com.app.o.R
 import com.app.o.api.comment.Comment
-import com.app.o.shared.OAppImageUtil
-import com.app.o.shared.OAppUtil
+import com.app.o.shared.util.OAppMultimediaUtil
+import com.app.o.shared.util.OAppUtil
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_list_comment.*
 
@@ -52,7 +52,7 @@ class DetailCommentAdapter(var context: Context) : RecyclerView.Adapter<DetailCo
                 item_text_comment_replies.visibility = View.GONE
             }
 
-            OAppImageUtil.setImage(item.avatar, R.drawable.ic_logo, item_image_comment_avatar)
+            OAppMultimediaUtil.setImage(item.avatar, R.drawable.ic_logo, item_image_comment_avatar)
 
             containerView.setOnClickListener { listener(item) }
         }

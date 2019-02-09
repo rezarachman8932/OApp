@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.app.o.R
 import com.app.o.api.comment.Comment
-import com.app.o.shared.OAppUtil
+import com.app.o.shared.util.OAppUserUtil
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_list_comment_ours.*
 import kotlinx.android.synthetic.main.item_list_comment_theirs.*
@@ -41,7 +41,7 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (dataItems[position].user_id == OAppUtil.getUserId()) {
+        return if (dataItems[position].user_id == OAppUserUtil.getUserId()) {
             TYPE_OURS
         } else {
             TYPE_THEIRS
