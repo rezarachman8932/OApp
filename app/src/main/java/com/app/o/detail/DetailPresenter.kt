@@ -5,7 +5,7 @@ import com.app.o.api.comment.CommentResponse
 import com.app.o.api.detail.DetailResponse
 import com.app.o.api.detail.DetailResponseZip
 import com.app.o.api.detail.DetailSpec
-import com.app.o.api.user.UserProfileResponse
+import com.app.o.api.user.profile.UserProfileResponse
 import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppViewService
 import com.app.o.shared.util.OAppUtil

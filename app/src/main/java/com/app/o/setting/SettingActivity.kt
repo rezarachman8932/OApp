@@ -1,10 +1,12 @@
 package com.app.o.setting
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.SeekBar
 import com.app.o.R
 import com.app.o.shared.util.OAppUtil
+import com.app.o.user.blocked.BlockedAccountActivity
 import kotlinx.android.synthetic.main.activity_setting.*
 
 class SettingActivity : AppCompatActivity() {
@@ -43,7 +45,8 @@ class SettingActivity : AppCompatActivity() {
         })
 
         layout_group_blocked_account.setOnClickListener {
-
+            val intent = Intent(this, BlockedAccountActivity::class.java)
+            startActivity(intent)
         }
 
         layout_group_change_password.setOnClickListener {

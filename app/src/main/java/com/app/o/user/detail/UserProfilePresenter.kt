@@ -2,9 +2,9 @@ package com.app.o.user.detail
 
 import com.app.o.api.APIRepository
 import com.app.o.api.home.HomeResponse
-import com.app.o.api.user.UserProfileResponse
-import com.app.o.api.user.UserProfileResponseZip
-import com.app.o.api.user.UserProfileSpec
+import com.app.o.api.user.profile.UserProfileResponse
+import com.app.o.api.user.profile.UserProfileResponseZip
+import com.app.o.api.user.profile.UserProfileSpec
 import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppViewService
 import com.app.o.shared.util.OAppUtil
@@ -43,7 +43,8 @@ class UserProfilePresenter(private val view: OAppViewService<UserProfileResponse
                 getUserDetailContent(userId),
                 getPostedItems(userId),
                 BiFunction<UserProfileResponse, HomeResponse, UserProfileResponseZip> {
-                    t1, t2 -> UserProfileResponseZip(t1, t2)
+                    t1, t2 ->
+                    UserProfileResponseZip(t1, t2)
                 })
     }
 

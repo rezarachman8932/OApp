@@ -5,7 +5,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.MenuItem
 import com.app.o.R
-import com.app.o.api.user.UserProfileResponseZip
+import com.app.o.api.user.profile.UserProfileResponseZip
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.home.HomeGridAdapter

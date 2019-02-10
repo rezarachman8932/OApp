@@ -3,8 +3,8 @@ package com.app.o.user.update_profile
 import android.os.Bundle
 import android.view.View
 import com.app.o.R
-import com.app.o.api.user.UserProfileResponse
-import com.app.o.api.user.UserUpdateProfileResponse
+import com.app.o.api.user.profile.UserProfileResponse
+import com.app.o.api.user.update.UserUpdateProfileResponse
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.shared.util.OAppUserUtil

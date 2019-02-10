@@ -15,9 +15,12 @@ import com.app.o.api.register.RegisterResponse
 import com.app.o.api.register.RegisterSpec
 import com.app.o.api.relation.UserConnectedCountResponse
 import com.app.o.api.relation.UserConnectedResponse
-import com.app.o.api.user.UserProfileResponse
-import com.app.o.api.user.UserProfileSpec
-import com.app.o.api.user.UserUpdateProfileResponse
+import com.app.o.api.user.blocked.BlockedUserResponse
+import com.app.o.api.user.blocked.UnblockedUserResponse
+import com.app.o.api.user.blocked.UnblockedUserSpec
+import com.app.o.api.user.profile.UserProfileResponse
+import com.app.o.api.user.profile.UserProfileSpec
+import com.app.o.api.user.update.UserUpdateProfileResponse
 import com.app.o.api.user.update.UserUpdateProfileSpec
 import io.reactivex.Single
 import okhttp3.MultipartBody
@@ -82,5 +85,11 @@ interface APIService {
 
     @POST("update_profile")
     fun updateProfile(@Body spec: UserUpdateProfileSpec, @Header("Authorization") tokenAuth: String?): Single<UserUpdateProfileResponse>
+
+    @POST("list_block_user")
+    fun getBlockedUsers(@Header("Authorization") tokenAuth: String?): Single<BlockedUserResponse>
+
+    @POST("unblock_user")
+    fun unBlockedUser(@Body spec: UnblockedUserSpec, @Header("Authorization") tokenAuth: String?): Single<UnblockedUserResponse>
 
 }

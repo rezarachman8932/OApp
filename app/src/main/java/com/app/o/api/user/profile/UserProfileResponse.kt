@@ -1,4 +1,4 @@
-package com.app.o.api.user
+package com.app.o.api.user.profile
 
 import com.app.o.base.data.OAppResponse
 

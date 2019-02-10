@@ -58,6 +58,9 @@
         <activity
             android:name=".setting.SettingActivity"
             android:parentActivityName=".home.HomeActivity"/>
+        <activity
+            android:name=".user.blocked.BlockedAccountActivity"
+            android:parentActivityName=".setting.SettingActivity"/>
 
         <service
             android:name=".notification.OAppMessagingService">

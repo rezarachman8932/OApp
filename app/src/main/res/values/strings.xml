@@ -80,7 +80,11 @@
     <string name="text_label_setting_blocked_account">Blocked Account</string>
     <string name="text_label_setting_change_password">Change Password</string>
     <string name="text_label_setting_about">About</string>
+    <string name="text_label_unblock">Unblock</string>
     <string name="text_label_distance_km">%d KM</string>
+    <string name="text_label_empty_state_title">Great!</string>
+    <string name="text_label_empty_state_description">You do not have blocked users</string>
+    <string name="text_error_fail_to_unblock_user">Failed unblocking your friend. Try again!</string>
 
     <plurals name="numberOfReplies">
         <item quantity="one">%d reply</item>
