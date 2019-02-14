@@ -5,10 +5,12 @@ import com.app.o.api.comment.CommentResponse
 import com.app.o.api.detail.DetailResponse
 import com.app.o.api.detail.DetailResponseZip
 import com.app.o.api.detail.DetailSpec
+import com.app.o.api.user.blocked.UserBlockingSpec
 import com.app.o.api.user.profile.UserProfileResponse
 import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppViewService
 import com.app.o.shared.util.OAppUtil
+import com.app.o.user.blocked.UnblockedAccountCallback
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function3
@@ -17,6 +19,7 @@ import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
+                      private val userBlockingCallback: UnblockedAccountCallback,
                       private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
 
     fun geDetailPageContent(spec: DetailSpec) {
@@ -36,6 +39,29 @@ class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
                 .subscribe(Consumer {
                     view.onDataResponse(it)
                     view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
+                }))
+    }
+
+    fun blockUser(spec: UserBlockingSpec) {
+        compositeDisposable.add(APIRepository.create().blockedUser(spec, getHeaderAuth())
+                .subscribeOn(Schedulers.io())
+                .compose {
+                    it.observeOn(AndroidSchedulers.mainThread())
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    userBlockingCallback.onProgress()
+                }
+                .onErrorResumeNext {
+                    userBlockingCallback.onFailed()
+                    Single.error(it)
+                }
+                .doOnError{
+                    userBlockingCallback.onFailed()
+                    it.printStackTrace()
+                }
+                .subscribe(Consumer {
+                    userBlockingCallback.onSucceed(it)
                 }))
     }
 

@@ -2,7 +2,7 @@ package com.app.o.user.blocked
 
 import com.app.o.api.APIRepository
 import com.app.o.api.user.blocked.BlockedUserResponse
-import com.app.o.api.user.blocked.UnblockedUserSpec
+import com.app.o.api.user.blocked.UserBlockingSpec
 import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppViewService
 import com.app.o.shared.util.OAppUtil
@@ -40,7 +40,7 @@ class BlockedAccountPresenter(private val view: OAppViewService<BlockedUserRespo
                 }))
     }
 
-    fun unBlockedUser(spec: UnblockedUserSpec) {
+    fun unBlockedUser(spec: UserBlockingSpec) {
         compositeDisposable.add(APIRepository.create().unBlockedUser(spec, getHeaderAuth())
                 .subscribeOn(Schedulers.io())
                 .compose {
@@ -48,18 +48,18 @@ class BlockedAccountPresenter(private val view: OAppViewService<BlockedUserRespo
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {
-                    unBlockCallback.onUnblockingAccount()
+                    unBlockCallback.onProgress()
                 }
                 .onErrorResumeNext {
-                    unBlockCallback.onUnblockedAccountFailed()
+                    unBlockCallback.onFailed()
                     Single.error(it)
                 }
                 .doOnError{
-                    unBlockCallback.onUnblockedAccountFailed()
+                    unBlockCallback.onFailed()
                     it.printStackTrace()
                 }
                 .subscribe(Consumer {
-                    unBlockCallback.onUnblockedAccountSuccceed(it)
+                    unBlockCallback.onSucceed(it)
                 }))
     }
 

@@ -3,11 +3,15 @@ package com.app.o.detail
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.app.o.R
 import com.app.o.api.detail.DetailResponse
 import com.app.o.api.detail.DetailResponseZip
 import com.app.o.api.detail.DetailSpec
+import com.app.o.api.user.blocked.UserBlockingResponse
+import com.app.o.api.user.blocked.UserBlockingSpec
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.custom.RecyclerViewDecorator
@@ -15,14 +19,16 @@ import com.app.o.message.room.MessageActivity
 import com.app.o.message.submit.NewCommentActivity
 import com.app.o.shared.util.OAppMultimediaUtil
 import com.app.o.shared.util.OAppUtil
+import com.app.o.user.blocked.UnblockedAccountCallback
 import kotlinx.android.synthetic.main.activity_detail.*
 
-class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
+class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, UnblockedAccountCallback {
 
     private lateinit var presenter: DetailPresenter
     private lateinit var adapter: DetailCommentAdapter
     private lateinit var postId: String
     private lateinit var contentData: DetailResponse
+    private var isLoaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,13 +38,32 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
 
         initViewContent()
 
-        presenter = DetailPresenter(this, mCompositeDisposable)
+        presenter = DetailPresenter(this, this, mCompositeDisposable)
     }
 
     override fun onResume() {
         super.onResume()
 
         presenter.geDetailPageContent(DetailSpec(postId))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        if (isLoaded) {
+            if (contentData.type == "image") {
+                menuInflater.inflate(R.menu.detail_menu, menu)
+            }
+        }
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_block_account -> {
+            presenter.blockUser(UserBlockingSpec(16))
+            true
+        } else -> {
+            super.onOptionsItemSelected(item)
+        }
     }
 
     override fun showLoading() {
@@ -54,6 +79,12 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
     override fun onDataResponse(data: DetailResponseZip) {
         invalidateData(data)
     }
+
+    override fun onProgress() {}
+
+    override fun onSucceed(response: UserBlockingResponse) {}
+
+    override fun onFailed() {}
 
     private fun getParam() {
         postId = intent.getStringExtra("postId")
@@ -129,6 +160,10 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip> {
         } else {
             card_view_comments.visibility = View.GONE
         }
+
+        isLoaded = true
+
+        invalidateOptionsMenu()
     }
 
     private fun setMedia(detailResponse: DetailResponse) {

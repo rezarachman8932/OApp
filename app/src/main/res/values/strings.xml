@@ -38,6 +38,7 @@
     <string name="text_menu_search">Search</string>
     <string name="text_menu_friend">Friend</string>
     <string name="text_menu_settings">Settings</string>
+    <string name="text_menu_block_account">Block</string>
     <string name="text_sub_menu_setting">Setting</string>
     <string name="text_sub_menu_update_profile">Update Profile</string>
     <string name="text_label_comment">Comment</string>

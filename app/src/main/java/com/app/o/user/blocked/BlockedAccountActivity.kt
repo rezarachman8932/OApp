@@ -5,8 +5,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.app.o.R
 import com.app.o.api.user.blocked.BlockedUserResponse
-import com.app.o.api.user.blocked.UnblockedUserResponse
-import com.app.o.api.user.blocked.UnblockedUserSpec
+import com.app.o.api.user.blocked.UserBlockingResponse
+import com.app.o.api.user.blocked.UserBlockingSpec
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.custom.RecyclerViewMargin
@@ -45,7 +45,7 @@ class BlockedAccountActivity : OAppActivity(), OAppViewService<BlockedUserRespon
                 adapter.setData(data.data)
                 adapter.setListener { position, user ->
                     index = position
-                    presenter.unBlockedUser(UnblockedUserSpec(user.user_id))
+                    presenter.unBlockedUser(UserBlockingSpec(user.user_id))
                 }
 
                 recycler_view_blocked_users.adapter = adapter
@@ -58,11 +58,11 @@ class BlockedAccountActivity : OAppActivity(), OAppViewService<BlockedUserRespon
         }
     }
 
-    override fun onUnblockingAccount() {
+    override fun onProgress() {
         shouldShowProgress(true)
     }
 
-    override fun onUnblockedAccountSuccceed(response: UnblockedUserResponse) {
+    override fun onSucceed(response: UserBlockingResponse) {
         if (isSuccess(response.status)) {
             shouldShowProgress(false)
             adapter.removeItem(index)
@@ -74,7 +74,7 @@ class BlockedAccountActivity : OAppActivity(), OAppViewService<BlockedUserRespon
         }
     }
 
-    override fun onUnblockedAccountFailed() {
+    override fun onFailed() {
         shouldShowProgress(false)
         showSnackBar(layout_root_blocked_account, getString(R.string.text_error_fail_to_unblock_user))
     }

@@ -16,8 +16,8 @@ import com.app.o.api.register.RegisterSpec
 import com.app.o.api.relation.UserConnectedCountResponse
 import com.app.o.api.relation.UserConnectedResponse
 import com.app.o.api.user.blocked.BlockedUserResponse
-import com.app.o.api.user.blocked.UnblockedUserResponse
-import com.app.o.api.user.blocked.UnblockedUserSpec
+import com.app.o.api.user.blocked.UserBlockingResponse
+import com.app.o.api.user.blocked.UserBlockingSpec
 import com.app.o.api.user.profile.UserProfileResponse
 import com.app.o.api.user.profile.UserProfileSpec
 import com.app.o.api.user.update.UserUpdateProfileResponse
@@ -90,6 +90,9 @@ interface APIService {
     fun getBlockedUsers(@Header("Authorization") tokenAuth: String?): Single<BlockedUserResponse>
 
     @POST("unblock_user")
-    fun unBlockedUser(@Body spec: UnblockedUserSpec, @Header("Authorization") tokenAuth: String?): Single<UnblockedUserResponse>
+    fun unBlockedUser(@Body spec: UserBlockingSpec, @Header("Authorization") tokenAuth: String?): Single<UserBlockingResponse>
+
+    @POST("block_user")
+    fun blockedUser(@Body spec: UserBlockingSpec, @Header("Authorization") tokenAuth: String?): Single<UserBlockingResponse>
 
 }

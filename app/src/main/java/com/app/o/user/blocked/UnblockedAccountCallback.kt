@@ -1,9 +1,9 @@
 package com.app.o.user.blocked
 
-import com.app.o.api.user.blocked.UnblockedUserResponse
+import com.app.o.api.user.blocked.UserBlockingResponse
 
 interface UnblockedAccountCallback {
-    fun onUnblockingAccount()
-    fun onUnblockedAccountSuccceed(response: UnblockedUserResponse)
-    fun onUnblockedAccountFailed()
+    fun onProgress()
+    fun onSucceed(response: UserBlockingResponse)
+    fun onFailed()
 }
