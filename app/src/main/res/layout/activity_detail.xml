@@ -24,11 +24,25 @@
                 android:id="@+id/layout_view_multimedia_content"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dip_180">
-                <ImageView
-                    android:id="@+id/image_detail_thumb"
+                <RelativeLayout
+                    android:id="@+id/layout_group_image_slider"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"/>
+                    android:layout_height="match_parent">
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/view_pager_posted_images"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                    <android.support.design.widget.TabLayout
+                        android:id="@+id/pager_image_indicator"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dip_24"
+                        android:layout_alignParentBottom="true"
+                        app:tabBackground="@drawable/bg_dot_indicator"
+                        app:tabGravity="center"
+                        app:tabIndicatorHeight="0dp"
+                        app:tabPaddingStart="@dimen/dip_6"
+                        app:tabPaddingEnd="@dimen/dip_6"/>
+                </RelativeLayout>
                 <VideoView
                     android:id="@+id/video_detail_thumb"
                     android:layout_width="match_parent"

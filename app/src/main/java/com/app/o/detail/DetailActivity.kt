@@ -15,6 +15,7 @@ import com.app.o.api.user.blocked.UserBlockingSpec
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.custom.RecyclerViewDecorator
+import com.app.o.detail.pager.DetailPostedImageAdapter
 import com.app.o.message.room.MessageActivity
 import com.app.o.message.submit.NewCommentActivity
 import com.app.o.shared.util.OAppMultimediaUtil
@@ -28,6 +29,7 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
     private lateinit var adapter: DetailCommentAdapter
     private lateinit var postId: String
     private lateinit var contentData: DetailResponse
+    private lateinit var imagePagerAdapter: DetailPostedImageAdapter
     private var isLoaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,14 +82,22 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
         invalidateData(data)
     }
 
-    override fun onProgress() {}
+    override fun onProgress() {
+        //TODO Show progress
+    }
 
-    override fun onSucceed(response: UserBlockingResponse) {}
+    override fun onSucceed(response: UserBlockingResponse) {
+        //TODO Hide progress
+    }
 
-    override fun onFailed() {}
+    override fun onFailed() {
+        //TODO Hide progress
+        //TODO Show snackBar
+    }
 
     private fun getParam() {
         postId = intent.getStringExtra("postId")
+        //TODO Get user_id to block function
     }
 
     private fun initViewContent() {
@@ -119,13 +129,13 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
             }
 
             contentData.type == "image" -> {
-                image_detail_thumb.visibility = View.VISIBLE
+                layout_group_image_slider.visibility = View.VISIBLE
                 video_detail_thumb.visibility = View.GONE
                 setMedia(contentData)
             }
 
             contentData.type == "video" -> {
-                image_detail_thumb.visibility = View.GONE
+                layout_group_image_slider.visibility = View.GONE
                 video_detail_thumb.visibility = View.VISIBLE
                 setMedia(contentData)
             }
@@ -168,13 +178,9 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
 
     private fun setMedia(detailResponse: DetailResponse) {
         if (!detailResponse.media.isNullOrEmpty()) {
-            detailResponse.media[0].url.let {
-                if (detailResponse.media[0].type.equals("image", true)) {
-                    OAppMultimediaUtil.setImage(it, null, image_detail_thumb)
-                } else {
-                    //TODO Handle video content
-                }
-            }
+            imagePagerAdapter = DetailPostedImageAdapter(supportFragmentManager, detailResponse.media)
+            view_pager_posted_images.adapter = imagePagerAdapter
+            pager_image_indicator.setupWithViewPager(view_pager_posted_images)
         }
     }
 
