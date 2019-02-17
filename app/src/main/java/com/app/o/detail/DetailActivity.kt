@@ -204,8 +204,7 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
 
     private fun setMediaVideo(detailResponse: DetailResponse) {
         if (!detailResponse.media.isNullOrEmpty()) {
-//            val uriPath = detailResponse.media[0].url
-            val uriPath = "https://www.demonuts.com/Demonuts/smallvideo.mp4"
+            val uriPath = detailResponse.media[0].url
             val uri = Uri.parse(uriPath)
             video_detail_thumb.setVideoURI(uri)
         }
