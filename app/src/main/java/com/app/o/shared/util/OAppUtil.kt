@@ -28,6 +28,8 @@ class OAppUtil {
         const val ON_ENABLE_GPS_SETTING = 99
         const val REQUEST_CODE_FOR_LOCATION = 1
 
+        const val MAX_IMAGES_SELECTION_COUNT = 3
+
         private const val SECOND_MILLIS = 1000
         private const val MINUTE_MILLIS = 60 * SECOND_MILLIS
         private const val HOUR_MILLIS = 60 * MINUTE_MILLIS

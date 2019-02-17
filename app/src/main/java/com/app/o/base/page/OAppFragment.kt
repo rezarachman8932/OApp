@@ -26,6 +26,11 @@ abstract class OAppFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     protected lateinit var mCompositeDisposable: CompositeDisposable
     private lateinit var mAlert: AlertDialog
 
+    companion object {
+        const val INDEX_IMAGE = 0
+        const val INDEX_VIDEO = 1
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -108,7 +113,7 @@ abstract class OAppFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     }
 
     protected fun openMedia() {
-        Pix.start(this, PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS)
+        Pix.start(this, PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS, OAppUtil.MAX_IMAGES_SELECTION_COUNT)
     }
 
     @NonNull
@@ -117,10 +122,10 @@ abstract class OAppFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     }
 
     @NonNull
-    protected fun prepareFilePart(bitmap: Bitmap?, filePath: String?): MultipartBody.Part {
+    protected fun prepareFileImagePart(bitmap: Bitmap?, index: Int, filePath: String?): MultipartBody.Part {
         val file = OAppMultimediaUtil.createFileFromPath(bitmap, filePath)
         val requestFile = RequestBody.create(MediaType.parse("image/*"), file)
-        return MultipartBody.Part.createFormData("media[0]", file.name, requestFile)
+        return MultipartBody.Part.createFormData("media[" + index.toString() + "]", file.name, requestFile)
     }
 
     protected fun validateInput(scrollView: ScrollView, titleProduct: String, description: String, note: String): Boolean {

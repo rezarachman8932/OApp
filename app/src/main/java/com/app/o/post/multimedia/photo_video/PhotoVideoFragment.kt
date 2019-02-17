@@ -14,18 +14,19 @@ import com.app.o.R
 import com.app.o.api.post.CreatedPostResponse
 import com.app.o.base.page.OAppFragment
 import com.app.o.base.service.OAppViewService
+import com.app.o.post.adapter.SelectedImageAdapter
 import com.app.o.shared.util.OAppMultimediaUtil
 import com.app.o.shared.util.OAppUtil
 import kotlinx.android.synthetic.main.fragment_photo_video.*
-import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> {
 
     private var index: Int? = -1
-    private var bitmap: Bitmap? = null
-    private var imagePath: String? = null
     private var isSubmittingItem: Boolean = false
+
+    private var uriValues: ArrayList<String> = arrayListOf()
+    private var uriBitmapList: ArrayList<Bitmap> = arrayListOf()
 
     private lateinit var imagePreview: ImageView
     private lateinit var backgroundImageLayout: RelativeLayout
@@ -35,11 +36,10 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
     private lateinit var inputNote: EditText
 
     private lateinit var presenter: PhotoVideoPresenter
+    private lateinit var selectedImageAdapter: SelectedImageAdapter
 
     companion object {
         private const val indexPage = "index"
-        private const val INDEX_IMAGE = 0
-        private const val INDEX_VIDEO = 1
 
         fun newInstance(index: Int): PhotoVideoFragment {
             val args = Bundle()
@@ -67,7 +67,12 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
         inputNote = view.findViewById(R.id.input_note) as EditText
 
         backgroundImageLayout = view.findViewById(R.id.view_layout_multimedia) as RelativeLayout
-        backgroundImageLayout.setOnClickListener { openMedia() }
+        backgroundImageLayout.setOnClickListener {
+            //TODO Check whether if video or image
+            if (uriValues.isNullOrEmpty()) {
+                openMedia()
+            }
+        }
 
         buttonPost = view.findViewById(R.id.button_post) as Button
         buttonPost.setOnClickListener { uploadData() }
@@ -107,9 +112,16 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
     override fun onSuccessGetImage(values: ArrayList<String>) {
         super.onSuccessGetImage(values)
 
-        imagePath = values[0]
-        bitmap = BitmapFactory.decodeFile(imagePath)
-        imagePreview.setImageBitmap(bitmap)
+        imagePreview.visibility = View.GONE
+
+        //TODO Check whether if video or image
+        uriValues = values
+        uriValues.forEach {
+            uriBitmapList.add(BitmapFactory.decodeFile(it))
+        }
+
+        selectedImageAdapter = SelectedImageAdapter(fragmentManager!!, uriValues)
+        view_pager_selected_images.adapter = selectedImageAdapter
     }
 
     private fun getRequestType(type: Int): RequestBody? {
@@ -134,10 +146,8 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
             val requestLatitude = createPartFromString(OAppUtil.getLatitude()!!)
             val requestType = getRequestType(index!!)
 
-            val body: MultipartBody.Part
-
-            if (bitmap != null && !imagePath.isNullOrEmpty()) {
-                body = prepareFilePart(bitmap, imagePath)
+            for (i in 0..uriValues.size) {
+                val body = prepareFileImagePart(uriBitmapList[i], i, uriValues[i])
                 presenter.files.add(body)
             }
 
