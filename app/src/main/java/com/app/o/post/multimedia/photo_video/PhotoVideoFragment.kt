@@ -14,9 +14,11 @@ import com.app.o.R
 import com.app.o.api.post.CreatedPostResponse
 import com.app.o.base.page.OAppFragment
 import com.app.o.base.service.OAppViewService
+import com.app.o.shared.util.OAppMultimediaUtil
 import com.app.o.shared.util.OAppUtil
 import kotlinx.android.synthetic.main.fragment_photo_video.*
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> {
 
@@ -36,6 +38,8 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
 
     companion object {
         private const val indexPage = "index"
+        private const val INDEX_IMAGE = 0
+        private const val INDEX_VIDEO = 1
 
         fun newInstance(index: Int): PhotoVideoFragment {
             val args = Bundle()
@@ -69,8 +73,8 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
         buttonPost.setOnClickListener { uploadData() }
 
         when (index) {
-            0 -> imagePreview.setBackgroundResource(R.drawable.bg_default_post_image)
-            1 -> imagePreview.setBackgroundResource(R.drawable.bg_default_post_video)
+            INDEX_IMAGE -> imagePreview.setBackgroundResource(R.drawable.bg_default_post_image)
+            INDEX_VIDEO -> imagePreview.setBackgroundResource(R.drawable.bg_default_post_video)
         }
 
         return view
@@ -108,6 +112,15 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
         imagePreview.setImageBitmap(bitmap)
     }
 
+    private fun getRequestType(type: Int): RequestBody? {
+        when(type) {
+            INDEX_IMAGE -> return createPartFromString(OAppMultimediaUtil.TYPE_IMAGE)
+            INDEX_VIDEO -> return createPartFromString(OAppMultimediaUtil.TYPE_VIDEO)
+        }
+
+        return null
+    }
+
     private fun uploadData() {
         val titleProduct = inputTitle.text.toString()
         val description = inputDescription.text.toString()
@@ -119,7 +132,7 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
             val requestNote = createPartFromString(note)
             val requestLongitude = createPartFromString(OAppUtil.getLongitude()!!)
             val requestLatitude = createPartFromString(OAppUtil.getLatitude()!!)
-            val requestType = createPartFromString("image")
+            val requestType = getRequestType(index!!)
 
             val body: MultipartBody.Part
 
@@ -129,7 +142,7 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
             }
 
             if (!isSubmittingItem) {
-                presenter.createPost(requestTitle, requestDescription, requestType, requestLatitude, requestLongitude, requestNote)
+                presenter.createPost(requestTitle, requestDescription, requestType!!, requestLatitude, requestLongitude, requestNote)
             }
         }
     }

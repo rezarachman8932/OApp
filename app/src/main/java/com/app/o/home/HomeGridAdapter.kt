@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.app.o.R
 import com.app.o.api.home.HomePostItem
+import com.app.o.shared.util.OAppMultimediaUtil
 import com.app.o.shared.util.OAppUtil
 import com.squareup.picasso.Picasso
 import kotlinx.android.extensions.LayoutContainer
@@ -16,12 +17,6 @@ class HomeGridAdapter : RecyclerView.Adapter<HomeGridAdapter.ViewHolder>() {
 
     private lateinit var dataItems: List<HomePostItem>
     private lateinit var listener: (HomePostItem) -> Unit
-
-    companion object {
-        const val TYPE_IMAGE = "image"
-        const val TYPE_TEXT = "text"
-        const val TYPE_VIDEO = "video"
-    }
 
     fun setData(data: List<HomePostItem>) {
         dataItems = data
@@ -67,9 +62,9 @@ class HomeGridAdapter : RecyclerView.Adapter<HomeGridAdapter.ViewHolder>() {
             }
 
             when {
-                item.type == TYPE_IMAGE -> item_icon_type_post.setImageResource(R.drawable.ic_type_bag)
-                item.type == TYPE_TEXT -> item_icon_type_post.setImageResource(R.drawable.ic_vector_speaker)
-                item.type == TYPE_VIDEO -> item_icon_type_post.setImageResource(R.drawable.ic_type_audio)
+                item.type == OAppMultimediaUtil.TYPE_IMAGE -> item_icon_type_post.setImageResource(R.drawable.ic_type_bag)
+                item.type == OAppMultimediaUtil.TYPE_TEXT -> item_icon_type_post.setImageResource(R.drawable.ic_vector_speaker)
+                item.type == OAppMultimediaUtil.TYPE_VIDEO -> item_icon_type_post.setImageResource(R.drawable.ic_type_audio)
             }
 
             item_text_post_title.text = item.title

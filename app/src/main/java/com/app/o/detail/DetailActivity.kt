@@ -1,11 +1,13 @@
 package com.app.o.detail
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.MediaController
 import com.app.o.R
 import com.app.o.api.detail.DetailResponse
 import com.app.o.api.detail.DetailResponseZip
@@ -30,6 +32,7 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
     private lateinit var postId: String
     private lateinit var contentData: DetailResponse
     private lateinit var imagePagerAdapter: DetailPostedImageAdapter
+    private lateinit var mediaController: MediaController
     private var isLoaded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +54,7 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if (isLoaded) {
+            //TODO Check whether logged in user or not
             if (contentData.type == "image") {
                 menuInflater.inflate(R.menu.detail_menu, menu)
             }
@@ -106,6 +110,20 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
         list_comment.layoutManager = LinearLayoutManager(this)
         list_comment.addItemDecoration(RecyclerViewDecorator(this))
 
+        mediaController = MediaController(this)
+        mediaController.setAnchorView(video_detail_thumb)
+
+        image_video_play.setOnClickListener {
+            if (!video_detail_thumb.isPlaying) {
+                image_video_play.visibility = View.GONE
+
+                video_detail_thumb.visibility = View.VISIBLE
+                video_detail_thumb.setMediaController(mediaController)
+                video_detail_thumb.requestFocus()
+                video_detail_thumb.start()
+            }
+        }
+
         icon_detail_post_new_comment.setOnClickListener {
             contentData.let { response ->
                 val intent = Intent(this, NewCommentActivity::class.java)
@@ -124,20 +142,20 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
         val userProfile = data.userProfile
 
         when {
-            contentData.type == "text" -> {
+            contentData.type == OAppMultimediaUtil.TYPE_TEXT -> {
                 layout_view_multimedia_content.visibility = View.GONE
             }
 
-            contentData.type == "image" -> {
+            contentData.type == OAppMultimediaUtil.TYPE_VIDEO -> {
                 layout_group_image_slider.visibility = View.VISIBLE
-                video_detail_thumb.visibility = View.GONE
-                setMedia(contentData)
+                layout_group_video.visibility = View.GONE
+                setMediaImage(contentData)
             }
 
-            contentData.type == "video" -> {
+            contentData.type == OAppMultimediaUtil.TYPE_IMAGE -> {
                 layout_group_image_slider.visibility = View.GONE
-                video_detail_thumb.visibility = View.VISIBLE
-                setMedia(contentData)
+                layout_group_video.visibility = View.VISIBLE
+                setMediaVideo(contentData)
             }
         }
 
@@ -176,11 +194,20 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
         invalidateOptionsMenu()
     }
 
-    private fun setMedia(detailResponse: DetailResponse) {
+    private fun setMediaImage(detailResponse: DetailResponse) {
         if (!detailResponse.media.isNullOrEmpty()) {
             imagePagerAdapter = DetailPostedImageAdapter(supportFragmentManager, detailResponse.media)
             view_pager_posted_images.adapter = imagePagerAdapter
             pager_image_indicator.setupWithViewPager(view_pager_posted_images)
+        }
+    }
+
+    private fun setMediaVideo(detailResponse: DetailResponse) {
+        if (!detailResponse.media.isNullOrEmpty()) {
+//            val uriPath = detailResponse.media[0].url
+            val uriPath = "https://www.demonuts.com/Demonuts/smallvideo.mp4"
+            val uri = Uri.parse(uriPath)
+            video_detail_thumb.setVideoURI(uri)
         }
     }
 
