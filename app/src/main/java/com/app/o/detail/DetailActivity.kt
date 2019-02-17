@@ -146,13 +146,13 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
                 layout_view_multimedia_content.visibility = View.GONE
             }
 
-            contentData.type == OAppMultimediaUtil.TYPE_VIDEO -> {
+            contentData.type == OAppMultimediaUtil.TYPE_IMAGE -> {
                 layout_group_image_slider.visibility = View.VISIBLE
                 layout_group_video.visibility = View.GONE
                 setMediaImage(contentData)
             }
 
-            contentData.type == OAppMultimediaUtil.TYPE_IMAGE -> {
+            contentData.type == OAppMultimediaUtil.TYPE_VIDEO -> {
                 layout_group_image_slider.visibility = View.GONE
                 layout_group_video.visibility = View.VISIBLE
                 setMediaVideo(contentData)
