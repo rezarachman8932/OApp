@@ -146,7 +146,7 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
             val requestLatitude = createPartFromString(OAppUtil.getLatitude()!!)
             val requestType = getRequestType(index!!)
 
-            for (i in 0..uriValues.size) {
+            for (i in 0 until uriValues.size) {
                 val body = prepareFileImagePart(uriBitmapList[i], i, uriValues[i])
                 presenter.files.add(body)
             }
