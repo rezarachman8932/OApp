@@ -11,6 +11,7 @@ import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppSearchService
 import com.app.o.base.service.OAppViewService
 import com.app.o.shared.util.OAppUtil
+import com.app.o.user.logout.LogoutCallback
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -21,7 +22,31 @@ import io.reactivex.schedulers.Schedulers
 class HomePresenter(
         private val view: OAppViewService<HomeResponseZip>,
         private val viewSearchService: OAppSearchService,
+        private val logoutCallback: LogoutCallback,
         private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
+
+    fun logout() {
+        compositeDisposable.add(APIRepository.create().logout(getHeaderAuth())
+                .subscribeOn(Schedulers.io())
+                .compose {
+                    it.observeOn(AndroidSchedulers.mainThread())
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    logoutCallback.onLogoutProceed()
+                }
+                .onErrorResumeNext {
+                    logoutCallback.onLogoutFailed()
+                    Single.error(it)
+                }
+                .doOnError{
+                    logoutCallback.onLogoutFailed()
+                    it.printStackTrace()
+                }
+                .subscribe(Consumer {
+                    logoutCallback.onLogoutSucceed()
+                }))
+    }
 
     fun getPostedTimeline(spec: LocationSpec) {
         compositeDisposable.add(getHomeContent(spec, getHeaderAuth())
@@ -32,6 +57,10 @@ class HomePresenter(
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {
                     view.showLoading()
+                }
+                .onErrorResumeNext {
+                    view.hideLoading(OAppUtil.ON_FINISH_FAILED)
+                    Single.error(it)
                 }
                 .doOnError{
                     view.hideLoading(OAppUtil.ON_FINISH_FAILED)
@@ -52,6 +81,10 @@ class HomePresenter(
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {
                     viewSearchService.onQueryProcessed()
+                }
+                .onErrorResumeNext {
+                    viewSearchService.onQueryFailed()
+                    Single.error(it)
                 }
                 .doOnError{
                     viewSearchService.onQueryFailed()

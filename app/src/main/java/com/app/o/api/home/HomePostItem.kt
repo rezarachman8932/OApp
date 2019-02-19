@@ -10,5 +10,7 @@ data class HomePostItem (
         val like_count: Int,
         val comment_count: Int,
         val created_at: String,
+        val user_id: Int,
+        val username: String,
         val media_url: String
 )

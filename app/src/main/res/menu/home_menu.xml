@@ -22,6 +22,8 @@
                 android:title="@string/text_sub_menu_update_profile" />
             <item android:id="@+id/action_sub_menu_setting"
                 android:title="@string/text_sub_menu_setting" />
+            <item android:id="@+id/action_sub_menu_logout"
+                android:title="@string/text_logout" />
         </menu>
     </item>
 </menu>

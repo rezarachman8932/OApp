@@ -9,6 +9,7 @@
     <string name="text_sign_up">Sign Up</string>
     <string name="text_update">Update</string>
     <string name="text_login">Login</string>
+    <string name="text_logout">Logout</string>
     <string name="text_login_here">Login here</string>
     <string name="text_hint_username">Username</string>
     <string name="text_hint_password">Password</string>
@@ -86,6 +87,7 @@
     <string name="text_label_empty_state_title">Great!</string>
     <string name="text_label_empty_state_description">You do not have blocked users</string>
     <string name="text_error_fail_to_unblock_user">Failed unblocking your friend. Try again!</string>
+    <string name="text_error_fail_to_logout">Logout failed!</string>
 
     <plurals name="numberOfReplies">
         <item quantity="one">%d reply</item>

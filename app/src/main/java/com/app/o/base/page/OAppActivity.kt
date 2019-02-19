@@ -37,6 +37,16 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     companion object {
         private const val MIN_REFRESH_LOCATION: Long = 30000
         private const val MIN_DISTANCE:Float = 10f
+
+        const val POST_ID = "postId"
+        const val USER_ID = "userId"
+
+        const val POSTED_ID = "posted_id"
+        const val POSTED_TITLE = "posted_title"
+        const val POSTED_SUBTITLE = "posted_subtitle"
+
+        const val SELECTED_COMMENT = "selectedComment"
+        const val BUNDLE = "bundle"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -179,6 +189,10 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         OAppUserUtil.setEmail(data.email)
         OAppUserUtil.setPhoneNumber(data.phonenumber)
         OAppUserUtil.setLoggedIn(true)
+    }
+
+    protected fun removeUserState() {
+        OAppUserUtil.setLoggedIn(false)
     }
 
     open fun onLocationUpdated(location: Location) {}

@@ -92,8 +92,8 @@ class MessageActivity : OAppActivity(), OAppSubmitMessageService {
     }
 
     private fun getParam() {
-        val bundle = intent.getBundleExtra("bundle")
-        parentComment = bundle.getParcelable("selectedComment") as Comment
+        val bundle = intent.getBundleExtra(BUNDLE)
+        parentComment = bundle.getParcelable(SELECTED_COMMENT) as Comment
     }
 
     private fun invalidateData() {

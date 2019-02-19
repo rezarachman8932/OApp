@@ -10,6 +10,7 @@ import com.app.o.api.location.LocationSpec
 import com.app.o.api.location.LocationWithQuerySpec
 import com.app.o.api.login.LoginResponse
 import com.app.o.api.login.LoginSpec
+import com.app.o.api.logout.LogoutResponse
 import com.app.o.api.post.CreatedPostResponse
 import com.app.o.api.register.RegisterResponse
 import com.app.o.api.register.RegisterSpec
@@ -31,6 +32,9 @@ interface APIService {
 
     @POST("login")
     fun login(@Body spec: LoginSpec, @Header("Authorization") tokenAuth: String?): Single<LoginResponse>
+
+    @POST("logout")
+    fun logout(@Header("Authorization") tokenAuth: String?): Single<LogoutResponse>
 
     @POST("register")
     fun register(@Body spec: RegisterSpec): Single<RegisterResponse>

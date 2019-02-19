@@ -51,9 +51,9 @@ class NewCommentActivity : OAppActivity(), OAppViewService<SubmitCommentResponse
     }
 
     private fun getParam() {
-        postId = intent.getIntExtra("posted_id", 0)
-        postTitle = intent.getStringExtra("posted_title")
-        postSubtitle = intent.getStringExtra("posted_subtitle")
+        postId = intent.getIntExtra(POSTED_ID, 0)
+        postTitle = intent.getStringExtra(POSTED_TITLE)
+        postSubtitle = intent.getStringExtra(POSTED_SUBTITLE)
     }
 
     private fun initView() {

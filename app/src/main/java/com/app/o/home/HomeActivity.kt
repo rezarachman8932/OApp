@@ -28,10 +28,12 @@ import com.app.o.setting.SettingActivity
 import com.app.o.shared.util.OAppUtil
 import com.app.o.user.connected.ConnectedUsersActivity
 import com.app.o.user.detail.UserProfileActivity
+import com.app.o.user.login.LoginActivity
+import com.app.o.user.logout.LogoutCallback
 import com.app.o.user.update_profile.UpdateProfileActivity
 import kotlinx.android.synthetic.main.activity_home.*
 
-class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearchService {
+class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearchService, LogoutCallback {
 
     private var connectedCount = 0
     private var shouldLoadDefaultData: Boolean = false
@@ -48,7 +50,7 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
         initGrid()
         initBottomView()
 
-        presenter = HomePresenter(this, this, mCompositeDisposable)
+        presenter = HomePresenter(this, this, this, mCompositeDisposable)
     }
 
     override fun onResume() {
@@ -102,6 +104,23 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
         updateData(response.data)
     }
 
+    override fun onLogoutSucceed() {
+        shouldShowProgress(false)
+        removeUserState()
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    override fun onLogoutFailed() {
+        shouldShowProgress(false)
+        showSnackBar(layout_root_home, getString(R.string.text_error_fail_to_logout))
+    }
+
+    override fun onLogoutProceed() {
+        shouldShowProgress(true)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.home_menu, menu)
         setSearchView(menu)
@@ -124,6 +143,11 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
         R.id.action_sub_menu_update_profile -> {
             val intent = Intent(this, UpdateProfileActivity::class.java)
             startActivity(intent)
+            true
+        }
+
+        R.id.action_sub_menu_logout -> {
+            presenter.logout()
             true
         }
 
@@ -218,7 +242,8 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
                     adapter.setData(data)
                     adapter.setListener {
                         val intent = Intent(this, DetailActivity::class.java)
-                        intent.putExtra("postId", it.post_id.toString())
+                        intent.putExtra(POST_ID, it.post_id.toString())
+                        intent.putExtra(USER_ID, it.user_id)
                         startActivity(intent)
                     }
 

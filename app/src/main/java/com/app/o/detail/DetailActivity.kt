@@ -21,6 +21,7 @@ import com.app.o.detail.pager.DetailPostedImageAdapter
 import com.app.o.message.room.MessageActivity
 import com.app.o.message.submit.NewCommentActivity
 import com.app.o.shared.util.OAppMultimediaUtil
+import com.app.o.shared.util.OAppUserUtil
 import com.app.o.shared.util.OAppUtil
 import com.app.o.user.blocked.UnblockedAccountCallback
 import kotlinx.android.synthetic.main.activity_detail.*
@@ -33,7 +34,9 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
     private lateinit var contentData: DetailResponse
     private lateinit var imagePagerAdapter: DetailPostedImageAdapter
     private lateinit var mediaController: MediaController
+
     private var isLoaded = false
+    private var userId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,8 +57,7 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if (isLoaded) {
-            //TODO Check whether logged in user or not
-            if (contentData.type == "image") {
+            if (userId != OAppUserUtil.getUserId()) {
                 menuInflater.inflate(R.menu.detail_menu, menu)
             }
         }
@@ -65,7 +67,7 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.action_block_account -> {
-            presenter.blockUser(UserBlockingSpec(16))
+            presenter.blockUser(UserBlockingSpec(userId))
             true
         } else -> {
             super.onOptionsItemSelected(item)
@@ -100,8 +102,8 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
     }
 
     private fun getParam() {
-        postId = intent.getStringExtra("postId")
-        //TODO Get user_id to block function
+        postId = intent.getStringExtra(POST_ID)
+        userId = intent.getIntExtra(USER_ID, -1)
     }
 
     private fun initViewContent() {
@@ -127,9 +129,9 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
         icon_detail_post_new_comment.setOnClickListener {
             contentData.let { response ->
                 val intent = Intent(this, NewCommentActivity::class.java)
-                intent.putExtra("posted_id", response.post_id)
-                intent.putExtra("posted_title", response.title)
-                intent.putExtra("posted_subtitle", response.content)
+                intent.putExtra(POSTED_ID, response.post_id)
+                intent.putExtra(POSTED_TITLE, response.title)
+                intent.putExtra(POSTED_SUBTITLE, response.content)
                 startActivity(intent)
             }
         }
@@ -177,8 +179,8 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
             adapter.setListener {
                 val bundle = Bundle()
                 val intent = Intent(this, MessageActivity::class.java)
-                bundle.putParcelable("selectedComment", it)
-                intent.putExtra("bundle", bundle)
+                bundle.putParcelable(SELECTED_COMMENT, it)
+                intent.putExtra(BUNDLE, bundle)
                 startActivity(intent)
             }
 
