@@ -89,7 +89,8 @@
     <string name="text_error_fail_to_unblock_user">Failed unblocking your friend. Try again!</string>
     <string name="text_error_fail_to_logout">Logout failed!</string>
     <string name="text_label_home_empty_state_title">It was quite!</string>
-    <string name="text_label_home_empty_state_subtitle">Please move or refresh your feed</string>
+    <string name="text_label_home_empty_state_subtitle">Please move or refresh your feed.</string>
+    <string name="text_error_get_posted_list">Fail getting posted list!</string>
 
     <plurals name="numberOfReplies">
         <item quantity="one">%d reply</item>

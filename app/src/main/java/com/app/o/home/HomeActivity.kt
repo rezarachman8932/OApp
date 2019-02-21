@@ -47,6 +47,7 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
+        initSwipeRefresh()
         initGrid()
         initBottomView()
 
@@ -81,6 +82,11 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
 
     override fun hideLoading(statusCode: Int) {
         setDataListVisibility(true)
+        layout_root_home.isRefreshing = false
+
+        if (statusCode == OAppUtil.ON_FINISH_FAILED) {
+            showSnackBar(layout_root_home, getString(R.string.text_error_get_posted_list))
+        }
     }
 
     override fun onDataResponse(data: HomeResponseZip) {
@@ -163,6 +169,13 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
         OAppUtil.setIconCount(this, connectedCount.toString(), icon, R.id.ic_group_count)
 
         return true
+    }
+
+    private fun initSwipeRefresh() {
+        layout_root_home.setColorSchemeResources(R.color.colorGreen)
+        layout_root_home.setOnRefreshListener {
+            requestCurrentLocation()
+        }
     }
 
     private fun initGrid() {
