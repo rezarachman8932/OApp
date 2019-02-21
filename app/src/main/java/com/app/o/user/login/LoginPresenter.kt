@@ -6,6 +6,7 @@ import com.app.o.api.login.LoginSpec
 import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppViewService
 import com.app.o.shared.util.OAppUtil
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
@@ -24,6 +25,10 @@ class LoginPresenter(private val view: OAppViewService<LoginResponse>,
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {
                     view.showLoading()
+                }
+                .onErrorResumeNext {
+                    view.hideLoading(OAppUtil.ON_FINISH_FAILED)
+                    Single.error(it)
                 }
                 .doOnError{
                     view.hideLoading(OAppUtil.ON_FINISH_FAILED)
