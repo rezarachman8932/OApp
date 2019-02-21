@@ -254,8 +254,10 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
                 } else {
                     updateData(data)
                 }
+
+                layout_group_home_empty_state.visibility = View.GONE
             } else {
-                //TODO Show empty state
+                layout_group_home_empty_state.visibility = View.VISIBLE
             }
         }
     }
