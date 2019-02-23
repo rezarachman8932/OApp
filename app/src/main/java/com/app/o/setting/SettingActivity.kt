@@ -7,6 +7,7 @@ import android.widget.SeekBar
 import com.app.o.R
 import com.app.o.shared.util.OAppUtil
 import com.app.o.user.blocked.BlockedAccountActivity
+import com.app.o.user.update_password.UpdatePasswordActivity
 import kotlinx.android.synthetic.main.activity_setting.*
 
 class SettingActivity : AppCompatActivity() {
@@ -50,7 +51,8 @@ class SettingActivity : AppCompatActivity() {
         }
 
         layout_group_change_password.setOnClickListener {
-
+            val intent = Intent(this, UpdatePasswordActivity::class.java)
+            startActivity(intent)
         }
 
         layout_group_about.setOnClickListener {

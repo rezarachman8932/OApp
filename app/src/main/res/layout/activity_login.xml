@@ -39,7 +39,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/dip_8"
                 android:layout_marginStart="@dimen/dip_8"
-                android:textSize="12sp"
+                android:textSize="@dimen/sp_12"
                 android:hint="@string/text_hint_username"
                 android:background="@android:color/transparent"/>
         </LinearLayout>
@@ -67,7 +67,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/dip_8"
                 android:layout_marginStart="@dimen/dip_8"
-                android:textSize="12sp"
+                android:textSize="@dimen/sp_12"
                 android:hint="@string/text_hint_password"
                 android:inputType="textPassword"
                 android:background="@android:color/transparent"/>

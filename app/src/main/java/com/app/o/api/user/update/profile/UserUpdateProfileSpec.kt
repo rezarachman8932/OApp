@@ -1,4 +1,4 @@
-package com.app.o.api.user.update
+package com.app.o.api.user.update.profile
 
 data class UserUpdateProfileSpec(
         val phone_number: String?,

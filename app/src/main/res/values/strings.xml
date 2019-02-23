@@ -20,6 +20,9 @@
     <string name="text_hint_location">Location</string>
     <string name="text_hint_facebook">Facebook</string>
     <string name="text_hint_twitter">Twitter</string>
+    <string name="text_hint_current_password">Current Password</string>
+    <string name="text_hint_new_password">New Password</string>
+    <string name="text_hint_re_type_new_password">Re-type New Password</string>
     <string name="text_hint_instagram">Instagram</string>
     <string name="text_already_have_account">Already have account?</string>
     <string name="text_error_submit_login">Please check your username and password correctly</string>
@@ -91,6 +94,11 @@
     <string name="text_label_home_empty_state_title">It was quite!</string>
     <string name="text_label_home_empty_state_subtitle">Please move or refresh your feed.</string>
     <string name="text_error_get_posted_list">Fail getting posted list!</string>
+    <string name="text_header_update_password">Update Password</string>
+    <string name="text_error_all_fields_required">Oops! All fields are required.</string>
+    <string name="text_error_current_password_invalid">Your current password is invalid.</string>
+    <string name="text_error_new_password_same_with_existing">Your new password must be different with existing password.</string>
+    <string name="text_error_retype_new_password">Please re-type your new password correctly.</string>
 
     <plurals name="numberOfReplies">
         <item quantity="one">%d reply</item>

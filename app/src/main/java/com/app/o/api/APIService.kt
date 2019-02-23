@@ -21,8 +21,10 @@ import com.app.o.api.user.blocked.UserBlockingResponse
 import com.app.o.api.user.blocked.UserBlockingSpec
 import com.app.o.api.user.profile.UserProfileResponse
 import com.app.o.api.user.profile.UserProfileSpec
-import com.app.o.api.user.update.UserUpdateProfileResponse
-import com.app.o.api.user.update.UserUpdateProfileSpec
+import com.app.o.api.user.update.password.UpdatePasswordResponse
+import com.app.o.api.user.update.password.UpdatePasswordSpec
+import com.app.o.api.user.update.profile.UserUpdateProfileResponse
+import com.app.o.api.user.update.profile.UserUpdateProfileSpec
 import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -98,5 +100,8 @@ interface APIService {
 
     @POST("block_user")
     fun blockedUser(@Body spec: UserBlockingSpec, @Header("Authorization") tokenAuth: String?): Single<UserBlockingResponse>
+
+    @POST("update_password")
+    fun updatePassword(@Body spec: UpdatePasswordSpec, @Header("Authorization") tokenAuth: String?): Single<UpdatePasswordResponse>
 
 }

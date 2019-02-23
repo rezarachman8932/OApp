@@ -61,6 +61,10 @@
         <activity
             android:name=".user.blocked.BlockedAccountActivity"
             android:parentActivityName=".setting.SettingActivity"/>
+        <activity
+            android:name=".user.update_password.UpdatePasswordActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:parentActivityName=".setting.SettingActivity"/>
 
         <service
             android:name=".notification.OAppMessagingService">

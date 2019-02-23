@@ -2,8 +2,8 @@ package com.app.o.user.update_profile
 
 import com.app.o.api.APIRepository
 import com.app.o.api.user.profile.UserProfileSpec
-import com.app.o.api.user.update.UserUpdateProfileResponse
-import com.app.o.api.user.update.UserUpdateProfileSpec
+import com.app.o.api.user.update.profile.UserUpdateProfileResponse
+import com.app.o.api.user.update.profile.UserUpdateProfileSpec
 import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppViewService
 import com.app.o.shared.util.OAppUserUtil

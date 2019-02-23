@@ -1,4 +1,4 @@
-package com.app.o.api.user.update
+package com.app.o.api.user.update.profile
 
 import com.app.o.base.data.OAppResponse
 
