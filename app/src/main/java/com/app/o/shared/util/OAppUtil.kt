@@ -96,11 +96,11 @@ class OAppUtil {
             return when {
                 diff < MINUTE_MILLIS -> OApplication.applicationContext().getString(R.string.text_label_recently)
                 diff < 2 * MINUTE_MILLIS -> OApplication.applicationContext().getString(R.string.text_label_one_minute_ago)
-                diff < 50 * MINUTE_MILLIS -> (diff / MINUTE_MILLIS).toString() + OApplication.applicationContext().getString(R.string.text_label_minutes_ago)
+                diff < 50 * MINUTE_MILLIS -> (diff / MINUTE_MILLIS).toString() + " " + OApplication.applicationContext().getString(R.string.text_label_minutes_ago)
                 diff < 90 * MINUTE_MILLIS -> OApplication.applicationContext().getString(R.string.text_label_one_hour_ago)
-                diff < 24 * HOUR_MILLIS -> (diff / HOUR_MILLIS).toString() + OApplication.applicationContext().getString(R.string.text_label_hours_ago)
+                diff < 24 * HOUR_MILLIS -> (diff / HOUR_MILLIS).toString() + " " + OApplication.applicationContext().getString(R.string.text_label_hours_ago)
                 diff < 48 * HOUR_MILLIS -> OApplication.applicationContext().getString(R.string.text_label_yesterday)
-                else -> (diff / DAY_MILLIS).toString() + OApplication.applicationContext().getString(R.string.text_label_days_ago)
+                else -> (diff / DAY_MILLIS).toString() + " " + OApplication.applicationContext().getString(R.string.text_label_days_ago)
             }
         }
 

@@ -141,7 +141,6 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
         contentData = data.detailContent
 
         val comments = data.commentListOptional.data
-        val userProfile = data.userProfile
 
         when {
             contentData.type == OAppMultimediaUtil.TYPE_TEXT -> {
@@ -161,10 +160,10 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
             }
         }
 
-        OAppMultimediaUtil.setImage(null, R.drawable.ic_logo, image_detail_photo)
+        OAppMultimediaUtil.setImage(contentData.avatar, R.drawable.ic_logo, image_detail_photo)
 
-        text_detail_name.text = userProfile.name
-        text_detail_location_name.text = userProfile.location
+        text_detail_name.text = contentData.username
+        text_detail_location_name.text = contentData.location.name
         text_detail_notes_tag.text = contentData.subtitle
         text_detail_love_count.text = contentData.like_count.toString()
         text_detail_title.text = contentData.title

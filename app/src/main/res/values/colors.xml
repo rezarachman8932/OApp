@@ -12,6 +12,7 @@
     <color name="colorGrey">#B1BCBE</color>
     <color name="colorWhiteSmoke">#F5F5F5</color>
     <color name="colorRed">#f20000</color>
+    <color name="colorTransparent">#1A000000</color>
 
     <!-- Pix Color -->
     <color name="colorPrimaryPix">#075e54</color>

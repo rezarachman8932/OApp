@@ -8,14 +8,14 @@ import com.app.o.R
 import com.app.o.api.user.profile.UserProfileResponseZip
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
-import com.app.o.home.HomeGridAdapter
+import com.app.o.home.HomeAdapter
 import com.app.o.shared.util.OAppMultimediaUtil
 import kotlinx.android.synthetic.main.activity_user_detail.*
 
 class UserProfileActivity : OAppActivity(), OAppViewService<UserProfileResponseZip> {
 
     private lateinit var presenter: UserProfilePresenter
-    private lateinit var adapter: HomeGridAdapter
+    private lateinit var adapter: HomeAdapter
     private var userId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +55,7 @@ class UserProfileActivity : OAppActivity(), OAppViewService<UserProfileResponseZ
         text_user_detail_additional_info.text = data.userProfileResponse.website
 
         if (data.homeResponse.data.isNotEmpty()) {
-            adapter = HomeGridAdapter()
+            adapter = HomeAdapter(this)
             adapter.setData(data.homeResponse.data)
             adapter.setListener {}
 

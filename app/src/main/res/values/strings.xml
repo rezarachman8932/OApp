@@ -47,12 +47,12 @@
     <string name="text_sub_menu_update_profile">Update Profile</string>
     <string name="text_label_comment">Comment</string>
     <string name="text_label_recently">recently</string>
-    <string name="text_label_one_minute_ago">1minute</string>
-    <string name="text_label_minutes_ago">minutes</string>
-    <string name="text_label_one_hour_ago">1hour</string>
-    <string name="text_label_hours_ago">hours</string>
+    <string name="text_label_one_minute_ago">1 minute ago</string>
+    <string name="text_label_minutes_ago">minutes ago</string>
+    <string name="text_label_one_hour_ago">1 hour ago</string>
+    <string name="text_label_hours_ago">hours ago</string>
     <string name="text_label_yesterday">yesterday</string>
-    <string name="text_label_days_ago">days</string>
+    <string name="text_label_days_ago">days ago</string>
     <string name="text_label_dialog_request_dialog_title">We need your permission for getting your current location. Shall we?</string>
     <string name="text_label_title">Title</string>
     <string name="text_label_description">Description</string>

@@ -6,16 +6,19 @@ import com.app.o.api.home.HomeResponseZip
 import com.app.o.api.location.LocationSpec
 import com.app.o.api.location.LocationWithQuerySpec
 import com.app.o.api.relation.UserConnectedCountResponse
+import com.app.o.api.user.profile.UserProfileResponse
+import com.app.o.api.user.profile.UserProfileSpec
 import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppSearchService
 import com.app.o.base.service.OAppViewService
+import com.app.o.shared.util.OAppUserUtil
 import com.app.o.shared.util.OAppUtil
 import com.app.o.user.logout.LogoutCallback
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Consumer
+import io.reactivex.functions.Function3
 import io.reactivex.schedulers.Schedulers
 
 class HomePresenter(
@@ -98,14 +101,15 @@ class HomePresenter(
         return Single.zip(
                 APIRepository.create().post(locationSpec, token),
                 APIRepository.create().getPeopleConnectedCount(locationSpec, token),
-                BiFunction<HomeResponse, UserConnectedCountResponse, HomeResponseZip> {
-                    t1, t2 ->
-                    createDetailModel(t1, t2)
+                APIRepository.create().getUserProfile(UserProfileSpec(OAppUserUtil.getUserId()), token),
+                Function3<HomeResponse, UserConnectedCountResponse, UserProfileResponse, HomeResponseZip> {
+                    t1, t2, t3 ->
+                    createDetailModel(t1, t2, t3)
                 })
     }
 
-    private fun createDetailModel(homeResponse: HomeResponse, userConnectedCountResponse: UserConnectedCountResponse) : HomeResponseZip {
-        return HomeResponseZip(homeResponse, userConnectedCountResponse)
+    private fun createDetailModel(homeResponse: HomeResponse, userConnectedCountResponse: UserConnectedCountResponse, userProfileResponse: UserProfileResponse) : HomeResponseZip {
+        return HomeResponseZip(homeResponse, userConnectedCountResponse, userProfileResponse)
     }
 
 }

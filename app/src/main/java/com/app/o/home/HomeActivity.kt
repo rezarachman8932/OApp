@@ -8,8 +8,8 @@ import android.location.Location
 import android.os.Bundle
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
-import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -18,6 +18,7 @@ import com.app.o.api.home.HomePostItem
 import com.app.o.api.home.HomeResponse
 import com.app.o.api.home.HomeResponseZip
 import com.app.o.api.location.LocationWithQuerySpec
+import com.app.o.api.user.profile.UserProfileResponse
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppSearchService
 import com.app.o.base.service.OAppViewService
@@ -25,6 +26,7 @@ import com.app.o.custom.BottomMenuView
 import com.app.o.detail.DetailActivity
 import com.app.o.post.PostActivity
 import com.app.o.setting.SettingActivity
+import com.app.o.shared.util.OAppMultimediaUtil
 import com.app.o.shared.util.OAppUtil
 import com.app.o.user.connected.ConnectedUsersActivity
 import com.app.o.user.detail.UserProfileActivity
@@ -40,7 +42,7 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
     private var isFirstTimeLoad: Boolean = true
 
     private lateinit var presenter: HomePresenter
-    private lateinit var adapter: HomeGridAdapter
+    private lateinit var adapter: HomeAdapter
     private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,6 +94,7 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
     override fun onDataResponse(data: HomeResponseZip) {
         connectedCount = data.userConnectedCount.amount
         invalidateOptionsMenu()
+        updateBottomView(data.userProfileResponse)
         setData(data.homeResponse.data, data.homeResponse.status)
     }
 
@@ -179,15 +182,13 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
     }
 
     private fun initGrid() {
-        val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        val layoutManager = LinearLayoutManager(this)
         recycler_view.layoutManager = layoutManager
         recycler_view.setHasFixedSize(true)
         recycler_view.itemAnimator = DefaultItemAnimator()
     }
 
     private fun initBottomView() {
-        bottom_menu.isShowBadge = true
-        bottom_menu.imageURL = "http://api.ademuhammad.or.id/uploads/post/sunday-sale201812220713180.JPG"
         bottom_menu.setMenuListener { _, type ->
             when (type) {
                 BottomMenuView.MESSAGE -> {}
@@ -251,7 +252,7 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
         if (isSuccess(status)) {
             if (data.isNotEmpty()) {
                 if (isFirstTimeLoad) {
-                    adapter = HomeGridAdapter()
+                    adapter = HomeAdapter(this)
                     adapter.setData(data)
                     adapter.setListener {
                         val intent = Intent(this, DetailActivity::class.java)
@@ -272,6 +273,15 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
             } else {
                 layout_group_home_empty_state.visibility = View.VISIBLE
             }
+        }
+    }
+
+    private fun updateBottomView(userProfileResponse: UserProfileResponse) {
+        //TODO  Check push notification
+        bottom_menu.isShowBadge = true
+
+        if (!userProfileResponse.avatar.isNullOrEmpty()) {
+            bottom_menu.imageURL = userProfileResponse.avatar
         }
     }
 

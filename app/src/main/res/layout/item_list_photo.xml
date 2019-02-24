@@ -24,16 +24,14 @@
                 <ImageView
                     android:id="@+id/item_image_thumbnail"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxHeight="@dimen/dip_180"
+                    android:layout_height="@dimen/dip_240"
                     android:scaleType="centerCrop"/>
                 <LinearLayout
                     android:id="@+id/item_layout_love"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dip_12"
-                    android:layout_marginRight="@dimen/dip_12"
-                    android:layout_marginEnd="@dimen/dip_12"
+                    android:background="@color/colorTransparent"
+                    android:padding="@dimen/dip_12"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
                     android:orientation="horizontal">
@@ -50,40 +48,44 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dip_4"
                         android:layout_marginStart="@dimen/dip_4"
-                        android:layout_gravity="center_vertical"
-                        app:srcCompat="@drawable/ic_vector_heart_inactive" />
+                        android:layout_gravity="center_vertical" />
                 </LinearLayout>
-                <ImageView
-                    android:id="@+id/item_icon_type_post"
+                <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dip_12"
-                    android:layout_marginLeft="@dimen/dip_12"
-                    android:layout_marginStart="@dimen/dip_12"
-                    app:srcCompat="@drawable/ic_vector_speaker" />
+                    android:padding="@dimen/dip_12"
+                    android:background="@color/colorTransparent">
+                    <ImageView
+                        android:id="@+id/item_icon_type_post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_vector_speaker" />
+                </FrameLayout>
             </RelativeLayout>
-            <View
-                android:id="@+id/item_separator_header"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="@dimen/dip_12"
-                android:visibility="visible"
-                android:background="@color/colorWhiteSmoke"/>
-            <TextView
-                android:id="@+id/item_text_post_title"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/dip_12"
-                android:maxLines="3"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:textSize="@dimen/sp_14" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginBottom="@dimen/dip_12"
-                android:visibility="visible"
-                android:background="@color/colorWhiteSmoke"/>
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/dip_12">
+                <TextView
+                    android:id="@+id/item_text_post_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="@dimen/sp_12" />
+                <TextView
+                    android:id="@+id/item_text_post_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dip_8"
+                    android:layout_marginStart="@dimen/dip_8"
+                    android:maxLines="2"
+                    android:gravity="center_vertical"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_14" />
+            </LinearLayout>
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -103,23 +105,23 @@
                     android:layout_toEndOf="@id/item_icon_clip"
                     android:layout_marginLeft="@dimen/dip_8"
                     android:layout_marginStart="@dimen/dip_8"
+                    android:layout_centerVertical="true"
                     android:textSize="@dimen/sp_14"
                     android:textColor="@color/colorGreen"
                     android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/item_text_post_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:textSize="@dimen/sp_12"/>
             </RelativeLayout>
-            <TextView
-                android:id="@+id/item_text_post_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dip_4"
-                android:layout_marginLeft="@dimen/dip_12"
-                android:layout_marginRight="@dimen/dip_12"
-                android:textSize="@dimen/sp_12"/>
             <View
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
+                android:layout_height="@dimen/dip_1"
                 android:layout_marginTop="@dimen/dip_12"
-                android:visibility="visible"
                 android:background="@color/colorWhiteSmoke"/>
             <LinearLayout
                 android:layout_width="wrap_content"

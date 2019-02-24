@@ -104,4 +104,13 @@ interface APIService {
     @POST("update_password")
     fun updatePassword(@Body spec: UpdatePasswordSpec, @Header("Authorization") tokenAuth: String?): Single<UpdatePasswordResponse>
 
+    @POST("post_like")
+    fun likeUserPost(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<CommentResponse>
+
+    @POST("post_unlike")
+    fun unLikeUserPost(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<CommentResponse>
+
+    @POST("post_list_like")
+    fun getLikeUserPostList(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<CommentResponse>
+
 }
