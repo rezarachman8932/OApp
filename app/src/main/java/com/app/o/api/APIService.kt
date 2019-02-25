@@ -12,6 +12,8 @@ import com.app.o.api.login.LoginResponse
 import com.app.o.api.login.LoginSpec
 import com.app.o.api.logout.LogoutResponse
 import com.app.o.api.post.CreatedPostResponse
+import com.app.o.api.post.LikedPostListResponse
+import com.app.o.api.post.LikedPostResponse
 import com.app.o.api.register.RegisterResponse
 import com.app.o.api.register.RegisterSpec
 import com.app.o.api.relation.UserConnectedCountResponse
@@ -105,12 +107,12 @@ interface APIService {
     fun updatePassword(@Body spec: UpdatePasswordSpec, @Header("Authorization") tokenAuth: String?): Single<UpdatePasswordResponse>
 
     @POST("post_like")
-    fun likeUserPost(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<CommentResponse>
+    fun likeUserPost(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<LikedPostResponse>
 
     @POST("post_unlike")
-    fun unLikeUserPost(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<CommentResponse>
+    fun unLikeUserPost(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<LikedPostResponse>
 
     @POST("post_list_like")
-    fun getLikeUserPostList(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<CommentResponse>
+    fun getLikeUserPostList(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<LikedPostListResponse>
 
 }

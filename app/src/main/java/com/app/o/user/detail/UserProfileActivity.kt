@@ -55,7 +55,7 @@ class UserProfileActivity : OAppActivity(), OAppViewService<UserProfileResponseZ
         text_user_detail_additional_info.text = data.userProfileResponse.website
 
         if (data.homeResponse.data.isNotEmpty()) {
-            adapter = HomeAdapter(this)
+            adapter = HomeAdapter()
             adapter.setData(data.homeResponse.data)
             adapter.setListener {}
 

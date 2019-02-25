@@ -26,7 +26,6 @@ import com.app.o.custom.BottomMenuView
 import com.app.o.detail.DetailActivity
 import com.app.o.post.PostActivity
 import com.app.o.setting.SettingActivity
-import com.app.o.shared.util.OAppMultimediaUtil
 import com.app.o.shared.util.OAppUtil
 import com.app.o.user.connected.ConnectedUsersActivity
 import com.app.o.user.detail.UserProfileActivity
@@ -252,7 +251,7 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
         if (isSuccess(status)) {
             if (data.isNotEmpty()) {
                 if (isFirstTimeLoad) {
-                    adapter = HomeAdapter(this)
+                    adapter = HomeAdapter()
                     adapter.setData(data)
                     adapter.setListener {
                         val intent = Intent(this, DetailActivity::class.java)

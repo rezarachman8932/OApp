@@ -26,7 +26,7 @@ import com.app.o.shared.util.OAppUtil
 import com.app.o.user.blocked.UnblockedAccountCallback
 import kotlinx.android.synthetic.main.activity_detail.*
 
-class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, UnblockedAccountCallback {
+class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, UnblockedAccountCallback, DetailInteractionCallback {
 
     private lateinit var presenter: DetailPresenter
     private lateinit var adapter: DetailCommentAdapter
@@ -36,7 +36,15 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
     private lateinit var mediaController: MediaController
 
     private var isLoaded = false
+    private var isInteractionLoading = false
+    private var isLoveCountExist = false
+    private var loveCount: Int = 0
     private var userId: Int = -1
+
+    companion object {
+        const val LIKE = 1
+        const val DISLIKE = 2
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +54,7 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
 
         initViewContent()
 
-        presenter = DetailPresenter(this, this, mCompositeDisposable)
+        presenter = DetailPresenter(this, this, this, mCompositeDisposable)
     }
 
     override fun onResume() {
@@ -101,6 +109,22 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
         //TODO Show snackBar
     }
 
+    override fun onIntegrationFailed() {
+        isInteractionLoading = false
+    }
+
+    override fun onIntegrationSucceed(resultCode: Int) {
+        isInteractionLoading = false
+
+        if (resultCode == LIKE) {
+            isLoveCountExist = true
+            icon_detail_love_count.setImageResource(R.drawable.ic_vector_heart_green)
+        } else if (resultCode == DISLIKE) {
+            isLoveCountExist = false
+            icon_detail_love_count.setImageResource(R.drawable.ic_vector_heart_inactive)
+        }
+    }
+
     private fun getParam() {
         postId = intent.getStringExtra(POST_ID)
         userId = intent.getIntExtra(USER_ID, -1)
@@ -135,6 +159,20 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
                 startActivity(intent)
             }
         }
+
+        icon_detail_love_count.setOnClickListener {
+            if (isInteractionLoading) {
+                return@setOnClickListener
+            }
+
+            isInteractionLoading = true
+
+            if (isLoveCountExist) {
+                presenter.doDislikeUserPost(postId, DISLIKE)
+            } else {
+                presenter.doLikeUserPost(postId, LIKE)
+            }
+        }
     }
 
     private fun invalidateData(data: DetailResponseZip) {
@@ -160,12 +198,29 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
             }
         }
 
+        if (contentData.like_count > 0) {
+            loveCount = contentData.like_count
+        }
+
+        for (item in data.likedPostListResponse.data) {
+            if (item.user_id == OAppUserUtil.getUserId()) {
+                isLoveCountExist = true
+                break
+            }
+        }
+
+        if (isLoveCountExist) {
+            icon_detail_love_count.setImageResource(R.drawable.ic_vector_heart_green)
+        } else {
+            icon_detail_love_count.setImageResource(R.drawable.ic_vector_heart_inactive)
+        }
+
         OAppMultimediaUtil.setImage(contentData.avatar, R.drawable.ic_logo, image_detail_photo)
 
         text_detail_name.text = contentData.username
         text_detail_location_name.text = contentData.location.name
         text_detail_notes_tag.text = contentData.subtitle
-        text_detail_love_count.text = contentData.like_count.toString()
+        text_detail_love_count.text = loveCount.toString()
         text_detail_title.text = contentData.title
         text_detail_content.text = contentData.content
         text_detail_time_ago.text = OAppUtil.getTimeAgo(OAppUtil.generateStringToTimestamp(contentData.created_at))

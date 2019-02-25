@@ -177,12 +177,12 @@
                                 android:textSize="@dimen/sp_12"
                                 android:textColor="@color/colorGreen" />
                             <ImageView
+                                android:id="@+id/icon_detail_love_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dip_4"
                                 android:layout_marginStart="@dimen/dip_4"
-                                android:layout_gravity="center_vertical"
-                                app:srcCompat="@drawable/ic_vector_heart_green"/>
+                                android:layout_gravity="center_vertical" />
                         </LinearLayout>
                         <ImageView
                             android:id="@+id/icon_detail_post_new_comment"

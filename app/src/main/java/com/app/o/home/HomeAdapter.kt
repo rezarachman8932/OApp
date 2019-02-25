@@ -1,7 +1,5 @@
 package com.app.o.home
 
-import android.content.Context
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +13,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_list_photo.*
 
-class HomeAdapter constructor(private var context: Context) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     private lateinit var dataItems: List<HomePostItem>
     private lateinit var listener: (HomePostItem) -> Unit
@@ -34,7 +32,7 @@ class HomeAdapter constructor(private var context: Context) : RecyclerView.Adapt
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
         val item = LayoutInflater.from(parent.context).inflate(R.layout.item_list_photo, parent, false) as LinearLayout
-        return ViewHolder(item, context)
+        return ViewHolder(item)
     }
 
     override fun getItemCount(): Int {
@@ -45,7 +43,7 @@ class HomeAdapter constructor(private var context: Context) : RecyclerView.Adapt
         holder.bindItem(dataItems[position], listener)
     }
 
-    class ViewHolder(override val containerView: View, val context: Context) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+    class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
         fun bindItem(item: HomePostItem, listener: (HomePostItem) -> Unit) {
             if (item.media_url.isNotEmpty()) {
                 Picasso.get().load(item.media_url).into(item_image_thumbnail)
@@ -57,10 +55,8 @@ class HomeAdapter constructor(private var context: Context) : RecyclerView.Adapt
             item_text_love_count.text = item.like_count.toString()
 
             if (item.like_count > 0) {
-                item_text_love_count.setTextColor(ContextCompat.getColor(context, R.color.colorGreen))
                 item_icon_love_status.setImageResource(R.drawable.ic_vector_heart_green)
             } else {
-                item_text_love_count.setTextColor(ContextCompat.getColor(context, R.color.colorWhiteSmoke))
                 item_icon_love_status.setImageResource(R.drawable.ic_vector_heart_inactive)
             }
 

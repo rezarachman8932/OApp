@@ -5,6 +5,7 @@ import com.app.o.api.comment.CommentResponse
 import com.app.o.api.detail.DetailResponse
 import com.app.o.api.detail.DetailResponseZip
 import com.app.o.api.detail.DetailSpec
+import com.app.o.api.post.LikedPostListResponse
 import com.app.o.api.user.blocked.UserBlockingSpec
 import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppViewService
@@ -13,13 +14,54 @@ import com.app.o.user.blocked.UnblockedAccountCallback
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Consumer
+import io.reactivex.functions.Function3
 import io.reactivex.schedulers.Schedulers
 
 class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
                       private val userBlockingCallback: UnblockedAccountCallback,
+                      private val interactionCallback: DetailInteractionCallback,
                       private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
+
+    fun doLikeUserPost(postId: String, resultCode: Int) {
+        compositeDisposable.add(APIRepository.create().likeUserPost(DetailSpec(postId), getHeaderAuth())
+                .subscribeOn(Schedulers.io())
+                .compose {
+                    it.observeOn(AndroidSchedulers.mainThread())
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorResumeNext {
+                    interactionCallback.onIntegrationFailed()
+                    Single.error(it)
+                }
+                .doOnError{
+                    interactionCallback.onIntegrationFailed()
+                    it.printStackTrace()
+                }
+                .subscribe(Consumer {
+                    interactionCallback.onIntegrationSucceed(resultCode)
+                }))
+    }
+
+    fun doDislikeUserPost(postId: String, resultCode: Int) {
+        compositeDisposable.add(APIRepository.create().unLikeUserPost(DetailSpec(postId), getHeaderAuth())
+                .subscribeOn(Schedulers.io())
+                .compose {
+                    it.observeOn(AndroidSchedulers.mainThread())
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorResumeNext {
+                    interactionCallback.onIntegrationFailed()
+                    Single.error(it)
+                }
+                .doOnError{
+                    interactionCallback.onIntegrationFailed()
+                    it.printStackTrace()
+                }
+                .subscribe(Consumer {
+                    interactionCallback.onIntegrationSucceed(resultCode)
+                }))
+    }
 
     fun geDetailPageContent(spec: DetailSpec) {
         compositeDisposable.add(getAllContent(spec)
@@ -67,15 +109,16 @@ class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
     private fun getAllContent(detailSpec: DetailSpec) : Single<DetailResponseZip> {
         return Single.zip(
                 APIRepository.create().getDetailContent(detailSpec, getHeaderAuth()),
+                APIRepository.create().getLikeUserPostList(detailSpec, getHeaderAuth()),
                 APIRepository.create().getDetailCommentList(detailSpec, getHeaderAuth()),
-                BiFunction<DetailResponse, CommentResponse, DetailResponseZip> {
-                    t1, t2 ->
-                    createDetailModel(t1, t2)
+                Function3<DetailResponse, LikedPostListResponse, CommentResponse, DetailResponseZip> {
+                    t1, t2, t3 ->
+                    createDetailModel(t1, t2, t3)
                 })
     }
 
-    private fun createDetailModel(detailResponse: DetailResponse, commentResponseOptional: CommentResponse) : DetailResponseZip {
-        return DetailResponseZip(detailResponse, commentResponseOptional)
+    private fun createDetailModel(detailResponse: DetailResponse, likedPostListResponse: LikedPostListResponse, commentResponseOptional: CommentResponse) : DetailResponseZip {
+        return DetailResponseZip(detailResponse, likedPostListResponse, commentResponseOptional)
     }
 
 }
