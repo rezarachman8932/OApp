@@ -54,7 +54,7 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
             item_text_love_count.text = item.like_count.toString()
 
-            if (item.like_count > 0) {
+            if (item.is_liked) {
                 item_icon_love_status.setImageResource(R.drawable.ic_vector_heart_green)
             } else {
                 item_icon_love_status.setImageResource(R.drawable.ic_vector_heart_inactive)

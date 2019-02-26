@@ -18,6 +18,7 @@ data class DetailResponse (
         val user_id: String,
         val username: String,
         val is_blocked_user: Boolean,
+        val is_liked: Boolean,
         val location: LocationCityName,
         val avatar: String,
         override val status: Int,

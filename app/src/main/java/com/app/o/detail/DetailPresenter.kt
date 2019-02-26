@@ -5,7 +5,6 @@ import com.app.o.api.comment.CommentResponse
 import com.app.o.api.detail.DetailResponse
 import com.app.o.api.detail.DetailResponseZip
 import com.app.o.api.detail.DetailSpec
-import com.app.o.api.post.LikedPostListResponse
 import com.app.o.api.user.blocked.UserBlockingSpec
 import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppViewService
@@ -14,8 +13,8 @@ import com.app.o.user.blocked.UnblockedAccountCallback
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Consumer
-import io.reactivex.functions.Function3
 import io.reactivex.schedulers.Schedulers
 
 class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
@@ -109,16 +108,15 @@ class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
     private fun getAllContent(detailSpec: DetailSpec) : Single<DetailResponseZip> {
         return Single.zip(
                 APIRepository.create().getDetailContent(detailSpec, getHeaderAuth()),
-                APIRepository.create().getLikeUserPostList(detailSpec, getHeaderAuth()),
                 APIRepository.create().getDetailCommentList(detailSpec, getHeaderAuth()),
-                Function3<DetailResponse, LikedPostListResponse, CommentResponse, DetailResponseZip> {
-                    t1, t2, t3 ->
-                    createDetailModel(t1, t2, t3)
+                BiFunction<DetailResponse, CommentResponse, DetailResponseZip> {
+                    t1, t2 ->
+                    createDetailModel(t1, t2)
                 })
     }
 
-    private fun createDetailModel(detailResponse: DetailResponse, likedPostListResponse: LikedPostListResponse, commentResponseOptional: CommentResponse) : DetailResponseZip {
-        return DetailResponseZip(detailResponse, likedPostListResponse, commentResponseOptional)
+    private fun createDetailModel(detailResponse: DetailResponse, commentResponseOptional: CommentResponse) : DetailResponseZip {
+        return DetailResponseZip(detailResponse, commentResponseOptional)
     }
 
 }

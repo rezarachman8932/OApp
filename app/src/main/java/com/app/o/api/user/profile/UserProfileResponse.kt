@@ -5,8 +5,8 @@ import com.app.o.base.data.OAppResponse
 data class UserProfileResponse (
         val name: String,
         val location: String?,
-        val latitude: String,
-        val longitude: String,
+        val latitude: String?,
+        val longitude: String?,
         val website: String?,
         val instagram: String?,
         val facebook: String?,

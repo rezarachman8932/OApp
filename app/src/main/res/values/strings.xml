@@ -99,6 +99,9 @@
     <string name="text_error_current_password_invalid">Your current password is invalid.</string>
     <string name="text_error_new_password_same_with_existing">Your new password must be different with existing password.</string>
     <string name="text_error_retype_new_password">Please re-type your new password correctly.</string>
+    <string name="text_default_profile_location">Your Location</string>
+    <string name="text_default_profile_activity">Your Activity</string>
+    <string name="text_empty_state_user_profile">You have never posted anything</string>
 
     <plurals name="numberOfReplies">
         <item quantity="one">%d reply</item>

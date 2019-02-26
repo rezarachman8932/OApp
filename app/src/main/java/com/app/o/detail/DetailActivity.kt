@@ -118,11 +118,15 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
 
         if (resultCode == LIKE) {
             isLoveCountExist = true
+            loveCount += 1
             icon_detail_love_count.setImageResource(R.drawable.ic_vector_heart_green)
         } else if (resultCode == DISLIKE) {
             isLoveCountExist = false
+            loveCount -= 1
             icon_detail_love_count.setImageResource(R.drawable.ic_vector_heart_inactive)
         }
+
+        text_detail_love_count.text = loveCount.toString()
     }
 
     private fun getParam() {
@@ -198,15 +202,10 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
             }
         }
 
+        isLoveCountExist = contentData.is_liked
+
         if (contentData.like_count > 0) {
             loveCount = contentData.like_count
-        }
-
-        for (item in data.likedPostListResponse.data) {
-            if (item.user_id == OAppUserUtil.getUserId()) {
-                isLoveCountExist = true
-                break
-            }
         }
 
         if (isLoveCountExist) {

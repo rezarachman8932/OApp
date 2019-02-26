@@ -23,6 +23,7 @@ import com.app.o.api.user.blocked.UserBlockingResponse
 import com.app.o.api.user.blocked.UserBlockingSpec
 import com.app.o.api.user.profile.UserProfileResponse
 import com.app.o.api.user.profile.UserProfileSpec
+import com.app.o.api.user.update.avatar.UpdateAvatarResponse
 import com.app.o.api.user.update.password.UpdatePasswordResponse
 import com.app.o.api.user.update.password.UpdatePasswordSpec
 import com.app.o.api.user.update.profile.UserUpdateProfileResponse
@@ -94,6 +95,12 @@ interface APIService {
     @POST("update_profile")
     fun updateProfile(@Body spec: UserUpdateProfileSpec, @Header("Authorization") tokenAuth: String?): Single<UserUpdateProfileResponse>
 
+    @POST("update_avatar")
+    fun updateAvatar(@Part avatar: MultipartBody.Part, @Header("Authorization") tokenAuth: String?): Single<UpdateAvatarResponse>
+
+    @POST("update_password")
+    fun updatePassword(@Body spec: UpdatePasswordSpec, @Header("Authorization") tokenAuth: String?): Single<UpdatePasswordResponse>
+
     @POST("list_block_user")
     fun getBlockedUsers(@Header("Authorization") tokenAuth: String?): Single<BlockedUserResponse>
 
@@ -102,9 +109,6 @@ interface APIService {
 
     @POST("block_user")
     fun blockedUser(@Body spec: UserBlockingSpec, @Header("Authorization") tokenAuth: String?): Single<UserBlockingResponse>
-
-    @POST("update_password")
-    fun updatePassword(@Body spec: UpdatePasswordSpec, @Header("Authorization") tokenAuth: String?): Single<UpdatePasswordResponse>
 
     @POST("post_like")
     fun likeUserPost(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<LikedPostResponse>

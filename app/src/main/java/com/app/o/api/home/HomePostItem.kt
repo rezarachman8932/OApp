@@ -11,6 +11,8 @@ data class HomePostItem (
         val comment_count: Int,
         val created_at: String,
         val user_id: Int,
+        val is_blocked_user: Boolean,
+        val is_liked: Boolean,
         val username: String,
         val media_url: String
 )
