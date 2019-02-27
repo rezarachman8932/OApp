@@ -1,7 +1,6 @@
 package com.app.o.base.page
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -10,14 +9,11 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.ScrollView
 import android.widget.TextView
 import com.app.o.R
-import com.app.o.shared.util.OAppMultimediaUtil
 import com.app.o.shared.util.OAppUtil
 import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
 import io.reactivex.annotations.NonNull
 import io.reactivex.disposables.CompositeDisposable
-import okhttp3.MediaType
-import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -119,13 +115,6 @@ abstract class OAppFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     @NonNull
     protected fun createPartFromString(descriptionString: String): RequestBody {
         return RequestBody.create(okhttp3.MultipartBody.FORM, descriptionString)
-    }
-
-    @NonNull
-    protected fun prepareFileImagePart(bitmap: Bitmap?, index: Int, filePath: String?): MultipartBody.Part {
-        val file = OAppMultimediaUtil.createFileFromPath(bitmap, filePath)
-        val requestFile = RequestBody.create(MediaType.parse("image/*"), file)
-        return MultipartBody.Part.createFormData("media[" + index.toString() + "]", file.name, requestFile)
     }
 
     protected fun validateInput(scrollView: ScrollView, titleProduct: String, description: String, note: String): Boolean {

@@ -1,12 +1,16 @@
 package com.app.o.user.update_profile
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
 import com.app.o.R
 import com.app.o.api.user.profile.UserProfileResponse
+import com.app.o.api.user.update.avatar.UpdateAvatarResponse
 import com.app.o.api.user.update.profile.UserUpdateProfileResponse
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
+import com.app.o.shared.util.OAppMultimediaUtil
 import com.app.o.shared.util.OAppUserUtil
 import com.app.o.shared.util.OAppUtil
 import kotlinx.android.synthetic.main.activity_update_profile.*
@@ -14,9 +18,11 @@ import kotlinx.android.synthetic.main.activity_update_profile.*
 class UpdateProfileActivity : OAppActivity(),
         View.OnClickListener,
         OAppViewService<UserUpdateProfileResponse>,
-        UpdateProfileCallback {
+        UpdateProfileCallback, UpdateProfileAvatarCallback {
 
     private lateinit var presenter: UpdateProfilePresenter
+    private lateinit var uriImageProfile: String
+    private lateinit var bitmapImageProfile: Bitmap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,12 +30,16 @@ class UpdateProfileActivity : OAppActivity(),
 
         initView()
 
-        presenter = UpdateProfilePresenter(this, this, mCompositeDisposable)
+        presenter = UpdateProfilePresenter(this, this, this, mCompositeDisposable)
         presenter.getCurrentProfile()
     }
 
-    override fun onClick(p0: View?) {
-        updateData()
+    override fun onClick(view: View) {
+        when {
+            view.id == R.id.button_update_profile -> updateData()
+            view.id == R.id.button_select_photo -> openMedia()
+            view.id == R.id.button_complete_selected_photo -> doUpdateAvatar()
+        }
     }
 
     override fun showLoading() {
@@ -71,6 +81,40 @@ class UpdateProfileActivity : OAppActivity(),
         input_facebook.setText(userProfileResponse.facebook)
         input_twitter.setText(userProfileResponse.twitter)
         input_instagram.setText(userProfileResponse.instagram)
+
+        OAppMultimediaUtil.setImage(userProfileResponse.avatar, R.drawable.ic_logo, image_user_profile)
+    }
+
+    override fun onSucceedGettingImage(updateAvatarResponse: UpdateAvatarResponse) {
+        shouldShowProgress(false)
+
+        if (isSuccess(updateAvatarResponse.status)) {
+            showSnackBar(scroll_root_update_profile, getString(R.string.text_update_avatar_succeed))
+        } else {
+            showSnackBar(scroll_root_update_profile, getString(R.string.text_update_avatar_failed))
+        }
+    }
+
+    override fun onFailedGettingImage() {
+        shouldShowProgress(false)
+        showSnackBar(scroll_root_update_profile, getString(R.string.text_update_avatar_failed))
+    }
+
+    override fun onLoadingImage() {
+        shouldShowProgress(true)
+    }
+
+    override fun onSuccessGetImage(values: ArrayList<String>) {
+        super.onSuccessGetImage(values)
+
+        try {
+            if (values.size > 0) {
+                uriImageProfile = values[0]
+                bitmapImageProfile = BitmapFactory.decodeFile(uriImageProfile)
+
+                image_user_profile.setImageBitmap(bitmapImageProfile)
+            }
+        } catch (exception: Exception) {}
     }
 
     private fun initView() {
@@ -81,6 +125,8 @@ class UpdateProfileActivity : OAppActivity(),
         input_updated_email.isEnabled = false
 
         button_update_profile.setOnClickListener(this)
+        button_complete_selected_photo.setOnClickListener(this)
+        button_select_photo.setOnClickListener(this)
     }
 
     private fun updateData() {
@@ -91,6 +137,13 @@ class UpdateProfileActivity : OAppActivity(),
         val instagram = input_instagram.text.toString()
 
         presenter.validateProfileUpdated(phone, location, facebook, twitter, instagram)
+    }
+
+    private fun doUpdateAvatar() {
+        if (bitmapImageProfile != null && uriImageProfile != null) {
+            val body = OAppMultimediaUtil.prepareFileImagePart("avatar", bitmapImageProfile, uriImageProfile)
+            presenter.updateAvatar(body)
+        }
     }
 
 }

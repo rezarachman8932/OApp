@@ -115,13 +115,15 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
         imagePreview.visibility = View.GONE
 
         //TODO Check whether if video or image
-        uriValues = values
-        uriValues.forEach {
-            uriBitmapList.add(BitmapFactory.decodeFile(it))
-        }
+        try {
+            uriValues = values
+            uriValues.forEach {
+                uriBitmapList.add(BitmapFactory.decodeFile(it))
+            }
 
-        selectedImageAdapter = SelectedImageAdapter(fragmentManager!!, uriValues)
-        view_pager_selected_images.adapter = selectedImageAdapter
+            selectedImageAdapter = SelectedImageAdapter(fragmentManager!!, uriValues)
+            view_pager_selected_images.adapter = selectedImageAdapter
+        } catch (exception: Exception) {}
     }
 
     private fun getRequestType(type: Int): RequestBody? {
@@ -147,7 +149,10 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
             val requestType = getRequestType(index!!)
 
             for (i in 0 until uriValues.size) {
-                val body = prepareFileImagePart(uriBitmapList[i], i, uriValues[i])
+                val body = OAppMultimediaUtil.prepareFileImagePart(
+                        "media[" + i.toString() + "]",
+                        uriBitmapList[i],
+                        uriValues[i])
                 presenter.files.add(body)
             }
 

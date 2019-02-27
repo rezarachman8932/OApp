@@ -95,6 +95,7 @@ interface APIService {
     @POST("update_profile")
     fun updateProfile(@Body spec: UserUpdateProfileSpec, @Header("Authorization") tokenAuth: String?): Single<UserUpdateProfileResponse>
 
+    @Multipart
     @POST("update_avatar")
     fun updateAvatar(@Part avatar: MultipartBody.Part, @Header("Authorization") tokenAuth: String?): Single<UpdateAvatarResponse>
 

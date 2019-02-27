@@ -21,6 +21,8 @@ import com.app.o.R
 import com.app.o.api.login.LoginResponse
 import com.app.o.shared.util.OAppUserUtil
 import com.app.o.shared.util.OAppUtil
+import com.fxn.pix.Pix
+import com.fxn.utility.PermUtil
 import io.reactivex.disposables.CompositeDisposable
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -70,7 +72,11 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        requestCurrentLocation()
+        if (requestCode == PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS) {
+            openMedia()
+        } else {
+            requestCurrentLocation()
+        }
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
@@ -88,6 +94,12 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
             when (requestCode) {
                 AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE -> {}
                 OAppUtil.ON_ENABLE_GPS_SETTING -> requestCurrentLocation()
+                PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS -> {
+                    if (data != null) {
+                        val returnValue = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+                        onSuccessGetImage(returnValue)
+                    }
+                }
             }
         }
     }
@@ -194,6 +206,12 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     protected fun removeUserState() {
         OAppUserUtil.setLoggedIn(false)
     }
+
+    protected fun openMedia() {
+        Pix.start(this, PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS)
+    }
+
+    open fun onSuccessGetImage(values: ArrayList<String>) {}
 
     open fun onLocationUpdated(location: Location) {}
 

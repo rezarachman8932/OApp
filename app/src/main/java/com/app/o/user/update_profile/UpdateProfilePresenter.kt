@@ -12,9 +12,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
+import okhttp3.MultipartBody
 
 class UpdateProfilePresenter(private val view: OAppViewService<UserUpdateProfileResponse>,
                              private val callback: UpdateProfileCallback,
+                             private val pickImageCallback: UpdateProfileAvatarCallback,
                              private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
 
     private fun updateProfile(spec: UserUpdateProfileSpec) {
@@ -34,6 +36,25 @@ class UpdateProfilePresenter(private val view: OAppViewService<UserUpdateProfile
                 .subscribe(Consumer {
                     view.onDataResponse(it)
                     view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
+                }))
+    }
+
+    fun updateAvatar(file: MultipartBody.Part) {
+        compositeDisposable.add(APIRepository.create().updateAvatar(file, getHeaderAuth())
+                .subscribeOn(Schedulers.io())
+                .compose {
+                    it.observeOn(AndroidSchedulers.mainThread())
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe {
+                    pickImageCallback.onLoadingImage()
+                }
+                .doOnError{
+                    pickImageCallback.onFailedGettingImage()
+                    it.printStackTrace()
+                }
+                .subscribe(Consumer {
+                    pickImageCallback.onSucceedGettingImage(it)
                 }))
     }
 

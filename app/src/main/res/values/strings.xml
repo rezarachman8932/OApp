@@ -8,6 +8,8 @@
     <string name="text_loading_posting_dialog_subtitle">Processing your thoughts</string>
     <string name="text_sign_up">Sign Up</string>
     <string name="text_update">Update</string>
+    <string name="text_select_photo">Select Photo</string>
+    <string name="text_done">Done</string>
     <string name="text_login">Login</string>
     <string name="text_logout">Logout</string>
     <string name="text_login_here">Login here</string>
@@ -102,6 +104,8 @@
     <string name="text_default_profile_location">Your Location</string>
     <string name="text_default_profile_activity">Your Activity</string>
     <string name="text_empty_state_user_profile">You have never posted anything</string>
+    <string name="text_update_avatar_succeed">Your updated photo was updated</string>
+    <string name="text_update_avatar_failed">An error occurred while taking your photo</string>
 
     <plurals name="numberOfReplies">
         <item quantity="one">%d reply</item>

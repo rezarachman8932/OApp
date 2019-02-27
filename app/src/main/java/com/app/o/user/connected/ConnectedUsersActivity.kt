@@ -61,7 +61,7 @@ class ConnectedUsersActivity : OAppActivity(), OAppViewService<UserConnectedResp
             adapter.setData(data.data)
             adapter.setListener {
                 val intent = Intent(this, UserProfileActivity::class.java)
-                intent.putExtra("userId", it.user_id)
+                intent.putExtra(USER_ID, it.user_id)
                 startActivity(intent)
             }
 

@@ -95,7 +95,7 @@ class UserProfileActivity : OAppActivity(), OAppViewService<UserProfileResponseZ
     }
 
     private fun getParam() {
-        userId = intent.getIntExtra("userId", 0)
+        userId = intent.getIntExtra(USER_ID, 0)
     }
 
 }
