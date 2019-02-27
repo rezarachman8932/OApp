@@ -13,6 +13,10 @@ abstract class OAppPresenter {
         return OAppUserUtil.getToken()
     }
 
+    fun getFCMToken(): String? {
+        return OAppUserUtil.getFCMToken()
+    }
+
     fun saveLastLocation(longitude: String, latitude: String) {
         OAppUtil.setLongitude(longitude)
         OAppUtil.setLatitude(latitude)

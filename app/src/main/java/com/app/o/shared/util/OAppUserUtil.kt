@@ -8,6 +8,14 @@ class OAppUserUtil {
     companion object {
         fun isValidEmail(email: String): Boolean = email.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
 
+        fun getFCMToken(): String? {
+            return OAppPreferencesHelper.fcmToken
+        }
+
+        fun setFCMToken(fcmToken: String?) {
+            OAppPreferencesHelper.fcmToken = fcmToken
+        }
+
         fun getToken(): String? {
             return OAppPreferencesHelper.tokenAuth
         }

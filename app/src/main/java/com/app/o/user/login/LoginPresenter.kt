@@ -56,7 +56,7 @@ class LoginPresenter(private val view: OAppViewService<LoginResponse>,
             return
         }
 
-        val loginSpec = LoginSpec(username, password, "device_token")
+        val loginSpec = LoginSpec(username, password, getFCMToken())
         doLogin(loginSpec)
     }
 

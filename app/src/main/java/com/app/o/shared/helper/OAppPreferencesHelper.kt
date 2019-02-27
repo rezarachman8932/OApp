@@ -12,6 +12,7 @@ object OAppPreferencesHelper {
     private val LOGGED_IN = Pair("is_logged_in", false)
     private val RECEIVED_NOTIFICATION = Pair("should_receive_notification", true)
     private val TOKEN = Pair("token", "")
+    private val FCM_TOKEN = Pair("fcm_token", "")
     private val EMAIL = Pair("email", "")
     private val USER_NAME = Pair("username", "")
     private val USER_ID = Pair("user_id", 0)
@@ -88,6 +89,12 @@ object OAppPreferencesHelper {
         get() = preferences.getInt(RANGE_FINDER.first, RANGE_FINDER.second)
         set(value) = preferences.edit {
             it.putInt(RANGE_FINDER.first, value)
+        }
+
+    var fcmToken: String?
+        get() = preferences.getString(FCM_TOKEN.first, FCM_TOKEN.second)
+        set(value) = preferences.edit {
+            it.putString(FCM_TOKEN.first, value)
         }
 
 }
