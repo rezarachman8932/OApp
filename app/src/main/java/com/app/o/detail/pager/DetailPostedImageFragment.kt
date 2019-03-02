@@ -1,5 +1,6 @@
 package com.app.o.detail.pager
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -7,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.app.o.R
+import com.app.o.detail.image.DetailPreviewImageActivity
 import com.app.o.shared.util.OAppMultimediaUtil
+import com.app.o.shared.util.OAppUtil
 
 class DetailPostedImageFragment : Fragment() {
 
@@ -37,6 +40,11 @@ class DetailPostedImageFragment : Fragment() {
 
         val imageDetailThumb = view.findViewById(R.id.item_image_detail_thumbnail) as ImageView
         OAppMultimediaUtil.setImage(imageUrl, null, imageDetailThumb)
+        imageDetailThumb.setOnClickListener {
+            val intent = Intent(activity, DetailPreviewImageActivity::class.java)
+            intent.putExtra(OAppUtil.IMAGE_DETAIL_PREVIEW, imageUrl)
+            startActivity(intent)
+        }
 
         return view
     }

@@ -30,6 +30,8 @@ class OAppUtil {
 
         const val MAX_IMAGES_SELECTION_COUNT = 3
 
+        const val IMAGE_DETAIL_PREVIEW = "image_detail_preview"
+
         private const val SECOND_MILLIS = 1000
         private const val MINUTE_MILLIS = 60 * SECOND_MILLIS
         private const val HOUR_MILLIS = 60 * MINUTE_MILLIS

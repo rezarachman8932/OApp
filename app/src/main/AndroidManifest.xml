@@ -72,6 +72,7 @@
             android:name=".user.update_password.UpdatePasswordActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:parentActivityName=".setting.SettingActivity"/>
+        <activity android:name=".detail.image.DetailPreviewImageActivity" />
 
         <service
             android:name=".notification.OAppMessagingService">
