@@ -32,11 +32,11 @@ class OAppMessagingService : FirebaseMessagingService() {
         Log.i("onMessageReceived", remoteMessage.from)
 
         if (remoteMessage.data.isNotEmpty()) {
-            Log.d("RemoteMessage", "Message Data Payload: " + remoteMessage.data)
+            Log.i("RemoteMessage", "Message Data Payload: " + remoteMessage.data)
         }
 
         if (remoteMessage.notification != null) {
-            Log.d("Notification", "Message Notification Body: " + remoteMessage.notification?.body)
+            Log.i("Notification", "Message Notification Body: " + remoteMessage.notification?.body)
         }
 
         sendNotification(remoteMessage)
@@ -46,7 +46,7 @@ class OAppMessagingService : FirebaseMessagingService() {
         val intent = Intent(this, HomeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
-        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent, PendingIntent.FLAG_ONE_SHOT)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
         val channelId = "com.app.o.notification"
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)

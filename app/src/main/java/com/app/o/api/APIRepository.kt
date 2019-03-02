@@ -10,6 +10,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object APIRepository {
 
+    private const val BASE_URL = "http://api-oapps.mindzzle.com/"
+
     fun create(): APIService {
         val gson = GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
@@ -22,7 +24,7 @@ object APIRepository {
         httpClient.interceptors().add(logging)
 
         val requestInterface = Retrofit.Builder()
-                .baseUrl("http://api.ademuhammad.or.id/")
+                .baseUrl(BASE_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(httpClient.build())
