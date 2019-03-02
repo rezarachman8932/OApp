@@ -61,6 +61,7 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".user.update_profile.UpdateProfileActivity"
+            android:parentActivityName=".home.HomeActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".setting.SettingActivity"

@@ -113,6 +113,8 @@ class UpdateProfileActivity : OAppActivity(),
                 bitmapImageProfile = BitmapFactory.decodeFile(uriImageProfile)
 
                 image_user_profile.setImageBitmap(bitmapImageProfile)
+
+                button_complete_selected_photo.visibility = View.VISIBLE
             }
         } catch (exception: Exception) {}
     }
@@ -140,10 +142,8 @@ class UpdateProfileActivity : OAppActivity(),
     }
 
     private fun doUpdateAvatar() {
-        if (bitmapImageProfile != null && uriImageProfile != null) {
-            val body = OAppMultimediaUtil.prepareFileImagePart("avatar", bitmapImageProfile, uriImageProfile)
-            presenter.updateAvatar(body)
-        }
+        val body = OAppMultimediaUtil.prepareFileImagePart("avatar", bitmapImageProfile, uriImageProfile)
+        presenter.updateAvatar(body)
     }
 
 }
