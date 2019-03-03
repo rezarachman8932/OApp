@@ -203,6 +203,10 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         OAppUserUtil.setLoggedIn(true)
     }
 
+    protected fun getDeviceToken(): String? {
+        return OAppUserUtil.getFCMToken()
+    }
+
     protected fun removeUserState() {
         OAppUserUtil.setLoggedIn(false)
     }

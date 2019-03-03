@@ -74,9 +74,12 @@
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:parentActivityName=".setting.SettingActivity"/>
         <activity android:name=".detail.image.DetailPreviewImageActivity" />
+        <activity
+            android:name=".notification.page.NotificationListActivity"
+            android:parentActivityName=".home.HomeActivity"/>
 
         <service
-            android:name=".notification.OAppMessagingService">
+            android:name=".notification.service.OAppMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>

@@ -5,6 +5,7 @@ import com.app.o.api.comment.CommentResponse
 import com.app.o.api.detail.DetailResponse
 import com.app.o.api.detail.DetailResponseZip
 import com.app.o.api.detail.DetailSpec
+import com.app.o.api.post.LikedPostSpec
 import com.app.o.api.user.blocked.UserBlockingSpec
 import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppViewService
@@ -22,8 +23,8 @@ class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
                       private val interactionCallback: DetailInteractionCallback,
                       private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
 
-    fun doLikeUserPost(postId: String, resultCode: Int) {
-        compositeDisposable.add(APIRepository.create().likeUserPost(DetailSpec(postId), getHeaderAuth())
+    fun doLikeUserPost(postId: String, resultCode: Int, deviceToken: String) {
+        compositeDisposable.add(APIRepository.create().likeUserPost(LikedPostSpec(postId, deviceToken), getHeaderAuth())
                 .subscribeOn(Schedulers.io())
                 .compose {
                     it.observeOn(AndroidSchedulers.mainThread())
@@ -42,8 +43,8 @@ class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
                 }))
     }
 
-    fun doDislikeUserPost(postId: String, resultCode: Int) {
-        compositeDisposable.add(APIRepository.create().unLikeUserPost(DetailSpec(postId), getHeaderAuth())
+    fun doDislikeUserPost(postId: String, resultCode: Int, deviceToken: String) {
+        compositeDisposable.add(APIRepository.create().unLikeUserPost(LikedPostSpec(postId, deviceToken), getHeaderAuth())
                 .subscribeOn(Schedulers.io())
                 .compose {
                     it.observeOn(AndroidSchedulers.mainThread())

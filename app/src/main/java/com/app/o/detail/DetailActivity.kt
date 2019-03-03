@@ -172,9 +172,9 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
             isInteractionLoading = true
 
             if (isLoveCountExist) {
-                presenter.doDislikeUserPost(postId, DISLIKE)
+                presenter.doDislikeUserPost(postId, DISLIKE, getDeviceToken()!!)
             } else {
-                presenter.doLikeUserPost(postId, LIKE)
+                presenter.doLikeUserPost(postId, LIKE, getDeviceToken()!!)
             }
         }
     }

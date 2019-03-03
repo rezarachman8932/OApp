@@ -1,4 +1,4 @@
-package com.app.o.notification
+package com.app.o.notification.service
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -10,7 +10,7 @@ import android.os.Build
 import android.support.v4.app.NotificationCompat
 import android.util.Log
 import com.app.o.R
-import com.app.o.home.HomeActivity
+import com.app.o.notification.page.NotificationListActivity
 import com.app.o.shared.util.OAppUserUtil
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -45,7 +45,7 @@ class OAppMessagingService : FirebaseMessagingService() {
     }
 
     private fun sendNotification() {
-        val intent = Intent(this, HomeActivity::class.java)
+        val intent = Intent(this, NotificationListActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)

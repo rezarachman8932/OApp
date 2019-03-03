@@ -67,7 +67,7 @@ class NewCommentActivity : OAppActivity(), OAppViewService<SubmitCommentResponse
             val comment = input_new_comment.text.toString()
 
             if (comment.isNotEmpty()) {
-                presenter.submitNewComment(CommentSpec(postId.toString(), comment, null))
+                presenter.submitNewComment(CommentSpec(postId.toString(), comment, getDeviceToken()!!, null))
             }
         }
     }

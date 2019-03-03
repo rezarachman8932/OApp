@@ -85,7 +85,11 @@ class MessageActivity : OAppActivity(), OAppSubmitMessageService {
             val inputString = input_comment.text.toString()
 
             if (!isSubmittingComment && !inputString.isEmpty()) {
-                val spec = CommentSpec(parentComment.post_id.toString(), inputString, parentComment.comment_id.toString())
+                val spec = CommentSpec(
+                        parentComment.post_id.toString(),
+                        inputString,
+                        getDeviceToken()!!,
+                        parentComment.comment_id.toString())
                 presenter.postReplyComment(spec)
             }
         }

@@ -11,8 +11,10 @@ import com.app.o.api.location.LocationWithQuerySpec
 import com.app.o.api.login.LoginResponse
 import com.app.o.api.login.LoginSpec
 import com.app.o.api.logout.LogoutResponse
+import com.app.o.api.notification.PushNotificationResponse
 import com.app.o.api.post.CreatedPostResponse
 import com.app.o.api.post.LikedPostResponse
+import com.app.o.api.post.LikedPostSpec
 import com.app.o.api.register.RegisterResponse
 import com.app.o.api.register.RegisterSpec
 import com.app.o.api.relation.UserConnectedCountResponse
@@ -111,9 +113,12 @@ interface APIService {
     fun blockedUser(@Body spec: UserBlockingSpec, @Header("Authorization") tokenAuth: String?): Single<UserBlockingResponse>
 
     @POST("post_like")
-    fun likeUserPost(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<LikedPostResponse>
+    fun likeUserPost(@Body spec: LikedPostSpec, @Header("Authorization") tokenAuth: String?): Single<LikedPostResponse>
 
     @POST("post_unlike")
-    fun unLikeUserPost(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<LikedPostResponse>
+    fun unLikeUserPost(@Body spec: LikedPostSpec, @Header("Authorization") tokenAuth: String?): Single<LikedPostResponse>
+
+    @POST("notification_user")
+    fun getPushNotificationList(@Header("Authorization") tokenAuth: String?): Single<PushNotificationResponse>
 
 }

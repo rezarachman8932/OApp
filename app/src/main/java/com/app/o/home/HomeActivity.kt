@@ -24,6 +24,7 @@ import com.app.o.base.service.OAppSearchService
 import com.app.o.base.service.OAppViewService
 import com.app.o.custom.BottomMenuView
 import com.app.o.detail.DetailActivity
+import com.app.o.notification.page.NotificationListActivity
 import com.app.o.post.PostActivity
 import com.app.o.setting.SettingActivity
 import com.app.o.shared.util.OAppUtil
@@ -190,7 +191,10 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
     private fun initBottomView() {
         bottom_menu.setMenuListener { _, type ->
             when (type) {
-                BottomMenuView.MESSAGE -> {}
+                BottomMenuView.MESSAGE -> {
+                    val intent = Intent(this, NotificationListActivity::class.java)
+                    startActivity(intent)
+                }
 
                 BottomMenuView.POST -> {
                     val intent = Intent(this, PostActivity::class.java)
