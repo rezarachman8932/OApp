@@ -5,6 +5,7 @@ import com.app.o.R
 import com.app.o.api.user.update.password.UpdatePasswordResponse
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
+import com.app.o.shared.util.OAppUtil
 import kotlinx.android.synthetic.main.activity_update_password.*
 
 class UpdatePasswordActivity : OAppActivity(), OAppViewService<UpdatePasswordResponse>, UpdatePasswordCallback {
@@ -21,23 +22,29 @@ class UpdatePasswordActivity : OAppActivity(), OAppViewService<UpdatePasswordRes
     }
 
     override fun showLoading() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        shouldShowProgress(true)
     }
 
     override fun hideLoading(statusCode: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        shouldShowProgress(false)
+
+        if (statusCode == OAppUtil.ON_FINISH_FAILED) {
+            showSnackBar(scroll_root_update_password, getString(R.string.text_unexpected_error_change_password))
+        }
     }
 
     override fun onDataResponse(data: UpdatePasswordResponse) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (isSuccess(data.status)) {
+            resetAllFields()
+
+            showSnackBar(scroll_root_update_password, getString(R.string.text_update_password_succeed))
+        } else {
+            showSnackBar(scroll_root_update_password, getString(R.string.text_error_current_password_invalid))
+        }
     }
 
     override fun onErrorAllFieldsRequired() {
         showSnackBar(scroll_root_update_password, getString(R.string.text_error_all_fields_required))
-    }
-
-    override fun onErrorCurrentPassword() {
-        showSnackBar(scroll_root_update_password, getString(R.string.text_error_current_password_invalid))
     }
 
     override fun onErrorCurrentPasswordEqualsNewPassword() {
@@ -62,6 +69,12 @@ class UpdatePasswordActivity : OAppActivity(), OAppViewService<UpdatePasswordRes
 
             presenter.validatePasswordChanged(currentPassword, newPassword, reTypeNewPassword)
         }
+    }
+
+    private fun resetAllFields() {
+        input_current_password.setText("")
+        input_new_password.setText("")
+        input_retype_new_password.setText("")
     }
 
 }

@@ -17,7 +17,7 @@ class UpdatePasswordPresenter(private val view: OAppViewService<UpdatePasswordRe
                               private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
 
     private fun updateUserPassword(spec: UpdatePasswordSpec) {
-        compositeDisposable.add(APIRepository.create().updatePassword(spec, getToken())
+        compositeDisposable.add(APIRepository.create().updatePassword(spec, getHeaderAuth())
                 .subscribeOn(Schedulers.io())
                 .compose {
                     it.observeOn(AndroidSchedulers.mainThread())
@@ -46,11 +46,6 @@ class UpdatePasswordPresenter(private val view: OAppViewService<UpdatePasswordRe
             return
         }
 
-        if (!current.equals("logged_in_user_password", false)) {
-            callback.onErrorCurrentPassword()
-            return
-        }
-
         if (current.equals(updated, false)) {
             callback.onErrorCurrentPasswordEqualsNewPassword()
             return
@@ -66,7 +61,7 @@ class UpdatePasswordPresenter(private val view: OAppViewService<UpdatePasswordRe
             return
         }
 
-        updateUserPassword(UpdatePasswordSpec(updated))
+        updateUserPassword(UpdatePasswordSpec(current, updated))
     }
 
 }

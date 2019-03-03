@@ -104,8 +104,10 @@
     <string name="text_default_profile_location">Your Location</string>
     <string name="text_default_profile_activity">Your Activity</string>
     <string name="text_empty_state_user_profile">You have never posted anything</string>
-    <string name="text_update_avatar_succeed">Your updated photo was updated</string>
+    <string name="text_update_avatar_succeed">Your profile photo was updated</string>
     <string name="text_update_avatar_failed">An error occurred while taking your photo</string>
+    <string name="text_update_password_succeed">Your password was changed</string>
+    <string name="text_unexpected_error_change_password">An error occurred while updating your password</string>
 
     <plurals name="numberOfReplies">
         <item quantity="one">%d reply</item>

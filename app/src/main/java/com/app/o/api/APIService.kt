@@ -12,7 +12,6 @@ import com.app.o.api.login.LoginResponse
 import com.app.o.api.login.LoginSpec
 import com.app.o.api.logout.LogoutResponse
 import com.app.o.api.post.CreatedPostResponse
-import com.app.o.api.post.LikedPostListResponse
 import com.app.o.api.post.LikedPostResponse
 import com.app.o.api.register.RegisterResponse
 import com.app.o.api.register.RegisterSpec
@@ -99,7 +98,7 @@ interface APIService {
     @POST("update_avatar")
     fun updateAvatar(@Part avatar: MultipartBody.Part, @Header("Authorization") tokenAuth: String?): Single<UpdateAvatarResponse>
 
-    @POST("update_password")
+    @POST("change_password")
     fun updatePassword(@Body spec: UpdatePasswordSpec, @Header("Authorization") tokenAuth: String?): Single<UpdatePasswordResponse>
 
     @POST("list_block_user")
@@ -116,8 +115,5 @@ interface APIService {
 
     @POST("post_unlike")
     fun unLikeUserPost(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<LikedPostResponse>
-
-    @POST("post_list_like")
-    fun getLikeUserPostList(@Body spec: DetailSpec, @Header("Authorization") tokenAuth: String?): Single<LikedPostListResponse>
 
 }
