@@ -108,6 +108,8 @@
     <string name="text_update_avatar_failed">An error occurred while taking your photo</string>
     <string name="text_update_password_succeed">Your password was changed</string>
     <string name="text_unexpected_error_change_password">An error occurred while updating your password</string>
+    <string name="text_notification_channel_id">com.app.o.notification</string>
+    <string name="text_notification_channel_name">OApp Push Notification</string>
 
     <plurals name="numberOfReplies">
         <item quantity="one">%d reply</item>
