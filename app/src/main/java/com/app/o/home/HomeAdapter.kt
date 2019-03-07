@@ -1,5 +1,6 @@
 package com.app.o.home
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +10,10 @@ import com.app.o.R
 import com.app.o.api.home.HomePostItem
 import com.app.o.shared.util.OAppMultimediaUtil
 import com.app.o.shared.util.OAppUtil
-import com.squareup.picasso.Picasso
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_list_photo.*
 
-class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+class HomeAdapter(val context: Context) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     private lateinit var dataItems: List<HomePostItem>
     private lateinit var listener: (HomePostItem) -> Unit
@@ -40,13 +40,19 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItem(dataItems[position], listener)
+        holder.bindItem(context, dataItems[position], listener)
     }
 
     class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
-        fun bindItem(item: HomePostItem, listener: (HomePostItem) -> Unit) {
+        fun bindItem(context: Context, item: HomePostItem, listener: (HomePostItem) -> Unit) {
             if (item.media_url.isNotEmpty()) {
-                Picasso.get().load(item.media_url).into(item_image_thumbnail)
+                if (item.type == OAppMultimediaUtil.TYPE_IMAGE) {
+                    OAppMultimediaUtil.setImage(item.media_url, null, item_image_thumbnail)
+                } else if (item.type == OAppMultimediaUtil.TYPE_VIDEO) {
+                    val videoFrame = OAppMultimediaUtil.generateBitmapFromVideoFrame(item.media_url)
+                    OAppMultimediaUtil.setImage(OAppMultimediaUtil.getImageUriFromBitmap(context, videoFrame).path, null, item_image_thumbnail)
+                }
+
                 item_image_thumbnail.visibility = View.VISIBLE
             } else {
                 item_image_thumbnail.visibility = View.GONE

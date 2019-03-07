@@ -1,6 +1,7 @@
 package com.app.o.base.page
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -16,6 +17,7 @@ import io.reactivex.annotations.NonNull
 import io.reactivex.disposables.CompositeDisposable
 import okhttp3.RequestBody
 import pub.devrel.easypermissions.EasyPermissions
+import com.app.o.shared.util.OAppMultimediaUtil
 
 abstract class OAppFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
@@ -50,6 +52,12 @@ abstract class OAppFragment : Fragment(), EasyPermissions.PermissionCallbacks {
                         onSuccessGetImage(returnValue)
                     }
                 }
+                OAppMultimediaUtil.REQUEST_CODE_PICK_VIDEO -> {
+                    if (data != null) {
+                        val returnValue = data.data
+                        onSuccessGetVideo(returnValue)
+                    }
+                }
             }
         }
     }
@@ -62,7 +70,9 @@ abstract class OAppFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
         if (requestCode == PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS) {
-            openMedia()
+            openMediaImage()
+        } else if (requestCode == OAppMultimediaUtil.REQUEST_CODE_PICK_VIDEO) {
+            openMediaVideo()
         }
     }
 
@@ -108,8 +118,15 @@ abstract class OAppFragment : Fragment(), EasyPermissions.PermissionCallbacks {
         }
     }
 
-    protected fun openMedia() {
+    protected fun openMediaImage() {
         Pix.start(this, PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS, OAppUtil.MAX_IMAGES_SELECTION_COUNT)
+    }
+
+    protected fun openMediaVideo() {
+        val intent = Intent()
+        intent.type = "video/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, context?.getString(R.string.text_header_pick_video_from_gallery)), OAppMultimediaUtil.REQUEST_CODE_PICK_VIDEO)
     }
 
     @NonNull
@@ -137,5 +154,7 @@ abstract class OAppFragment : Fragment(), EasyPermissions.PermissionCallbacks {
     }
 
     open fun onSuccessGetImage(values: ArrayList<String>) {}
+
+    open fun onSuccessGetVideo(value: Uri) {}
 
 }

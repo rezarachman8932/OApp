@@ -255,7 +255,7 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
         if (isSuccess(status)) {
             if (data.isNotEmpty()) {
                 if (isFirstTimeLoad) {
-                    adapter = HomeAdapter()
+                    adapter = HomeAdapter(this)
                     adapter.setData(data)
                     adapter.setListener {
                         val intent = Intent(this, DetailActivity::class.java)

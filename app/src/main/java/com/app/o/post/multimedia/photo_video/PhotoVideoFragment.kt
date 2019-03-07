@@ -2,14 +2,13 @@ package com.app.o.post.multimedia.photo_video
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.RelativeLayout
+import android.widget.*
 import com.app.o.R
 import com.app.o.api.post.CreatedPostResponse
 import com.app.o.base.page.OAppFragment
@@ -28,12 +27,16 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
     private var uriValues: ArrayList<String> = arrayListOf()
     private var uriBitmapList: ArrayList<Bitmap> = arrayListOf()
 
+    private lateinit var uriValue: Uri
     private lateinit var imagePreview: ImageView
     private lateinit var backgroundImageLayout: RelativeLayout
     private lateinit var buttonPost: Button
     private lateinit var inputTitle: EditText
     private lateinit var inputDescription: EditText
     private lateinit var inputNote: EditText
+    private lateinit var viewPagerImage: ViewPager
+    private lateinit var videoFrame: VideoView
+    private lateinit var mediaController: MediaController
 
     private lateinit var presenter: PhotoVideoPresenter
     private lateinit var selectedImageAdapter: SelectedImageAdapter
@@ -61,16 +64,22 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
         val view = inflater.inflate(R.layout.fragment_photo_video, container, false)
 
         imagePreview = view.findViewById(R.id.image_preview_post) as ImageView
+        videoFrame = view.findViewById(R.id.video_frame) as VideoView
 
         inputTitle = view.findViewById(R.id.input_title_product) as EditText
         inputDescription = view.findViewById(R.id.input_description) as EditText
         inputNote = view.findViewById(R.id.input_note) as EditText
 
+        viewPagerImage = view.findViewById(R.id.view_pager_selected_images) as ViewPager
+
         backgroundImageLayout = view.findViewById(R.id.view_layout_multimedia) as RelativeLayout
         backgroundImageLayout.setOnClickListener {
-            //TODO Check whether if video or image
-            if (uriValues.isNullOrEmpty()) {
-                openMedia()
+            if (index == INDEX_IMAGE) {
+                if (uriValues.isNullOrEmpty()) {
+                    openMediaImage()
+                }
+            } else {
+                openMediaVideo()
             }
         }
 
@@ -81,6 +90,9 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
             INDEX_IMAGE -> imagePreview.setBackgroundResource(R.drawable.bg_default_post_image)
             INDEX_VIDEO -> imagePreview.setBackgroundResource(R.drawable.bg_default_post_video)
         }
+
+        mediaController = MediaController(activity)
+        mediaController.setAnchorView(videoFrame)
 
         return view
     }
@@ -113,8 +125,8 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
         super.onSuccessGetImage(values)
 
         imagePreview.visibility = View.GONE
+        viewPagerImage.visibility = View.VISIBLE
 
-        //TODO Check whether if video or image
         try {
             uriValues = values
             uriValues.forEach {
@@ -122,7 +134,24 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
             }
 
             selectedImageAdapter = SelectedImageAdapter(fragmentManager!!, uriValues)
-            view_pager_selected_images.adapter = selectedImageAdapter
+            viewPagerImage.adapter = selectedImageAdapter
+            selectedImageAdapter.notifyDataSetChanged()
+        } catch (exception: Exception) {}
+    }
+
+    override fun onSuccessGetVideo(value: Uri) {
+        super.onSuccessGetVideo(value)
+
+        imagePreview.visibility = View.GONE
+        videoFrame.visibility = View.VISIBLE
+
+        try {
+            uriValue = value
+
+            videoFrame.setVideoURI(uriValue)
+            videoFrame.setMediaController(mediaController)
+            videoFrame.requestFocus()
+            videoFrame.start()
         } catch (exception: Exception) {}
     }
 
@@ -148,11 +177,20 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
             val requestLatitude = createPartFromString(OAppUtil.getLatitude()!!)
             val requestType = getRequestType(index!!)
 
-            for (i in 0 until uriValues.size) {
-                val body = OAppMultimediaUtil.prepareFileImagePart(
-                        "media[" + i.toString() + "]",
-                        uriBitmapList[i],
-                        uriValues[i])
+            if (uriValues.size > 0) {
+                for (i in 0 until uriValues.size) {
+                    val body = OAppMultimediaUtil.prepareFileImagePart(
+                            "media[" + i.toString() + "]",
+                            uriBitmapList[i],
+                            uriValues[i])
+                    presenter.files.add(body)
+                }
+            }
+
+            if (!uriValue.path.isNullOrEmpty()) {
+                val body = OAppMultimediaUtil.prepareFileVideoPart(
+                        "media[0]",
+                        OAppMultimediaUtil.getVideoPath(uriValue, activity!!.parent)!!)
                 presenter.files.add(body)
             }
 

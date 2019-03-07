@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object APIRepository {
 
-    private const val BASE_URL = "http://api-oapps.mindzzle.com/"
+    private const val BASE_URL = "http://api.ademuhammad.or.id/"
 
     fun create(): APIService {
         val gson = GsonBuilder()

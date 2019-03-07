@@ -111,6 +111,7 @@
     <string name="text_notification_channel_id">com.app.o.notification</string>
     <string name="text_notification_channel_name">OApp Push Notification</string>
     <string name="text_notification_list_header">Notification List</string>
+    <string name="text_header_pick_video_from_gallery">Select Video</string>
 
     <plurals name="numberOfReplies">
         <item quantity="one">%d reply</item>

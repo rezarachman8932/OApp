@@ -69,7 +69,7 @@ class UserProfileActivity : OAppActivity(), OAppViewService<UserProfileResponseZ
         }
 
         if (data.homeResponse.data.isNotEmpty()) {
-            adapter = HomeAdapter()
+            adapter = HomeAdapter(this)
             adapter.setData(data.homeResponse.data)
             adapter.setListener {}
 
