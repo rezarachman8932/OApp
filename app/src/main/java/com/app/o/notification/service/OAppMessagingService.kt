@@ -9,15 +9,14 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
 import android.support.v4.app.NotificationCompat
+import android.support.v4.content.LocalBroadcastManager
 import android.util.Log
 import com.app.o.R
-import com.app.o.notification.page.NotificationListActivity
+import com.app.o.shared.util.OAppNotificationUtil
 import com.app.o.shared.util.OAppUserUtil
+import com.app.o.splash.SplashActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import java.text.SimpleDateFormat
-import java.util.*
-
 
 class OAppMessagingService : FirebaseMessagingService() {
 
@@ -32,21 +31,28 @@ class OAppMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
 
-        Log.i("onMessageReceived", remoteMessage.from)
-
         if (remoteMessage.data.isNotEmpty()) {
-            Log.i("Data", "Message Data Payload: " + remoteMessage.data)
+            handleNotification()
         }
-
-        if (remoteMessage.notification != null) {
-            Log.i("Notification", "Message Notification Body: " + remoteMessage.notification?.body)
-        }
-
-        sendNotification()
     }
 
-    private fun sendNotification() {
-        val intent = Intent(this, NotificationListActivity::class.java)
+    private fun handleNotification() {
+        try {
+            if (!OAppNotificationUtil.isAppIsInBackground(applicationContext)) {
+                val pushNotification = Intent(OAppNotificationUtil.PUSH_NOTIFICATION)
+                pushNotification.putExtra(OAppNotificationUtil.PUSH_NOTIFICATION, true)
+                LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification)
+            } else {
+                val intent = Intent(this, SplashActivity::class.java)
+                intent.putExtra(OAppNotificationUtil.PUSH_NOTIFICATION, true)
+                sendNotification(intent)
+            }
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
+    }
+
+    private fun sendNotification(intent: Intent) {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         val pendingIntent: PendingIntent? = TaskStackBuilder.create(this).run {
@@ -71,12 +77,7 @@ class OAppMessagingService : FirebaseMessagingService() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        notificationManager.notify(generateNotificationID(), notificationBuilder.build())
-    }
-
-    private fun generateNotificationID(): Int {
-        val now = Date()
-        return Integer.parseInt(SimpleDateFormat("yyMMddHHmmssZ", Locale.getDefault()).format(now))
+        notificationManager.notify(OAppNotificationUtil.generateNotificationTimeID(), notificationBuilder.build())
     }
 
 }

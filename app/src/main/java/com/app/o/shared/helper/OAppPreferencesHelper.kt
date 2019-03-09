@@ -9,6 +9,7 @@ object OAppPreferencesHelper {
     private const val MODE = Context.MODE_PRIVATE
     private lateinit var preferences: SharedPreferences
 
+    private val IS_NOTIFICATION_EXIST = Pair("is_notification_exist", false)
     private val LOGGED_IN = Pair("is_logged_in", false)
     private val RECEIVED_NOTIFICATION = Pair("should_receive_notification", true)
     private val TOKEN = Pair("token", "")
@@ -30,6 +31,12 @@ object OAppPreferencesHelper {
         operation(editor)
         editor.apply()
     }
+
+    var isNotificationExist: Boolean
+        get() = preferences.getBoolean(IS_NOTIFICATION_EXIST.first, IS_NOTIFICATION_EXIST.second)
+        set(value) = preferences.edit {
+            it.putBoolean(IS_NOTIFICATION_EXIST.first, value)
+        }
 
     var shouldReceivePushNotification: Boolean
         get() = preferences.getBoolean(RECEIVED_NOTIFICATION.first, RECEIVED_NOTIFICATION.second)

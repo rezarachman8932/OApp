@@ -9,6 +9,7 @@ import com.app.o.api.notification.PushNotificationResponse
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.custom.RecyclerViewMargin
+import com.app.o.shared.util.OAppNotificationUtil
 import com.app.o.shared.util.OAppUserUtil
 import kotlinx.android.synthetic.main.activity_notification_list.*
 
@@ -39,6 +40,7 @@ class NotificationListActivity : OAppActivity(), OAppViewService<PushNotificatio
     override fun onDataResponse(data: PushNotificationResponse) {
         if (isSuccess(data.status)) {
             val notifications: MutableList<PushNotificationItem> = arrayListOf()
+            var readNotification = 0
 
             data.data.forEach {
                 if (it.user_id != OAppUserUtil.getUserId()) {
@@ -48,10 +50,23 @@ class NotificationListActivity : OAppActivity(), OAppViewService<PushNotificatio
 
             adapter = NotificationListAdapter()
             adapter.setData(notifications)
-            adapter.setListener {}
+            adapter.setListener {
+                //TODO Go to destination page based on action_type
+            }
 
             recycler_view_notification_list.adapter = adapter
             adapter.notifyDataSetChanged()
+
+            notifications.forEach {
+                if (it.is_read) {
+                    readNotification += 1
+                }
+            }
+
+            if (readNotification == notifications.size) {
+                OAppNotificationUtil.setPushNotificationExist(false)
+                OAppNotificationUtil.clearNotifications(this)
+            }
 
             progress_bar.visibility = View.GONE
             recycler_view_notification_list.visibility = View.VISIBLE

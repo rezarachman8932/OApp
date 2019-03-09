@@ -27,6 +27,7 @@ import com.app.o.detail.DetailActivity
 import com.app.o.notification.page.NotificationListActivity
 import com.app.o.post.PostActivity
 import com.app.o.setting.SettingActivity
+import com.app.o.shared.util.OAppNotificationUtil
 import com.app.o.shared.util.OAppUtil
 import com.app.o.user.connected.ConnectedUsersActivity
 import com.app.o.user.detail.UserProfileActivity
@@ -280,8 +281,7 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
     }
 
     private fun updateBottomView(userProfileResponse: UserProfileResponse) {
-        //TODO  Check push notification
-        bottom_menu.isShowBadge = true
+        bottom_menu.isShowBadge = OAppNotificationUtil.isPushNotificationExist()
 
         if (!userProfileResponse.avatar.isNullOrEmpty()) {
             bottom_menu.imageURL = userProfileResponse.avatar
