@@ -1,5 +1,6 @@
 package com.app.o.notification.page
 
+import android.graphics.Typeface
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -39,6 +40,14 @@ class NotificationListAdapter : RecyclerView.Adapter<NotificationListAdapter.Vie
 
     class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
         fun bindItem(item: PushNotificationItem, listener: (PushNotificationItem) -> Unit) {
+            if (!item.is_read) {
+                item_text_notification_time.setTypeface(null, Typeface.BOLD)
+                item_text_notification_message.setTypeface(null, Typeface.BOLD)
+            } else {
+                item_text_notification_time.setTypeface(null, Typeface.NORMAL)
+                item_text_notification_message.setTypeface(null, Typeface.NORMAL)
+            }
+
             if (item.created_at != null) {
                 item_text_notification_time.text = OAppUtil.getTimeAgo(OAppUtil.generateStringToTimestamp(item.created_at))
             }
