@@ -11,6 +11,8 @@ import com.app.o.api.location.LocationWithQuerySpec
 import com.app.o.api.login.LoginResponse
 import com.app.o.api.login.LoginSpec
 import com.app.o.api.logout.LogoutResponse
+import com.app.o.api.notification.PushNotificationReadResponse
+import com.app.o.api.notification.PushNotificationReadSpec
 import com.app.o.api.notification.PushNotificationResponse
 import com.app.o.api.post.CreatedPostResponse
 import com.app.o.api.post.LikedPostResponse
@@ -120,5 +122,8 @@ interface APIService {
 
     @POST("notification_user")
     fun getPushNotificationList(@Header("Authorization") tokenAuth: String?): Single<PushNotificationResponse>
+
+    @POST("notification_update_read")
+    fun setPushNotificationAsRead(@Body spec: PushNotificationReadSpec, @Header("Authorization") tokenAuth: String?): Single<PushNotificationReadResponse>
 
 }

@@ -112,6 +112,8 @@
     <string name="text_notification_channel_name">OApp Push Notification</string>
     <string name="text_notification_list_header">Notification List</string>
     <string name="text_header_pick_video_from_gallery">Select Video</string>
+    <string name="text_error_get_notification_list">Failed getting notification list</string>
+    <string name="text_error_set_notification_as_read">Failed updating your notification</string>
 
     <plurals name="numberOfReplies">
         <item quantity="one">%d reply</item>

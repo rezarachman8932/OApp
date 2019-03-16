@@ -49,8 +49,9 @@ class HomeAdapter(val context: Context) : RecyclerView.Adapter<HomeAdapter.ViewH
                 if (item.type == OAppMultimediaUtil.TYPE_IMAGE) {
                     OAppMultimediaUtil.setImage(item.media_url, null, item_image_thumbnail)
                 } else if (item.type == OAppMultimediaUtil.TYPE_VIDEO) {
-                    val videoFrame = OAppMultimediaUtil.generateBitmapFromVideoFrame(item.media_url)
-                    OAppMultimediaUtil.setImage(OAppMultimediaUtil.getImageUriFromBitmap(context, videoFrame).path, null, item_image_thumbnail)
+                    //TODO Fix me
+//                    val videoFrame = OAppMultimediaUtil.generateBitmapFromVideoFrame(item.media_url)
+//                    OAppMultimediaUtil.setImage(OAppMultimediaUtil.getImageUriFromBitmap(context, videoFrame).path, null, item_image_thumbnail)
                 }
 
                 item_image_thumbnail.visibility = View.VISIBLE
