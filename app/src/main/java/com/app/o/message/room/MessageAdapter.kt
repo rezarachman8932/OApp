@@ -64,14 +64,15 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
     inner class ViewHolderOurs(override val containerView: View) : ViewHolder(containerView), LayoutContainer {
         fun bindItem(item: Comment) {
             item_text_comment_ours.text = item.content
-            item_text_comment_ours_time.text = item.time_string
+            item_text_comment_ours_time.text = item.created_at
         }
     }
 
     inner class ViewHolderTheirs(override val containerView: View) : ViewHolder(containerView), LayoutContainer {
         fun bindItem(item: Comment) {
+            item_text_comment_theirs_name.text = item.username
             item_text_comment_theirs.text = item.content
-            item_text_comment_theirs_time.text = item.time_string
+            item_text_comment_theirs_time.text = item.created_at
         }
     }
 
