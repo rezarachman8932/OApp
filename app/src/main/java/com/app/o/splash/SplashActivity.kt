@@ -10,12 +10,12 @@ import com.app.o.notification.page.NotificationListActivity
 import com.app.o.shared.util.OAppNotificationUtil
 import com.app.o.shared.util.OAppUserUtil
 import com.app.o.shared.util.OAppUtil
+import com.app.o.user.activation.RegisterActivationActivity
 import com.app.o.user.front.UserRegisterLoginActivity
 
 class SplashActivity : AppCompatActivity() {
 
     private lateinit var mDelayHandler: Handler
-    private lateinit var mIntent: Intent
 
     private var isFromNotification = false
 
@@ -42,19 +42,32 @@ class SplashActivity : AppCompatActivity() {
 
     private val mRunnable: Runnable = Runnable {
         if (!isFinishing) {
-            mIntent = if (OAppUserUtil.isLoggedIn()) {
-                if (isFromNotification) {
-                    OAppNotificationUtil.setPushNotificationExist(isFromNotification)
+            when (OAppUserUtil.getUserState()) {
+                OAppUserUtil.USER_STATE_LOGGED_IN -> {
+                    val intent = if (isFromNotification) {
+                        OAppNotificationUtil.setPushNotificationExist(isFromNotification)
 
-                    Intent(this, NotificationListActivity::class.java)
-                } else {
-                    Intent(this, HomeActivity::class.java)
+                        Intent(this, NotificationListActivity::class.java)
+                    } else {
+                        Intent(this, HomeActivity::class.java)
+                    }
+
+                    startActivity(intent)
+                    finish()
                 }
-            } else {
-                Intent(this, UserRegisterLoginActivity::class.java)
+
+                OAppUserUtil.USER_STATE_NOT_LOGGED_IN -> {
+                    val intent = Intent(this, UserRegisterLoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+
+                OAppUserUtil.USER_STATE_REGISTRATION_NOT_COMPLETED -> {
+                    val intent = Intent(this, RegisterActivationActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
             }
-            startActivity(mIntent)
-            finish()
         }
     }
 

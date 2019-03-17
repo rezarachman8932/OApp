@@ -40,7 +40,7 @@ class RegisterPresenter(private val view: OAppViewService<RegisterResponse>,
                 }))
     }
 
-    fun validateSignUp(name: String, phoneNumber: String, email: String, username: String, password: String) {
+    fun validateSignUp(name: String, phoneNumber: String, email: String, username: String, password: String, activationType: String) {
         if (name.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || username.isEmpty() || password.isEmpty()) {
             callback.onAllInputEmpty()
             return
@@ -71,7 +71,7 @@ class RegisterPresenter(private val view: OAppViewService<RegisterResponse>,
             return
         }
 
-        val registerSpec = RegisterSpec(name, phoneNumber, email, username, password)
+        val registerSpec = RegisterSpec(name, phoneNumber, email, username, password, activationType)
         doSignUp(registerSpec)
     }
 

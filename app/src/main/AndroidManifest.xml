@@ -77,6 +77,9 @@
         <activity
             android:name=".notification.page.NotificationListActivity"
             android:parentActivityName=".home.HomeActivity"/>
+        <activity
+            android:name=".user.activation.RegisterActivationActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
 
         <service
             android:name=".notification.service.OAppMessagingService">

@@ -6,6 +6,10 @@ import com.app.o.shared.helper.OAppPreferencesHelper
 class OAppUserUtil {
 
     companion object {
+        const val USER_STATE_LOGGED_IN = 98
+        const val USER_STATE_NOT_LOGGED_IN = 99
+        const val USER_STATE_REGISTRATION_NOT_COMPLETED = 100
+
         fun isValidEmail(email: String): Boolean = email.isNotEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
 
         fun getFCMToken(): String? {
@@ -56,12 +60,20 @@ class OAppUserUtil {
             OAppPreferencesHelper.phoneNumber = phone
         }
 
-        fun isLoggedIn(): Boolean {
-            return OAppPreferencesHelper.isLoggedIn
+        fun getUserState(): Int {
+            return OAppPreferencesHelper.userState
         }
 
-        fun setLoggedIn(loggedIn: Boolean) {
-            OAppPreferencesHelper.isLoggedIn = loggedIn
+        fun setUserState(state: Int) {
+            OAppPreferencesHelper.userState = state
+        }
+
+        fun getActivationType(): String? {
+            return OAppPreferencesHelper.registerActivationType
+        }
+
+        fun setActivationType(state: String) {
+            OAppPreferencesHelper.registerActivationType = state
         }
     }
 

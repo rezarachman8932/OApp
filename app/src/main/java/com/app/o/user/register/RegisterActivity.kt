@@ -10,7 +10,7 @@ import com.app.o.api.register.RegisterResponse
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.shared.util.OAppUtil
-import com.app.o.user.login.LoginActivity
+import com.app.o.user.activation.RegisterActivationActivity
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : OAppActivity(),
@@ -45,9 +45,11 @@ class RegisterActivity : OAppActivity(),
 
     override fun onDataResponse(data: RegisterResponse) {
         if (isSuccess(data.status)) {
+            saveActivationUserTokenState("")
+
             showSnackBar(scroll_root_register, getString(R.string.text_success_register))
 
-            val intent = Intent(this, LoginActivity::class.java)
+            val intent = Intent(this, RegisterActivationActivity::class.java)
             startActivity(intent)
             finish()
         } else {
@@ -111,13 +113,37 @@ class RegisterActivity : OAppActivity(),
         val username = input_username.text.toString()
         val password = input_sign_up_password.text.toString()
 
-        presenter.validateSignUp(name, phone, email, username, password)
+        presenter.validateSignUp(name, phone, email, username, password, getActivationType())
     }
 
     private fun setViewListener() {
         icon_password_preview.setOnClickListener(this)
         button_register.setOnClickListener(this)
         input_username.addTextChangedListener(this)
+
+        option_via_email.setOnCheckedChangeListener { _, checked ->
+            if (checked) {
+                option_via_sms.isChecked = false
+            }
+        }
+
+        option_via_sms.setOnCheckedChangeListener { _, checked ->
+            if (checked) {
+                option_via_email.isChecked = false
+            }
+        }
+    }
+
+    private fun getActivationType(): String {
+        lateinit var activationType: String
+
+        if (option_via_email.isChecked) {
+            activationType = "email"
+        } else if (option_via_sms.isChecked) {
+            activationType = "sms"
+        }
+
+        return activationType
     }
 
 }

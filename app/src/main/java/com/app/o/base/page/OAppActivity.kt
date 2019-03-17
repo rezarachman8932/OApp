@@ -200,7 +200,12 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         OAppUserUtil.setUserId(data.user_id)
         OAppUserUtil.setEmail(data.email)
         OAppUserUtil.setPhoneNumber(data.phonenumber)
-        OAppUserUtil.setLoggedIn(true)
+        OAppUserUtil.setUserState(OAppUserUtil.USER_STATE_LOGGED_IN)
+    }
+
+    protected fun saveActivationUserTokenState(activationType: String) {
+        OAppUserUtil.setUserState(OAppUserUtil.USER_STATE_REGISTRATION_NOT_COMPLETED)
+        OAppUserUtil.setActivationType(activationType)
     }
 
     protected fun getDeviceToken(): String? {
@@ -208,7 +213,7 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     }
 
     protected fun removeUserState() {
-        OAppUserUtil.setLoggedIn(false)
+        OAppUserUtil.setUserState(OAppUserUtil.USER_STATE_NOT_LOGGED_IN)
     }
 
     protected fun openMedia() {

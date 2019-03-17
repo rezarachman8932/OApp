@@ -2,6 +2,7 @@ package com.app.o.shared.helper
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.app.o.shared.util.OAppUserUtil
 
 object OAppPreferencesHelper {
 
@@ -10,17 +11,18 @@ object OAppPreferencesHelper {
     private lateinit var preferences: SharedPreferences
 
     private val IS_NOTIFICATION_EXIST = Pair("is_notification_exist", false)
-    private val LOGGED_IN = Pair("is_logged_in", false)
     private val RECEIVED_NOTIFICATION = Pair("should_receive_notification", true)
     private val TOKEN = Pair("token", "")
     private val FCM_TOKEN = Pair("fcm_token", "")
     private val EMAIL = Pair("email", "")
+    private val USER_STATE = Pair("user_state", OAppUserUtil.USER_STATE_NOT_LOGGED_IN)
     private val USER_NAME = Pair("username", "")
     private val USER_ID = Pair("user_id", 0)
     private val RANGE_FINDER = Pair("range_finder", 1)
     private val PHONE_NUMBER = Pair("phone_number", "")
     private val LAST_LOCATION_LONGITUDE = Pair("longitude", "")
     private val LAST_LOCATION_LATITUDE = Pair("latitude", "")
+    private val REGISTER_ACTIVATION_TYPE = Pair("register_activation_type", "")
 
     fun init(context: Context) {
         preferences = context.getSharedPreferences(NAME, MODE)
@@ -44,12 +46,6 @@ object OAppPreferencesHelper {
             it.putBoolean(RECEIVED_NOTIFICATION.first, value)
         }
 
-    var isLoggedIn: Boolean
-        get() = preferences.getBoolean(LOGGED_IN.first, LOGGED_IN.second)
-        set(value) = preferences.edit {
-            it.putBoolean(LOGGED_IN.first, value)
-        }
-
     var tokenAuth: String?
         get() = preferences.getString(TOKEN.first, TOKEN.second)
         set(value) = preferences.edit {
@@ -60,6 +56,12 @@ object OAppPreferencesHelper {
         get() = preferences.getString(EMAIL.first, EMAIL.second)
         set(value) = preferences.edit {
             it.putString(EMAIL.first, value)
+        }
+
+    var userState: Int
+        get() = preferences.getInt(USER_STATE.first, USER_STATE.second)
+        set(value) = preferences.edit {
+            it.putInt(USER_STATE.first, value)
         }
 
     var userId: Int
@@ -102,6 +104,12 @@ object OAppPreferencesHelper {
         get() = preferences.getString(FCM_TOKEN.first, FCM_TOKEN.second)
         set(value) = preferences.edit {
             it.putString(FCM_TOKEN.first, value)
+        }
+
+    var registerActivationType: String?
+        get() = preferences.getString(REGISTER_ACTIVATION_TYPE.first, REGISTER_ACTIVATION_TYPE.second)
+        set(value) = preferences.edit {
+            it.putString(REGISTER_ACTIVATION_TYPE.first, value)
         }
 
 }
