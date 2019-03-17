@@ -1,69 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_root_scroll_activation_token"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <TextView
-        android:id="@+id/text_header_registration_token"
-        android:layout_marginTop="@dimen/dip_24"
-        android:layout_marginLeft="@dimen/dip_16"
-        android:layout_marginRight="@dimen/dip_16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/black" />
-    <FrameLayout
-        android:id="@+id/layout_group_input_registration_token"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dip_16"
-        android:layout_marginLeft="@dimen/dip_16"
-        android:layout_marginRight="@dimen/dip_16"
-        android:background="@drawable/bg_rounded_border"
-        android:padding="@dimen/dip_12">
-        <EditText
-            android:id="@+id/input_registration_token"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/sp_12"
-            android:hint="@string/text_registration_token"
-            android:inputType="text"
-            android:background="@android:color/transparent"/>
-    </FrameLayout>
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dip_8"
-        android:layout_marginLeft="@dimen/dip_16"
-        android:layout_marginRight="@dimen/dip_16"
-        android:orientation="horizontal">
+        android:paddingBottom="@dimen/dip_24"
+        android:orientation="vertical">
         <TextView
+            android:id="@+id/text_header_registration_token"
+            android:layout_marginTop="@dimen/dip_24"
+            android:layout_marginLeft="@dimen/dip_16"
+            android:layout_marginRight="@dimen/dip_16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorGreen"
-            android:textSize="@dimen/sp_12"
-            android:text="@string/text_registration_token_resend_footer"/>
-        <TextView
-            android:id="@+id/text_resend_registration_token"
-            android:layout_width="wrap_content"
+            android:textColor="@android:color/black" />
+        <FrameLayout
+            android:id="@+id/layout_group_input_registration_token"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dip_4"
-            android:layout_marginLeft="@dimen/dip_4"
-            android:textColor="@color/colorGreen"
-            android:textSize="@dimen/sp_12"
-            android:text="@string/text_registration_token_resend_footer_click_here"/>
+            android:layout_marginTop="@dimen/dip_16"
+            android:layout_marginLeft="@dimen/dip_16"
+            android:layout_marginRight="@dimen/dip_16"
+            android:background="@drawable/bg_rounded_border"
+            android:padding="@dimen/dip_12">
+            <EditText
+                android:id="@+id/input_registration_token"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_12"
+                android:hint="@string/text_registration_token"
+                android:inputType="text"
+                android:background="@android:color/transparent"/>
+        </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dip_8"
+            android:layout_marginLeft="@dimen/dip_16"
+            android:layout_marginRight="@dimen/dip_16"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGreen"
+                android:textSize="@dimen/sp_12"
+                android:text="@string/text_registration_token_resend_footer"/>
+            <TextView
+                android:id="@+id/text_resend_registration_token"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dip_4"
+                android:layout_marginLeft="@dimen/dip_4"
+                android:textColor="@color/colorGreen"
+                android:textSize="@dimen/sp_12"
+                android:text="@string/text_registration_token_resend_footer_click_here"/>
+        </LinearLayout>
+        <Button
+            android:id="@+id/button_verify_registration_token"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rounded_soft_green"
+            android:layout_marginTop="@dimen/dip_24"
+            android:layout_marginLeft="@dimen/dip_16"
+            android:layout_marginRight="@dimen/dip_16"
+            android:text="@string/text_label_verify"
+            android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            app:elevation="@dimen/dip_4"/>
     </LinearLayout>
-    <Button
-        android:id="@+id/button_verify_registration_token"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_rounded_soft_green"
-        android:layout_marginTop="@dimen/dip_24"
-        android:layout_marginLeft="@dimen/dip_16"
-        android:layout_marginRight="@dimen/dip_16"
-        android:text="@string/text_label_verify"
-        android:textColor="@android:color/white"
-        android:textAllCaps="false"
-        app:elevation="@dimen/dip_4"/>
-</LinearLayout>
+</ScrollView>

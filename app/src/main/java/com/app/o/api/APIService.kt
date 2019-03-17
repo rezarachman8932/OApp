@@ -1,5 +1,7 @@
 package com.app.o.api
 
+import com.app.o.api.activation.ActivationTokenResponse
+import com.app.o.api.activation.ActivationTokenSpec
 import com.app.o.api.comment.CommentResponse
 import com.app.o.api.comment.CommentSpec
 import com.app.o.api.comment.SubmitCommentResponse
@@ -125,5 +127,8 @@ interface APIService {
 
     @POST("notification_update_read")
     fun setPushNotificationAsRead(@Body spec: PushNotificationReadSpec, @Header("Authorization") tokenAuth: String?): Single<PushNotificationReadResponse>
+
+    @POST("user_activation")
+    fun activateUserToken(@Body spec: ActivationTokenSpec, @Header("Authorization") tokenAuth: String?): Single<ActivationTokenResponse>
 
 }

@@ -124,6 +124,7 @@
     <string name="text_registration_option_sms">SMS</string>
     <string name="text_registration_token_resend_footer">Still have not got your registration token?</string>
     <string name="text_registration_token_resend_footer_click_here"><u>Click here</u>.</string>
+    <string name="text_registration_token_validation_failed">Failed verifying your token</string>
 
     <plurals name="numberOfReplies">
         <item quantity="one">%d reply</item>
