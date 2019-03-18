@@ -6,4 +6,4 @@ data class RegisterSpec (
         val email: String,
         val username: String,
         val password: String,
-        val activation_type: String)
+        val action_type: String)

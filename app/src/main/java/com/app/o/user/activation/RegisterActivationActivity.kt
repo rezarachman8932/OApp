@@ -39,6 +39,8 @@ class RegisterActivationActivity : OAppActivity(), OAppViewService<ActivationTok
 
     override fun onDataResponse(data: ActivationTokenResponse) {
         if (isSuccess(data.status)) {
+            removeUserState()
+
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()

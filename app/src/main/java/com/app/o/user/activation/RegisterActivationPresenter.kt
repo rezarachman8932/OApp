@@ -16,7 +16,7 @@ class RegisterActivationPresenter(private val view: OAppViewService<ActivationTo
                                   private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
 
     fun activateAccount(activationTokenSpec: ActivationTokenSpec) {
-        compositeDisposable.add(APIRepository.create().activateUserToken(activationTokenSpec, getHeaderAuth())
+        compositeDisposable.add(APIRepository.create().activateUserToken(activationTokenSpec)
                 .subscribeOn(Schedulers.io())
                 .compose {
                     it.observeOn(AndroidSchedulers.mainThread())

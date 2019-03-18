@@ -129,6 +129,6 @@ interface APIService {
     fun setPushNotificationAsRead(@Body spec: PushNotificationReadSpec, @Header("Authorization") tokenAuth: String?): Single<PushNotificationReadResponse>
 
     @POST("user_activation")
-    fun activateUserToken(@Body spec: ActivationTokenSpec, @Header("Authorization") tokenAuth: String?): Single<ActivationTokenResponse>
+    fun activateUserToken(@Body spec: ActivationTokenSpec): Single<ActivationTokenResponse>
 
 }
