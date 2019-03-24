@@ -18,10 +18,15 @@
         android:layout_marginLeft="@dimen/dip_16"
         android:layout_marginRight="@dimen/dip_16"
         android:layout_marginBottom="@dimen/dip_16">
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/button_google_sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
         <Button
             android:id="@+id/button_sign_up"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dip_8"
             android:background="@drawable/bg_rounded_soft_green"
             android:text="@string/text_sign_up"
             android:textColor="@android:color/white"
