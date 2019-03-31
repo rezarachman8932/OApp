@@ -1,8 +1,8 @@
-package com.app.o.user.login
+package com.app.o.user.front
 
 import com.app.o.api.APIRepository
 import com.app.o.api.login.account.LoginResponse
-import com.app.o.api.login.account.LoginSpec
+import com.app.o.api.login.third_party.LoginSocialMediaSpec
 import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppViewService
 import com.app.o.shared.util.OAppUtil
@@ -12,12 +12,13 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
-class LoginPresenter(private val view: OAppViewService<LoginResponse>,
-                     private val callback: LoginCallback,
-                     private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
+class UserRegisterLoginPresenter(private val view: OAppViewService<LoginResponse>,
+                                 private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
 
-    private fun doLogin(loginSpec: LoginSpec) {
-        compositeDisposable.add(APIRepository.create().login(loginSpec)
+    fun doLoginWithThirdParty(email: String?, name:String?, password: String, loginType: String) {
+        val spec = LoginSocialMediaSpec(email, name, password, loginType, getFCMToken())
+
+        compositeDisposable.add(APIRepository.create().loginWithThirdParty(spec)
                 .subscribeOn(Schedulers.io())
                 .compose {
                     it.observeOn(AndroidSchedulers.mainThread())
@@ -38,26 +39,6 @@ class LoginPresenter(private val view: OAppViewService<LoginResponse>,
                     view.onDataResponse(it)
                     view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
                 }))
-    }
-
-    fun validateLogin(username: String, password: String) {
-        if (username.isEmpty() || password.isEmpty()) {
-            callback.onEmptyInput()
-            return
-        }
-
-        if (username.length < OAppUtil.MINIMUM_CHARS) {
-            callback.onUsernameNotComplete()
-            return
-        }
-
-        if (password.length < OAppUtil.MINIMUM_CHARS) {
-            callback.onPasswordNotComplete()
-            return
-        }
-
-        val loginSpec = LoginSpec(username, password, getFCMToken())
-        doLogin(loginSpec)
     }
 
 }

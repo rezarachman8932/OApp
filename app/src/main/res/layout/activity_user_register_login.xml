@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_register_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
@@ -22,6 +23,12 @@
             android:id="@+id/button_google_sign_in"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/button_facebook_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dip_8" />
         <Button
             android:id="@+id/button_sign_up"
             android:layout_width="match_parent"

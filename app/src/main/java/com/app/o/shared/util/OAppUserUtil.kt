@@ -56,7 +56,7 @@ class OAppUserUtil {
             return OAppPreferencesHelper.phoneNumber
         }
 
-        fun setPhoneNumber(phone: String) {
+        fun setPhoneNumber(phone: String?) {
             OAppPreferencesHelper.phoneNumber = phone
         }
 

@@ -18,7 +18,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import com.app.o.R
-import com.app.o.api.login.LoginResponse
+import com.app.o.api.login.account.LoginResponse
 import com.app.o.shared.util.OAppUserUtil
 import com.app.o.shared.util.OAppUtil
 import com.fxn.pix.Pix

@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.app.o.R
-import com.app.o.api.login.LoginResponse
+import com.app.o.api.login.account.LoginResponse
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.home.HomeActivity

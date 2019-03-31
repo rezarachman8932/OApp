@@ -1,4 +1,9 @@
 <resources>
+    <!-- Facebook -->
+    <string name="facebook_app_id">947420882011426</string>
+    <string name="fb_login_protocol_scheme">fb947420882011426</string>
+
+    <!-- Common -->
     <string name="app_name">OApp</string>
     <string name="text_loading">Please Wait</string>
     <string name="text_loading_subtitle">Preparing content for you</string>
@@ -126,6 +131,7 @@
     <string name="text_registration_token_resend_footer_click_here"><u>Click here</u>.</string>
     <string name="text_registration_token_validation_failed">Failed verifying your token</string>
 
+    <!-- Plural -->
     <plurals name="numberOfReplies">
         <item quantity="one">%d reply</item>
         <item quantity="other">%d replies</item>

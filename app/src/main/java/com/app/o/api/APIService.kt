@@ -10,8 +10,9 @@ import com.app.o.api.detail.DetailSpec
 import com.app.o.api.home.HomeResponse
 import com.app.o.api.location.LocationSpec
 import com.app.o.api.location.LocationWithQuerySpec
-import com.app.o.api.login.LoginResponse
-import com.app.o.api.login.LoginSpec
+import com.app.o.api.login.account.LoginResponse
+import com.app.o.api.login.account.LoginSpec
+import com.app.o.api.login.third_party.LoginSocialMediaSpec
 import com.app.o.api.logout.LogoutResponse
 import com.app.o.api.notification.PushNotificationReadResponse
 import com.app.o.api.notification.PushNotificationReadSpec
@@ -41,7 +42,7 @@ import retrofit2.http.*
 interface APIService {
 
     @POST("login")
-    fun login(@Body spec: LoginSpec, @Header("Authorization") tokenAuth: String?): Single<LoginResponse>
+    fun login(@Body spec: LoginSpec): Single<LoginResponse>
 
     @POST("logout")
     fun logout(@Header("Authorization") tokenAuth: String?): Single<LogoutResponse>
@@ -130,5 +131,8 @@ interface APIService {
 
     @POST("user_activation")
     fun activateUserToken(@Body spec: ActivationTokenSpec): Single<ActivationTokenResponse>
+
+    @POST("oauth")
+    fun loginWithThirdParty(@Body spec: LoginSocialMediaSpec): Single<LoginResponse>
 
 }
