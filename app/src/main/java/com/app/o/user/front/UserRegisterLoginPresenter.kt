@@ -15,7 +15,7 @@ import io.reactivex.schedulers.Schedulers
 class UserRegisterLoginPresenter(private val view: OAppViewService<LoginResponse>,
                                  private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
 
-    fun doLoginWithThirdParty(email: String?, name:String?, password: String, loginType: String) {
+    fun doLoginWithThirdParty(email: String?, name:String?, password: String?, loginType: String) {
         val spec = LoginSocialMediaSpec(email, name, password, loginType, getFCMToken())
 
         compositeDisposable.add(APIRepository.create().loginWithThirdParty(spec)

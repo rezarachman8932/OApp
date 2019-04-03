@@ -21,13 +21,22 @@ import com.app.o.R
 import com.app.o.api.login.account.LoginResponse
 import com.app.o.shared.util.OAppUserUtil
 import com.app.o.shared.util.OAppUtil
+import com.facebook.CallbackManager
+import com.facebook.login.LoginManager
 import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import io.reactivex.disposables.CompositeDisposable
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
 abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
+
+    // Google
+    protected lateinit var mGoogleSignInClient: GoogleSignInClient
+
+    // Facebook
+    protected lateinit var mCallbackManager: CallbackManager
 
     protected lateinit var mCompositeDisposable: CompositeDisposable
 
@@ -214,6 +223,22 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 
     protected fun removeUserState() {
         OAppUserUtil.setUserState(OAppUserUtil.USER_STATE_NOT_LOGGED_IN)
+    }
+
+    protected fun setLoginTypeFromThirdParty(loginType: String?) {
+        OAppUserUtil.setThirdPartyLoginType(loginType)
+    }
+
+    protected fun logoutThirdPartyState() {
+        val loginType = OAppUserUtil.getThirdPartyLoginType()
+
+        if (!loginType.isNullOrEmpty()) {
+            if (loginType == "facebook") {
+                LoginManager.getInstance().logOut()
+            } else if (loginType == "google") {
+                mGoogleSignInClient.signOut()
+            }
+        }
     }
 
     protected fun openMedia() {

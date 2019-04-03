@@ -1,7 +1,7 @@
 <resources>
     <!-- Facebook -->
-    <string name="facebook_app_id">947420882011426</string>
-    <string name="fb_login_protocol_scheme">fb947420882011426</string>
+    <string name="facebook_app_id">573516649796516</string>
+    <string name="fb_login_protocol_scheme">fb573516649796516</string>
 
     <!-- Common -->
     <string name="app_name">OApp</string>

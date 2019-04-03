@@ -23,6 +23,7 @@ object OAppPreferencesHelper {
     private val LAST_LOCATION_LONGITUDE = Pair("longitude", "")
     private val LAST_LOCATION_LATITUDE = Pair("latitude", "")
     private val REGISTER_ACTIVATION_TYPE = Pair("register_activation_type", "")
+    private val THIRD_PARTY_LOGIN_TYPE = Pair("third_party_login_type", "")
 
     fun init(context: Context) {
         preferences = context.getSharedPreferences(NAME, MODE)
@@ -110,6 +111,12 @@ object OAppPreferencesHelper {
         get() = preferences.getString(REGISTER_ACTIVATION_TYPE.first, REGISTER_ACTIVATION_TYPE.second)
         set(value) = preferences.edit {
             it.putString(REGISTER_ACTIVATION_TYPE.first, value)
+        }
+
+    var thirdPartyLoginType: String?
+        get() = preferences.getString(THIRD_PARTY_LOGIN_TYPE.first, THIRD_PARTY_LOGIN_TYPE.second)
+        set(value) = preferences.edit {
+            it.putString(THIRD_PARTY_LOGIN_TYPE.first, value)
         }
 
 }

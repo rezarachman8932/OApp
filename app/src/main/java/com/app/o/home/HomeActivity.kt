@@ -158,6 +158,7 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
 
         R.id.action_sub_menu_logout -> {
             presenter.logout()
+            logoutThirdPartyState()
             true
         }
 

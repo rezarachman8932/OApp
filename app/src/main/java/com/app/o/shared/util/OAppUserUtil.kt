@@ -75,6 +75,14 @@ class OAppUserUtil {
         fun setActivationType(state: String) {
             OAppPreferencesHelper.registerActivationType = state
         }
+
+        fun getThirdPartyLoginType(): String? {
+            return OAppPreferencesHelper.thirdPartyLoginType
+        }
+
+        fun setThirdPartyLoginType(type: String?) {
+            OAppPreferencesHelper.thirdPartyLoginType = type
+        }
     }
 
 }

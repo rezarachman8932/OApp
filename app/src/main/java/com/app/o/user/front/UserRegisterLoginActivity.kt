@@ -8,21 +8,25 @@ import com.app.o.api.login.account.LoginResponse
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.home.HomeActivity
+import com.app.o.shared.util.OAppUserUtil
+import com.app.o.shared.util.OAppUtil
 import com.app.o.user.login.LoginActivity
 import com.app.o.user.register.RegisterActivity
+import com.facebook.*
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import kotlinx.android.synthetic.main.activity_user_register_login.*
+import java.util.*
 
 class UserRegisterLoginActivity : OAppActivity(), View.OnClickListener, OAppViewService<LoginResponse> {
 
-    private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var presenter: UserRegisterLoginPresenter
+    private lateinit var loginType: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +34,7 @@ class UserRegisterLoginActivity : OAppActivity(), View.OnClickListener, OAppView
         supportActionBar?.hide()
 
         initGoogleSignIn()
+        initFacebookSignIn()
         initView()
 
         presenter = UserRegisterLoginPresenter(this, mCompositeDisposable)
@@ -40,7 +45,9 @@ class UserRegisterLoginActivity : OAppActivity(), View.OnClickListener, OAppView
 
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleSignInResult(task)
+            handleSignInGoogleResult(task)
+        } else {
+            mCallbackManager.onActivityResult(requestCode, resultCode, data)
         }
     }
 
@@ -69,6 +76,12 @@ class UserRegisterLoginActivity : OAppActivity(), View.OnClickListener, OAppView
 
     override fun hideLoading(statusCode: Int) {
         shouldShowProgress(false)
+
+        if (statusCode == OAppUtil.ON_FINISH_FAILED) {
+            if (!OAppUserUtil.getThirdPartyLoginType().isNullOrEmpty()) {
+                setLoginTypeFromThirdParty(null)
+            }
+        }
     }
 
     override fun onDataResponse(data: LoginResponse) {
@@ -91,6 +104,21 @@ class UserRegisterLoginActivity : OAppActivity(), View.OnClickListener, OAppView
         mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
     }
 
+    private fun initFacebookSignIn() {
+        mCallbackManager = CallbackManager.Factory.create()
+
+        button_facebook_login.setReadPermissions(Arrays.asList("public_profile", "email"))
+        button_facebook_login.registerCallback(mCallbackManager, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(loginResult: LoginResult) {
+                handleSignInFacebookResult(loginResult.accessToken)
+            }
+
+            override fun onCancel() {}
+
+            override fun onError(exception: FacebookException) {}
+        })
+    }
+
     private fun initView() {
         button_google_sign_in.setOnClickListener(this)
         button_google_sign_in.setSize(SignInButton.SIZE_STANDARD)
@@ -99,15 +127,40 @@ class UserRegisterLoginActivity : OAppActivity(), View.OnClickListener, OAppView
         layout_login_text.setOnClickListener(this)
     }
 
-    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
+    private fun handleSignInGoogleResult(completedTask: Task<GoogleSignInAccount>) {
         try {
+            loginType = "google"
+            setLoginTypeFromThirdParty(loginType)
+
             val account = completedTask.getResult(ApiException::class.java)
             presenter.doLoginWithThirdParty(
                     account?.email,
                     account?.displayName,
-                    "password",
-                    "google")
+                    account?.id,
+                    loginType)
         } catch (e: ApiException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun handleSignInFacebookResult(accessToken: AccessToken) {
+        try {
+            loginType = "facebook"
+            setLoginTypeFromThirdParty(loginType)
+
+            val request = GraphRequest.newMeRequest(accessToken) { `object`, _ ->
+                presenter.doLoginWithThirdParty(
+                        `object`.getString("email"),
+                        `object`.getString("name"),
+                        `object`.getString("id"),
+                        "facebook")
+            }
+
+            val parameters = Bundle()
+            parameters.putString("fields", "id,name,email")
+            request.parameters = parameters
+            request.executeAsync()
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
