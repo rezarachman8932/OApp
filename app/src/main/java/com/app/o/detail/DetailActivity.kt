@@ -24,6 +24,7 @@ import com.app.o.shared.util.OAppMultimediaUtil
 import com.app.o.shared.util.OAppUserUtil
 import com.app.o.shared.util.OAppUtil
 import com.app.o.user.blocked.UnblockedAccountCallback
+import com.app.o.user.detail.UserProfileActivity
 import kotlinx.android.synthetic.main.activity_detail.*
 
 class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, UnblockedAccountCallback, DetailInteractionCallback {
@@ -152,6 +153,12 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
                 video_detail_thumb.requestFocus()
                 video_detail_thumb.start()
             }
+        }
+
+        text_detail_name.setOnClickListener {
+            val intent = Intent(this, UserProfileActivity::class.java)
+            intent.putExtra(USER_ID, userId)
+            startActivity(intent)
         }
 
         icon_detail_post_new_comment.setOnClickListener {
