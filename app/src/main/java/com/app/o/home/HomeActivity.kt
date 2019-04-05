@@ -256,9 +256,17 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
     private fun setData(data: List<HomePostItem>, status: Int) {
         if (isSuccess(status)) {
             if (data.isNotEmpty()) {
+                val filteredData : MutableList<HomePostItem> = mutableListOf()
+
+                data.forEach {
+                    if (!it.is_blocked_user) {
+                        filteredData.add(it)
+                    }
+                }
+
                 if (isFirstTimeLoad) {
                     adapter = HomeAdapter(this)
-                    adapter.setData(data)
+                    adapter.setData(filteredData)
                     adapter.setListener {
                         val intent = Intent(this, DetailActivity::class.java)
                         intent.putExtra(POST_ID, it.post_id.toString())
@@ -271,7 +279,7 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
 
                     isFirstTimeLoad = false
                 } else {
-                    updateData(data)
+                    updateData(filteredData)
                 }
 
                 layout_group_home_empty_state.visibility = View.GONE
