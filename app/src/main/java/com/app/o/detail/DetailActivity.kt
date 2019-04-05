@@ -37,6 +37,7 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
     private lateinit var mediaController: MediaController
 
     private var isLoaded = false
+    private var hasAlreadyBlocked = false
     private var isInteractionLoading = false
     private var isLoveCountExist = false
     private var loveCount: Int = 0
@@ -66,8 +67,12 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         if (isLoaded) {
-            if (userId != OAppUserUtil.getUserId()) {
+            if (userId != OAppUserUtil.getUserId() && !hasAlreadyBlocked) {
                 menuInflater.inflate(R.menu.detail_menu, menu)
+            } else {
+                if (menu?.findItem(R.id.action_block_account) != null) {
+                    menu.removeItem(R.id.action_block_account)
+                }
             }
         }
 
@@ -98,16 +103,30 @@ class DetailActivity : OAppActivity(), OAppViewService<DetailResponseZip>, Unblo
     }
 
     override fun onProgress() {
-        //TODO Show progress
+        shouldShowProgress(
+                true,
+                getString(R.string.text_loading_dialog_title),
+                getString(R.string.text_block_user_progress))
     }
 
     override fun onSucceed(response: UserBlockingResponse) {
-        //TODO Hide progress
+        hasAlreadyBlocked = true
+
+        invalidateOptionsMenu()
+
+        shouldShowProgress(
+                false,
+                getString(R.string.text_loading_dialog_title),
+                getString(R.string.text_block_user_progress))
+        showSnackBar(scroll_root_detail_page, getString(R.string.text_block_user_success))
     }
 
     override fun onFailed() {
-        //TODO Hide progress
-        //TODO Show snackBar
+        shouldShowProgress(
+                false,
+                getString(R.string.text_loading_dialog_title),
+                getString(R.string.text_block_user_progress))
+        showSnackBar(scroll_root_detail_page, getString(R.string.text_block_user_failed))
     }
 
     override fun onIntegrationFailed() {

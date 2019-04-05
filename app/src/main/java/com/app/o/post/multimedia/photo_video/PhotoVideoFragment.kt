@@ -177,21 +177,23 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
             val requestLatitude = createPartFromString(OAppUtil.getLatitude()!!)
             val requestType = getRequestType(index!!)
 
-            if (uriValues.size > 0) {
-                for (i in 0 until uriValues.size) {
-                    val body = OAppMultimediaUtil.prepareFileImagePart(
-                            "media[" + i.toString() + "]",
-                            uriBitmapList[i],
-                            uriValues[i])
+            if (index == INDEX_IMAGE) {
+                if (uriValues.size > 0) {
+                    for (i in 0 until uriValues.size) {
+                        val body = OAppMultimediaUtil.prepareFileImagePart(
+                                "media[" + i.toString() + "]",
+                                uriBitmapList[i],
+                                uriValues[i])
+                        presenter.files.add(body)
+                    }
+                }
+            } else {
+                if (!uriValue.path.isNullOrEmpty()) {
+                    val body = OAppMultimediaUtil.prepareFileVideoPart(
+                            "media[0]",
+                            OAppMultimediaUtil.getVideoPath(uriValue, activity!!.parent)!!)
                     presenter.files.add(body)
                 }
-            }
-
-            if (!uriValue.path.isNullOrEmpty()) {
-                val body = OAppMultimediaUtil.prepareFileVideoPart(
-                        "media[0]",
-                        OAppMultimediaUtil.getVideoPath(uriValue, activity!!.parent)!!)
-                presenter.files.add(body)
             }
 
             if (!isSubmittingItem) {

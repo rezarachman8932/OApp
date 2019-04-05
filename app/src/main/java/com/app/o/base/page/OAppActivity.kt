@@ -191,6 +191,29 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         }
     }
 
+    protected fun shouldShowProgress(showed: Boolean, title: String, subtitle: String) {
+        if (showed) {
+            val loadingProgress = AlertDialog.Builder(this, R.style.CustomDialogTheme)
+            with(loadingProgress) {
+                setTitle(title)
+                setMessage(subtitle)
+            }
+
+            mAlert = loadingProgress.create()
+            with(mAlert) {
+                show()
+                window?.attributes
+            }
+
+            val textTitle = mAlert.findViewById<TextView>(android.R.id.title)
+            val textMessage = mAlert.findViewById<TextView>(android.R.id.message)
+            textTitle?.textSize = 12f
+            textMessage?.textSize = 12f
+        } else {
+            mAlert.dismiss()
+        }
+    }
+
     protected fun isSuccess(status: Int): Boolean {
         return (status == OAppUtil.SUCCESS_STATUS)
     }
