@@ -17,6 +17,9 @@ import android.provider.MediaStore
 import android.app.Activity
 import android.content.Context
 import android.net.Uri
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.support.media.ExifInterface
 
 class OAppMultimediaUtil {
 
@@ -113,6 +116,29 @@ class OAppMultimediaUtil {
             } else {
                 uri.path
             }
+        }
+
+        fun getBitmapCorrectOrientation(fileName: String) : Bitmap {
+            val bounds = BitmapFactory.Options()
+            bounds.inJustDecodeBounds = true
+            BitmapFactory.decodeFile(fileName, bounds)
+
+            val opts = BitmapFactory.Options()
+            val bitmap = BitmapFactory.decodeFile(fileName, opts)
+
+            val exif = ExifInterface(fileName)
+            val orientString = exif.getAttribute(ExifInterface.TAG_ORIENTATION)
+            val orientation = if (orientString != null) Integer.parseInt(orientString) else ExifInterface.ORIENTATION_NORMAL
+
+            var rotationAngle = 0
+            if (orientation == ExifInterface.ORIENTATION_ROTATE_90) rotationAngle = 90
+            if (orientation == ExifInterface.ORIENTATION_ROTATE_180) rotationAngle = 180
+            if (orientation == ExifInterface.ORIENTATION_ROTATE_270) rotationAngle = 270
+
+            val matrix = Matrix()
+            matrix.setRotate(rotationAngle.toFloat(), (bitmap.width / 2).toFloat(), (bitmap.height / 2).toFloat())
+
+            return Bitmap.createBitmap(bitmap, 0, 0, bounds.outWidth, bounds.outHeight, matrix, true)
         }
     }
 

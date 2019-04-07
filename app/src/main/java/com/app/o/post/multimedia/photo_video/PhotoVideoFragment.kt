@@ -1,7 +1,6 @@
 package com.app.o.post.multimedia.photo_video
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.view.ViewPager
@@ -130,7 +129,7 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
         try {
             uriValues = values
             uriValues.forEach {
-                uriBitmapList.add(BitmapFactory.decodeFile(it))
+                uriBitmapList.add(OAppMultimediaUtil.getBitmapCorrectOrientation(it))
             }
 
             selectedImageAdapter = SelectedImageAdapter(fragmentManager!!, uriValues)

@@ -1,6 +1,5 @@
 package com.app.o.post.multimedia.photo_video
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.app.o.R
+import com.app.o.shared.util.OAppMultimediaUtil
 
 class SelectedImageFragment : Fragment()  {
 
@@ -34,9 +34,8 @@ class SelectedImageFragment : Fragment()  {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_pager_thumb_detail, container, false)
-
         val imageDetailThumb = view.findViewById(R.id.item_image_detail_thumbnail) as ImageView
-        val bitmap = BitmapFactory.decodeFile(imageUrl)
+        val bitmap = OAppMultimediaUtil.getBitmapCorrectOrientation(imageUrl)
 
         imageDetailThumb.setImageBitmap(bitmap)
 

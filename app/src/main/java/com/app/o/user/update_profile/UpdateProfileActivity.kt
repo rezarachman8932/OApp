@@ -1,7 +1,6 @@
 package com.app.o.user.update_profile
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
 import com.app.o.R
@@ -110,7 +109,7 @@ class UpdateProfileActivity : OAppActivity(),
         try {
             if (values.size > 0) {
                 uriImageProfile = values[0]
-                bitmapImageProfile = BitmapFactory.decodeFile(uriImageProfile)
+                bitmapImageProfile = OAppMultimediaUtil.getBitmapCorrectOrientation(uriImageProfile)
 
                 image_user_profile.setImageBitmap(bitmapImageProfile)
 
