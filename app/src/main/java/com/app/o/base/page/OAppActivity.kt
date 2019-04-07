@@ -19,26 +19,25 @@ import android.widget.EditText
 import android.widget.TextView
 import com.app.o.R
 import com.app.o.api.login.account.LoginResponse
+import com.app.o.home.HomePresenter
 import com.app.o.shared.util.OAppUserUtil
 import com.app.o.shared.util.OAppUtil
 import com.facebook.CallbackManager
 import com.facebook.login.LoginManager
 import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.GoogleApiClient
 import io.reactivex.disposables.CompositeDisposable
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
 abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
 
-    // Google
-    protected lateinit var mGoogleSignInClient: GoogleSignInClient
-
-    // Facebook
     protected lateinit var mCallbackManager: CallbackManager
-
     protected lateinit var mCompositeDisposable: CompositeDisposable
+    protected lateinit var mGoogleAPIClient: GoogleApiClient
 
     private lateinit var mLocationManager: LocationManager
     private lateinit var mAlert: AlertDialog
@@ -58,6 +57,9 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 
         const val SELECTED_COMMENT = "selectedComment"
         const val BUNDLE = "bundle"
+
+        const val LOGIN_TYPE_GOOGLE = "google"
+        const val LOGIN_TYPE_FACEBOOK = "facebook"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -252,20 +254,45 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         OAppUserUtil.setThirdPartyLoginType(loginType)
     }
 
-    protected fun logoutThirdPartyState() {
+    protected fun logoutThirdPartyState(homePresenter: HomePresenter) {
         val loginType = OAppUserUtil.getThirdPartyLoginType()
 
         if (!loginType.isNullOrEmpty()) {
-            if (loginType == "facebook") {
-                LoginManager.getInstance().logOut()
-            } else if (loginType == "google") {
-                mGoogleSignInClient.signOut()
+            when (loginType) {
+                LOGIN_TYPE_FACEBOOK -> signOutFacebook(homePresenter)
+                LOGIN_TYPE_GOOGLE -> signOutGoogle(homePresenter)
             }
+        } else {
+            homePresenter.logout()
         }
     }
 
     protected fun openMedia() {
         Pix.start(this, PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS)
+    }
+
+    protected fun initSignInGoogle() {
+        val googleSignInOption = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build()
+
+        mGoogleAPIClient = GoogleApiClient.Builder(this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOption)
+                .build()
+        mGoogleAPIClient.connect()
+    }
+
+    private fun signOutGoogle(homePresenter: HomePresenter) {
+        Auth.GoogleSignInApi.signOut(mGoogleAPIClient).setResultCallback {
+            if (it.isSuccess) {
+                homePresenter.logout()
+            }
+        }
+    }
+
+    private fun signOutFacebook(homePresenter: HomePresenter) {
+        LoginManager.getInstance().logOut()
+        homePresenter.logout()
     }
 
     open fun onSuccessGetImage(values: ArrayList<String>) {}

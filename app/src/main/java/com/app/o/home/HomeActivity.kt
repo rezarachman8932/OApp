@@ -57,6 +57,12 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
         presenter = HomePresenter(this, this, this, mCompositeDisposable)
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        initSignInGoogle()
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -157,8 +163,7 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
         }
 
         R.id.action_sub_menu_logout -> {
-            presenter.logout()
-            logoutThirdPartyState()
+            logoutThirdPartyState(presenter)
             true
         }
 

@@ -187,7 +187,7 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
                         presenter.files.add(body)
                     }
                 }
-            } else {
+            } else if (index == INDEX_VIDEO) {
                 if (!uriValue.path.isNullOrEmpty()) {
                     val body = OAppMultimediaUtil.prepareFileVideoPart(
                             "media[0]",

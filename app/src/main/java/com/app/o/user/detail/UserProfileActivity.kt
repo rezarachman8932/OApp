@@ -1,14 +1,16 @@
 package com.app.o.user.detail
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.StaggeredGridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import android.view.View
 import com.app.o.R
 import com.app.o.api.user.profile.UserProfileResponseZip
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
+import com.app.o.detail.DetailActivity
 import com.app.o.home.HomeAdapter
 import com.app.o.shared.util.OAppMultimediaUtil
 import com.app.o.shared.util.OAppUtil
@@ -71,7 +73,12 @@ class UserProfileActivity : OAppActivity(), OAppViewService<UserProfileResponseZ
         if (data.homeResponse.data.isNotEmpty()) {
             adapter = HomeAdapter(this)
             adapter.setData(data.homeResponse.data)
-            adapter.setListener {}
+            adapter.setListener {
+                val intent = Intent(this, DetailActivity::class.java)
+                intent.putExtra(POST_ID, it.post_id.toString())
+                intent.putExtra(USER_ID, it.user_id)
+                startActivity(intent)
+            }
 
             recycler_view_posted_user.adapter = adapter
             adapter.notifyDataSetChanged()
@@ -88,7 +95,7 @@ class UserProfileActivity : OAppActivity(), OAppViewService<UserProfileResponseZ
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.text_label_header_user_profile)
 
-        val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        val layoutManager = LinearLayoutManager(this)
         recycler_view_posted_user.layoutManager = layoutManager
         recycler_view_posted_user.setHasFixedSize(true)
         recycler_view_posted_user.itemAnimator = DefaultItemAnimator()

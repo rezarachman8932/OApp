@@ -14,9 +14,9 @@ import com.app.o.user.login.LoginActivity
 import com.app.o.user.register.RegisterActivity
 import com.facebook.*
 import com.facebook.login.LoginResult
+import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
@@ -26,14 +26,13 @@ import java.util.*
 class UserRegisterLoginActivity : OAppActivity(), View.OnClickListener, OAppViewService<LoginResponse> {
 
     private lateinit var presenter: UserRegisterLoginPresenter
-    private lateinit var loginType: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_register_login)
         supportActionBar?.hide()
 
-        initGoogleSignIn()
+        initSignInGoogle()
         initFacebookSignIn()
         initView()
 
@@ -64,7 +63,7 @@ class UserRegisterLoginActivity : OAppActivity(), View.OnClickListener, OAppView
             }
 
             R.id.button_google_sign_in -> {
-                val signInIntent = mGoogleSignInClient.signInIntent
+                val signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleAPIClient)
                 startActivityForResult(signInIntent, RC_SIGN_IN)
             }
         }
@@ -96,14 +95,6 @@ class UserRegisterLoginActivity : OAppActivity(), View.OnClickListener, OAppView
         }
     }
 
-    private fun initGoogleSignIn() {
-        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build()
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions)
-    }
-
     private fun initFacebookSignIn() {
         mCallbackManager = CallbackManager.Factory.create()
 
@@ -129,15 +120,14 @@ class UserRegisterLoginActivity : OAppActivity(), View.OnClickListener, OAppView
 
     private fun handleSignInGoogleResult(completedTask: Task<GoogleSignInAccount>) {
         try {
-            loginType = "google"
-            setLoginTypeFromThirdParty(loginType)
+            setLoginTypeFromThirdParty(LOGIN_TYPE_GOOGLE)
 
             val account = completedTask.getResult(ApiException::class.java)
             presenter.doLoginWithThirdParty(
                     account?.email,
                     account?.displayName,
                     account?.id,
-                    loginType)
+                    LOGIN_TYPE_GOOGLE)
         } catch (e: ApiException) {
             e.printStackTrace()
         }
@@ -145,15 +135,14 @@ class UserRegisterLoginActivity : OAppActivity(), View.OnClickListener, OAppView
 
     private fun handleSignInFacebookResult(accessToken: AccessToken) {
         try {
-            loginType = "facebook"
-            setLoginTypeFromThirdParty(loginType)
+            setLoginTypeFromThirdParty(LOGIN_TYPE_FACEBOOK)
 
             val request = GraphRequest.newMeRequest(accessToken) { `object`, _ ->
                 presenter.doLoginWithThirdParty(
                         `object`.getString("email"),
                         `object`.getString("name"),
                         `object`.getString("id"),
-                        "facebook")
+                        LOGIN_TYPE_FACEBOOK)
             }
 
             val parameters = Bundle()
