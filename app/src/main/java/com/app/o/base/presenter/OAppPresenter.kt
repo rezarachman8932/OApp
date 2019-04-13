@@ -9,7 +9,7 @@ abstract class OAppPresenter {
         return OAppUtil.generateJWTToken(OAppUserUtil.getUserName(), getToken())
     }
 
-    fun getToken(): String? {
+    private fun getToken(): String? {
         return OAppUserUtil.getToken()
     }
 

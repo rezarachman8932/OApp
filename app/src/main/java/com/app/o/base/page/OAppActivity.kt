@@ -45,7 +45,7 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     private val mPermissions = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
 
     companion object {
-        private const val MIN_REFRESH_LOCATION: Long = 30000
+        private const val MIN_REFRESH_LOCATION: Long = 180000
         private const val MIN_DISTANCE:Float = 10f
 
         const val POST_ID = "postId"
@@ -126,7 +126,7 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 
     @SuppressLint("MissingPermission")
     private fun getLastKnownLocation(): Location? {
-        val providers = mLocationManager.getProviders(false)
+        val providers = mLocationManager.getProviders(true)
         var bestLocation: Location? = null
 
         for (provider in providers) {
@@ -153,7 +153,14 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
                     startActivityForResult(intent, OAppUtil.ON_ENABLE_GPS_SETTING)
                 }
 
-                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_REFRESH_LOCATION, MIN_DISTANCE, locationListener)
+                val gpsEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                val networkEnabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+
+                if (gpsEnabled) {
+                    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_REFRESH_LOCATION, MIN_DISTANCE, locationListener)
+                } else if (networkEnabled) {
+                    mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_REFRESH_LOCATION, MIN_DISTANCE, locationListener)
+                }
             } catch (securityException: SecurityException) {
                 securityException.message
             }
