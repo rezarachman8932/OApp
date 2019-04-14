@@ -132,16 +132,19 @@
                         android:layout_gravity="center_horizontal"
                         android:orientation="horizontal">
                         <ImageView
+                            android:id="@+id/icon_facebook"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:srcCompat="@drawable/ic_vector_social_media_facebook"/>
                         <ImageView
+                            android:id="@+id/icon_twitter"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dip_4"
                             android:layout_marginStart="@dimen/dip_4"
                             app:srcCompat="@drawable/ic_vector_social_media_twitter"/>
                         <ImageView
+                            android:id="@+id/icon_instagram"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dip_4"

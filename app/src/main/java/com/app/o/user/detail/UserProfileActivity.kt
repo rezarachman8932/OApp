@@ -7,12 +7,14 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import android.view.View
 import com.app.o.R
+import com.app.o.api.user.profile.UserProfileResponse
 import com.app.o.api.user.profile.UserProfileResponseZip
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppViewService
 import com.app.o.detail.DetailActivity
 import com.app.o.home.HomeAdapter
 import com.app.o.shared.util.OAppMultimediaUtil
+import com.app.o.shared.util.OAppSocialMediaUtil
 import com.app.o.shared.util.OAppUtil
 import kotlinx.android.synthetic.main.activity_user_detail.*
 
@@ -20,6 +22,7 @@ class UserProfileActivity : OAppActivity(), OAppViewService<UserProfileResponseZ
 
     private lateinit var presenter: UserProfilePresenter
     private lateinit var adapter: HomeAdapter
+    private lateinit var profileResponse : UserProfileResponse
     private var userId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +59,7 @@ class UserProfileActivity : OAppActivity(), OAppViewService<UserProfileResponseZ
     }
 
     override fun onDataResponse(data: UserProfileResponseZip) {
-        val profileResponse = data.userProfileResponse
+        profileResponse = data.userProfileResponse
 
         OAppMultimediaUtil.setImage(profileResponse.avatar, R.drawable.ic_logo, image_user_detail_profile)
 
@@ -94,6 +97,21 @@ class UserProfileActivity : OAppActivity(), OAppViewService<UserProfileResponseZ
     private fun initView() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.text_label_header_user_profile)
+
+        icon_facebook.setOnClickListener {
+
+        }
+
+        icon_instagram.setOnClickListener {
+            profileResponse.facebook?.let { s ->
+                val instagramIntent = OAppSocialMediaUtil.getInstagramProfileIntent(packageManager, s)
+                startActivity(instagramIntent)
+            }
+        }
+
+        icon_twitter.setOnClickListener {
+
+        }
 
         val layoutManager = LinearLayoutManager(this)
         recycler_view_posted_user.layoutManager = layoutManager
