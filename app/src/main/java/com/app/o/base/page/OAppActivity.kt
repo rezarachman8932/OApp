@@ -20,6 +20,7 @@ import android.widget.TextView
 import com.app.o.R
 import com.app.o.api.login.account.LoginResponse
 import com.app.o.home.HomePresenter
+import com.app.o.shared.util.OAppNotificationUtil
 import com.app.o.shared.util.OAppUserUtil
 import com.app.o.shared.util.OAppUtil
 import com.facebook.CallbackManager
@@ -255,6 +256,7 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
 
     protected fun removeUserState() {
         OAppUserUtil.setUserState(OAppUserUtil.USER_STATE_NOT_LOGGED_IN)
+        OAppNotificationUtil.setPushNotificationExist(false)
     }
 
     protected fun setLoginTypeFromThirdParty(loginType: String?) {

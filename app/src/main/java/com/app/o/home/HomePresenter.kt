@@ -5,6 +5,7 @@ import com.app.o.api.home.HomeResponse
 import com.app.o.api.home.HomeResponseZip
 import com.app.o.api.location.LocationSpec
 import com.app.o.api.location.LocationWithQuerySpec
+import com.app.o.api.notification.PushNotificationResponse
 import com.app.o.api.relation.UserConnectedCountResponse
 import com.app.o.api.user.profile.UserProfileResponse
 import com.app.o.api.user.profile.UserProfileSpec
@@ -18,7 +19,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
-import io.reactivex.functions.Function3
+import io.reactivex.functions.Function4
 import io.reactivex.schedulers.Schedulers
 
 class HomePresenter(
@@ -102,14 +103,15 @@ class HomePresenter(
                 APIRepository.create().post(locationSpec, token),
                 APIRepository.create().getPeopleConnectedCount(locationSpec, token),
                 APIRepository.create().getUserProfile(UserProfileSpec(OAppUserUtil.getUserId()), token),
-                Function3<HomeResponse, UserConnectedCountResponse, UserProfileResponse, HomeResponseZip> {
-                    t1, t2, t3 ->
-                    createDetailModel(t1, t2, t3)
+                APIRepository.create().getPushNotificationList(getHeaderAuth()),
+                Function4<HomeResponse, UserConnectedCountResponse, UserProfileResponse, PushNotificationResponse, HomeResponseZip> {
+                    t1, t2, t3, t4 ->
+                    createDetailModel(t1, t2, t3, t4)
                 })
     }
 
-    private fun createDetailModel(homeResponse: HomeResponse, userConnectedCountResponse: UserConnectedCountResponse, userProfileResponse: UserProfileResponse) : HomeResponseZip {
-        return HomeResponseZip(homeResponse, userConnectedCountResponse, userProfileResponse)
+    private fun createDetailModel(homeResponse: HomeResponse, userConnectedCountResponse: UserConnectedCountResponse, userProfileResponse: UserProfileResponse, pushNotificationResponse: PushNotificationResponse) : HomeResponseZip {
+        return HomeResponseZip(homeResponse, userConnectedCountResponse, userProfileResponse, pushNotificationResponse)
     }
 
 }

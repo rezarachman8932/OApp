@@ -18,6 +18,7 @@ import com.app.o.api.home.HomePostItem
 import com.app.o.api.home.HomeResponse
 import com.app.o.api.home.HomeResponseZip
 import com.app.o.api.location.LocationWithQuerySpec
+import com.app.o.api.notification.PushNotificationResponse
 import com.app.o.api.user.profile.UserProfileResponse
 import com.app.o.base.page.OAppActivity
 import com.app.o.base.service.OAppSearchService
@@ -101,8 +102,8 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
     override fun onDataResponse(data: HomeResponseZip) {
         connectedCount = data.userConnectedCount.amount
         invalidateOptionsMenu()
+        setData(data.homeResponse.data, data.homeResponse.status, data.pushNotificationListResponse)
         updateBottomView(data.userProfileResponse)
-        setData(data.homeResponse.data, data.homeResponse.status)
     }
 
     override fun onQueryProcessed() {
@@ -258,7 +259,7 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
         }
     }
 
-    private fun setData(data: List<HomePostItem>, status: Int) {
+    private fun setData(data: List<HomePostItem>, status: Int, pushNotificationResponse: PushNotificationResponse) {
         if (isSuccess(status)) {
             if (data.isNotEmpty()) {
                 val filteredData : MutableList<HomePostItem> = mutableListOf()
@@ -287,6 +288,8 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
                     updateData(filteredData)
                 }
 
+                checkNotification(pushNotificationResponse)
+
                 layout_group_home_empty_state.visibility = View.GONE
             } else {
                 layout_group_home_empty_state.visibility = View.VISIBLE
@@ -307,6 +310,15 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
         val result = DiffUtil.calculateDiff(HomeDiffUtilCallback(oldData, newData))
         adapter.setData(newData)
         result.dispatchUpdatesTo(adapter)
+    }
+
+    private fun checkNotification(notificationResponse: PushNotificationResponse) {
+        notificationResponse.data.forEach {
+            if (!it.is_read) {
+                OAppNotificationUtil.setPushNotificationExist(true)
+                return
+            }
+        }
     }
 
 }
