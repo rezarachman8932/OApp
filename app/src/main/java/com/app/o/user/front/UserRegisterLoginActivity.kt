@@ -138,10 +138,17 @@ class UserRegisterLoginActivity : OAppActivity(), View.OnClickListener, OAppView
             setLoginTypeFromThirdParty(LOGIN_TYPE_FACEBOOK)
 
             val request = GraphRequest.newMeRequest(accessToken) { `object`, _ ->
+                val userId = `object`.getString("id")
+                val userName = `object`.getString("name")
+                val userEmail = `object`.getString("email")
+
+                OAppUserUtil.setFacebookUserId(userId)
+                OAppUserUtil.setFacebookUserName(userName)
+
                 presenter.doLoginWithThirdParty(
-                        `object`.getString("email"),
-                        `object`.getString("name"),
-                        `object`.getString("id"),
+                        userEmail,
+                        userName,
+                        userId,
                         LOGIN_TYPE_FACEBOOK)
             }
 

@@ -15,6 +15,7 @@ import com.app.o.detail.DetailActivity
 import com.app.o.home.HomeAdapter
 import com.app.o.shared.util.OAppMultimediaUtil
 import com.app.o.shared.util.OAppSocialMediaUtil
+import com.app.o.shared.util.OAppUserUtil
 import com.app.o.shared.util.OAppUtil
 import kotlinx.android.synthetic.main.activity_user_detail.*
 
@@ -99,7 +100,8 @@ class UserProfileActivity : OAppActivity(), OAppViewService<UserProfileResponseZ
         supportActionBar?.title = getString(R.string.text_label_header_user_profile)
 
         icon_facebook.setOnClickListener {
-
+            val facebookIntent = OAppSocialMediaUtil.getFacebookProfileIntent(this, OAppUserUtil.getFacebookUserId(), OAppUserUtil.getFacebookUserName())
+            startActivity(facebookIntent)
         }
 
         icon_instagram.setOnClickListener {

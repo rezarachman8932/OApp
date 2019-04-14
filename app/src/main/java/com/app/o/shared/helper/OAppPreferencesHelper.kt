@@ -24,6 +24,8 @@ object OAppPreferencesHelper {
     private val LAST_LOCATION_LATITUDE = Pair("latitude", "")
     private val REGISTER_ACTIVATION_TYPE = Pair("register_activation_type", "")
     private val THIRD_PARTY_LOGIN_TYPE = Pair("third_party_login_type", "")
+    private val FACEBOOK_USER_NAME = Pair("facebook_user_name", "")
+    private val FACEBOOK_USER_ID = Pair("facebook_user_id", "")
 
     fun init(context: Context) {
         preferences = context.getSharedPreferences(NAME, MODE)
@@ -117,6 +119,18 @@ object OAppPreferencesHelper {
         get() = preferences.getString(THIRD_PARTY_LOGIN_TYPE.first, THIRD_PARTY_LOGIN_TYPE.second)
         set(value) = preferences.edit {
             it.putString(THIRD_PARTY_LOGIN_TYPE.first, value)
+        }
+
+    var facebookUserName: String?
+        get() = preferences.getString(FACEBOOK_USER_NAME.first, FACEBOOK_USER_NAME.second)
+        set(value) = preferences.edit {
+            it.putString(FACEBOOK_USER_NAME.first, value)
+        }
+
+    var facebookUserId: String?
+        get() = preferences.getString(FACEBOOK_USER_ID.first, FACEBOOK_USER_ID.second)
+        set(value) = preferences.edit {
+            it.putString(FACEBOOK_USER_ID.first, value)
         }
 
 }

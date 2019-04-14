@@ -83,6 +83,22 @@ class OAppUserUtil {
         fun setThirdPartyLoginType(type: String?) {
             OAppPreferencesHelper.thirdPartyLoginType = type
         }
+
+        fun getFacebookUserName(): String? {
+            return OAppPreferencesHelper.facebookUserName
+        }
+
+        fun setFacebookUserName(username: String?) {
+            OAppPreferencesHelper.facebookUserName = username
+        }
+
+        fun getFacebookUserId(): String? {
+            return OAppPreferencesHelper.facebookUserId
+        }
+
+        fun setFacebookUserId(userId: String?) {
+            OAppPreferencesHelper.facebookUserId = userId
+        }
     }
 
 }
