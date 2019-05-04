@@ -55,6 +55,10 @@ class BottomMenuView: LinearLayout {
             imageURL != null -> {
                 view_image_third.load(imageURL!!)
             }
+
+            imageURL == null -> {
+                view_image_third.setImageResource(R.drawable.ic_vector_profile_bottom)
+            }
         }
 
         view_image_third.invalidate()
