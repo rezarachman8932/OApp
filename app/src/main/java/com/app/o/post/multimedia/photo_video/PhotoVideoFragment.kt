@@ -12,6 +12,7 @@ import com.app.o.R
 import com.app.o.api.post.CreatedPostResponse
 import com.app.o.base.page.OAppFragment
 import com.app.o.base.service.OAppViewService
+import com.app.o.custom.AspectRatioLayout
 import com.app.o.post.adapter.SelectedImageAdapter
 import com.app.o.shared.util.OAppMultimediaUtil
 import com.app.o.shared.util.OAppUtil
@@ -28,7 +29,7 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
 
     private lateinit var uriValue: Uri
     private lateinit var imagePreview: ImageView
-    private lateinit var backgroundImageLayout: RelativeLayout
+    private lateinit var backgroundImageLayout: AspectRatioLayout
     private lateinit var buttonPost: Button
     private lateinit var inputTitle: EditText
     private lateinit var inputDescription: EditText
@@ -71,7 +72,7 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
 
         viewPagerImage = view.findViewById(R.id.view_pager_selected_images) as ViewPager
 
-        backgroundImageLayout = view.findViewById(R.id.view_layout_multimedia) as RelativeLayout
+        backgroundImageLayout = view.findViewById(R.id.view_layout_multimedia) as AspectRatioLayout
         backgroundImageLayout.setOnClickListener {
             if (index == INDEX_IMAGE) {
                 if (uriValues.isNullOrEmpty()) {

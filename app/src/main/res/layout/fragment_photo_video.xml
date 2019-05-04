@@ -9,10 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <RelativeLayout
+        <com.app.o.custom.AspectRatioLayout
             android:id="@+id/view_layout_multimedia"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dip_180"
+            android:layout_height="0dp"
+            app:aspectRatioHeight="3"
+            app:aspectRatioWidth="4"
             android:background="@color/colorWhiteSmoke">
             <android.support.v4.view.ViewPager
                 android:id="@+id/view_pager_selected_images"
@@ -26,10 +28,10 @@
                 android:visibility="gone"/>
             <ImageView
                 android:id="@+id/image_preview_post"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true" />
-        </RelativeLayout>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"/>
+        </com.app.o.custom.AspectRatioLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/dip_2"

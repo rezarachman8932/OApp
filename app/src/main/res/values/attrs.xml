@@ -11,4 +11,9 @@
         <attr name="progressSubTitle" format="string"/>
     </declare-styleable>
 
+    <declare-styleable name="AspectRatioLayout">
+        <attr format="integer" name="aspectRatioWidth"/>
+        <attr format="integer" name="aspectRatioHeight"/>
+    </declare-styleable>
+
 </resources>

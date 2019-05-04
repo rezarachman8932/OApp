@@ -17,15 +17,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <RelativeLayout
+            <com.app.o.custom.AspectRatioLayout
                 android:id="@+id/item_layout_header"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="0dp"
+                app:aspectRatioHeight="3"
+                app:aspectRatioWidth="4">
                 <ImageView
                     android:id="@+id/item_image_thumbnail"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dip_240"
-                    android:scaleType="centerCrop"/>
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"/>
                 <LinearLayout
                     android:id="@+id/item_layout_love"
                     android:layout_width="wrap_content"
@@ -62,7 +64,7 @@
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/ic_vector_speaker" />
                 </FrameLayout>
-            </RelativeLayout>
+            </com.app.o.custom.AspectRatioLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

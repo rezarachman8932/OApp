@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.app.o.custom.AspectRatioLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="0dp"
+    app:aspectRatioHeight="3"
+    app:aspectRatioWidth="4">
     <ImageView
         android:id="@+id/item_image_detail_thumbnail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"/>
-</FrameLayout>
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"/>
+</com.app.o.custom.AspectRatioLayout>

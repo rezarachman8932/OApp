@@ -6,6 +6,6 @@
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/image_preview"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dip_240"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"/>
 </FrameLayout>
