@@ -181,7 +181,7 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
                 if (uriValues.size > 0) {
                     for (i in 0 until uriValues.size) {
                         val body = OAppMultimediaUtil.prepareFileImagePart(
-                                "media[" + i.toString() + "]",
+                                "media[$i]",
                                 uriBitmapList[i],
                                 uriValues[i])
                         presenter.files.add(body)
@@ -191,7 +191,7 @@ class PhotoVideoFragment : OAppFragment(), OAppViewService<CreatedPostResponse> 
                 if (!uriValue.path.isNullOrEmpty()) {
                     val body = OAppMultimediaUtil.prepareFileVideoPart(
                             "media[0]",
-                            OAppMultimediaUtil.getVideoPath(uriValue, activity!!.parent)!!)
+                            OAppMultimediaUtil.getVideoPath(uriValue, context)!!)
                     presenter.files.add(body)
                 }
             }

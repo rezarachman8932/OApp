@@ -1,6 +1,14 @@
 package com.app.o.shared.util
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.MediaMetadataRetriever
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
+import android.support.media.ExifInterface
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
 import io.reactivex.annotations.NonNull
@@ -11,15 +19,6 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import android.media.MediaMetadataRetriever
-import android.os.Build
-import android.provider.MediaStore
-import android.app.Activity
-import android.content.Context
-import android.net.Uri
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
-import android.support.media.ExifInterface
 
 class OAppMultimediaUtil {
 
@@ -105,9 +104,9 @@ class OAppMultimediaUtil {
             return file
         }
 
-        fun getVideoPath(uri: Uri, activity: Activity): String? {
+        fun getVideoPath(uri: Uri, context: Context?): String? {
             val projection = arrayOf(MediaStore.Video.Media.DATA)
-            val cursor = activity.contentResolver.query(uri, projection, null, null, null)
+            val cursor = context?.contentResolver?.query(uri, projection, null, null, null)
 
             return if (cursor != null) {
                 val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)
