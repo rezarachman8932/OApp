@@ -105,14 +105,17 @@ class UserProfileActivity : OAppActivity(), OAppViewService<UserProfileResponseZ
         }
 
         icon_instagram.setOnClickListener {
-            profileResponse.facebook?.let { s ->
+            profileResponse.instagram?.let { s ->
                 val instagramIntent = OAppSocialMediaUtil.getInstagramProfileIntent(packageManager, s)
                 startActivity(instagramIntent)
             }
         }
 
         icon_twitter.setOnClickListener {
-
+            profileResponse.twitter?.let {
+                val twitterIntent = OAppSocialMediaUtil.getTwitterIntent(it)
+                startActivity(twitterIntent)
+            }
         }
 
         val layoutManager = LinearLayoutManager(this)

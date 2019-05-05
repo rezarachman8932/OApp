@@ -36,6 +36,10 @@ class OAppSocialMediaUtil {
                 Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/$userName"))
             }
         }
+
+        fun getTwitterIntent(profileName: String): Intent {
+            return Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/$profileName"))
+        }
     }
 
 }
