@@ -9,6 +9,14 @@ abstract class OAppPresenter {
         return OAppUtil.generateJWTToken(OAppUserUtil.getUserName(), getToken())
     }
 
+    protected fun subscriberHandler(throwable: Throwable, successHandler: ()->Unit, errorHandler: ()->Unit): ()->Unit {
+        return if (throwable == null) {
+            successHandler
+        } else{
+            errorHandler
+        }
+    }
+
     private fun getToken(): String? {
         return OAppUserUtil.getToken()
     }
