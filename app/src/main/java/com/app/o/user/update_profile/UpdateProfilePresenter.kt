@@ -10,7 +10,6 @@ import com.app.o.shared.util.OAppUserUtil
 import com.app.o.shared.util.OAppUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
 
@@ -20,61 +19,90 @@ class UpdateProfilePresenter(private val view: OAppViewService<UserUpdateProfile
                              private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
 
     private fun updateProfile(spec: UserUpdateProfileSpec) {
-        compositeDisposable.add(APIRepository.create().updateProfile(spec, getHeaderAuth())
-                .subscribeOn(Schedulers.io())
-                .compose {
-                    it.observeOn(AndroidSchedulers.mainThread())
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe {
-                    view.showLoading()
-                }
-                .doOnError{
-                    view.hideLoading(OAppUtil.ON_FINISH_FAILED)
-                    it.printStackTrace()
-                }
-                .subscribe(Consumer {
-                    view.onDataResponse(it)
-                    view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
-                }))
+        try {
+            compositeDisposable.add(APIRepository.create().updateProfile(spec, getHeaderAuth())
+                    .subscribeOn(Schedulers.io())
+                    .compose {
+                        it.observeOn(AndroidSchedulers.mainThread())
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe {
+                        view.showLoading()
+                    }
+                    .doOnError{
+                        view.hideLoading(OAppUtil.ON_FINISH_FAILED)
+                        it.printStackTrace()
+                    }
+                    .subscribe { userUpdateProfileResponse, throwable ->
+                        val succeed = {
+                            view.onDataResponse(userUpdateProfileResponse)
+                            view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
+                        }
+
+                        val failed = {
+                            view.hideLoading(OAppUtil.ON_FINISH_FAILED)
+                        }
+
+                        subscriberHandler(throwable, succeed, failed)
+                    }
+            )
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
     }
 
     fun updateAvatar(file: MultipartBody.Part) {
-        compositeDisposable.add(APIRepository.create().updateAvatar(file, getHeaderAuth())
-                .subscribeOn(Schedulers.io())
-                .compose {
-                    it.observeOn(AndroidSchedulers.mainThread())
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe {
-                    pickImageCallback.onLoadingImage()
-                }
-                .doOnError{
-                    pickImageCallback.onFailedGettingImage()
-                    it.printStackTrace()
-                }
-                .subscribe(Consumer {
-                    pickImageCallback.onSucceedGettingImage(it)
-                }))
+        try {
+            compositeDisposable.add(APIRepository.create().updateAvatar(file, getHeaderAuth())
+                    .subscribeOn(Schedulers.io())
+                    .compose {
+                        it.observeOn(AndroidSchedulers.mainThread())
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe {
+                        pickImageCallback.onLoadingImage()
+                    }
+                    .doOnError{
+                        pickImageCallback.onFailedGettingImage()
+                        it.printStackTrace()
+                    }
+                    .subscribe { updateAvatarResponse, throwable ->
+                        val succeed = { pickImageCallback.onSucceedGettingImage(updateAvatarResponse) }
+                        val failed = { pickImageCallback.onFailedGettingImage() }
+
+                        subscriberHandler(throwable, succeed, failed)
+                    }
+            )
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
     }
 
     fun getCurrentProfile() {
-        compositeDisposable.add(APIRepository.create().getUserProfile(UserProfileSpec(OAppUserUtil.getUserId()), getHeaderAuth())
-                .subscribeOn(Schedulers.io())
-                .compose {
-                    it.observeOn(AndroidSchedulers.mainThread())
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe {
-                    callback.onLoadCurrentProfile()
-                }
-                .doOnError{
-                    callback.onFailedGetCurrentProfile()
-                    it.printStackTrace()
-                }
-                .subscribe(Consumer {
-                    callback.onSucceedGetCurrentProfile(it)
-                }))
+        try {
+            compositeDisposable.add(APIRepository.create().getUserProfile(UserProfileSpec(OAppUserUtil.getUserId()), getHeaderAuth())
+                    .subscribeOn(Schedulers.io())
+                    .compose {
+                        it.observeOn(AndroidSchedulers.mainThread())
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe {
+                        callback.onLoadCurrentProfile()
+                    }
+                    .doOnError{
+                        callback.onFailedGetCurrentProfile()
+                        it.printStackTrace()
+                    }
+                    .subscribe { userProfileResponse, throwable ->
+                        val succeed = { callback.onSucceedGetCurrentProfile(userProfileResponse) }
+                        val failed = { callback.onFailedGetCurrentProfile() }
+
+                        subscriberHandler(throwable, succeed, failed)
+                    }
+            )
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
     }
 
     fun validateProfileUpdated(phoneNumber: String, location: String?, facebook: String?, twitter: String?, instagram: String?) {
@@ -97,6 +125,7 @@ class UpdateProfilePresenter(private val view: OAppViewService<UserUpdateProfile
                 instagram,
                 "test"
         )
+
         updateProfile(updateProfileSpec)
     }
 

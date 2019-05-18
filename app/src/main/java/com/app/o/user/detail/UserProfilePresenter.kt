@@ -12,30 +12,42 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 class UserProfilePresenter(private val view: OAppViewService<UserProfileResponseZip>,
                            private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
 
     fun getProfile(userId: Int) {
-        compositeDisposable.add(getAllContent(userId)
-                .subscribeOn(Schedulers.io())
-                .compose {
-                    it.observeOn(AndroidSchedulers.mainThread())
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe {
-                    view.showLoading()
-                }
-                .doOnError{
-                    view.hideLoading(OAppUtil.ON_FINISH_FAILED)
-                    it.printStackTrace()
-                }
-                .subscribe(Consumer {
-                    view.onDataResponse(it)
-                    view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
-                }))
+        try {
+            compositeDisposable.add(getAllContent(userId)
+                    .subscribeOn(Schedulers.io())
+                    .compose {
+                        it.observeOn(AndroidSchedulers.mainThread())
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe {
+                        view.showLoading()
+                    }
+                    .doOnError{
+                        view.hideLoading(OAppUtil.ON_FINISH_FAILED)
+                        it.printStackTrace()
+                    }
+                    .subscribe { userProfileResponseZip, throwable ->
+                        val succeed = {
+                            view.onDataResponse(userProfileResponseZip)
+                            view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
+                        }
+
+                        val failed = {
+                            view.hideLoading(OAppUtil.ON_FINISH_FAILED)
+                        }
+
+                        subscriberHandler(throwable, succeed, failed)
+                    }
+            )
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
     }
 
     private fun getAllContent(userId: Int) : Single<UserProfileResponseZip> {

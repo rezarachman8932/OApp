@@ -9,7 +9,6 @@ import com.app.o.shared.util.OAppUtil
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 class UpdatePasswordPresenter(private val view: OAppViewService<UpdatePasswordResponse>,
@@ -17,27 +16,40 @@ class UpdatePasswordPresenter(private val view: OAppViewService<UpdatePasswordRe
                               private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
 
     private fun updateUserPassword(spec: UpdatePasswordSpec) {
-        compositeDisposable.add(APIRepository.create().updatePassword(spec, getHeaderAuth())
-                .subscribeOn(Schedulers.io())
-                .compose {
-                    it.observeOn(AndroidSchedulers.mainThread())
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe {
-                    view.showLoading()
-                }
-                .onErrorResumeNext {
-                    view.hideLoading(OAppUtil.ON_FINISH_FAILED)
-                    Single.error(it)
-                }
-                .doOnError{
-                    view.hideLoading(OAppUtil.ON_FINISH_FAILED)
-                    it.printStackTrace()
-                }
-                .subscribe(Consumer {
-                    view.onDataResponse(it)
-                    view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
-                }))
+        try {
+            compositeDisposable.add(APIRepository.create().updatePassword(spec, getHeaderAuth())
+                    .subscribeOn(Schedulers.io())
+                    .compose {
+                        it.observeOn(AndroidSchedulers.mainThread())
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe {
+                        view.showLoading()
+                    }
+                    .onErrorResumeNext {
+                        view.hideLoading(OAppUtil.ON_FINISH_FAILED)
+                        Single.error(it)
+                    }
+                    .doOnError{
+                        view.hideLoading(OAppUtil.ON_FINISH_FAILED)
+                        it.printStackTrace()
+                    }
+                    .subscribe { updatePasswordResponse, throwable ->
+                        val succeed = {
+                            view.onDataResponse(updatePasswordResponse)
+                            view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
+                        }
+
+                        val failed = {
+                            view.hideLoading(OAppUtil.ON_FINISH_FAILED)
+                        }
+
+                        subscriberHandler(throwable, succeed, failed)
+                    }
+            )
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
     }
 
     fun validatePasswordChanged(current: String, updated: String, retypeUpdated: String) {

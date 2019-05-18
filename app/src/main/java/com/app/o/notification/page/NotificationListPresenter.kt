@@ -9,7 +9,6 @@ import com.app.o.shared.util.OAppUtil
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 class NotificationListPresenter(private val view: OAppViewService<PushNotificationResponse>,
@@ -17,50 +16,71 @@ class NotificationListPresenter(private val view: OAppViewService<PushNotificati
                                 private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
 
     fun getPushNotificationList() {
-        compositeDisposable.add(APIRepository.create().getPushNotificationList(getHeaderAuth())
-                .subscribeOn(Schedulers.io())
-                .compose {
-                    it.observeOn(AndroidSchedulers.mainThread())
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe {
-                    view.showLoading()
-                }
-                .onErrorResumeNext {
-                    view.hideLoading(OAppUtil.ON_FINISH_FAILED)
-                    Single.error(it)
-                }
-                .doOnError{
-                    view.hideLoading(OAppUtil.ON_FINISH_FAILED)
-                    it.printStackTrace()
-                }
-                .subscribe(Consumer {
-                    view.onDataResponse(it)
-                    view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
-                }))
+        try {
+            compositeDisposable.add(APIRepository.create().getPushNotificationList(getHeaderAuth())
+                    .subscribeOn(Schedulers.io())
+                    .compose {
+                        it.observeOn(AndroidSchedulers.mainThread())
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe {
+                        view.showLoading()
+                    }
+                    .onErrorResumeNext {
+                        view.hideLoading(OAppUtil.ON_FINISH_FAILED)
+                        Single.error(it)
+                    }
+                    .doOnError{
+                        view.hideLoading(OAppUtil.ON_FINISH_FAILED)
+                        it.printStackTrace()
+                    }
+                    .subscribe { pushNotificationResponse, throwable ->
+                        val succeed = {
+                            view.onDataResponse(pushNotificationResponse)
+                            view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
+                        }
+
+                        val failed = {
+                            view.hideLoading(OAppUtil.ON_FINISH_FAILED)
+                        }
+
+                        subscriberHandler(throwable, succeed, failed)
+                    }
+            )
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
     }
 
     fun setPushNotificationAsRead(spec: PushNotificationReadSpec) {
-        compositeDisposable.add(APIRepository.create().setPushNotificationAsRead(spec, getHeaderAuth())
-                .subscribeOn(Schedulers.io())
-                .compose {
-                    it.observeOn(AndroidSchedulers.mainThread())
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe {
-                    notificationListCallback.onSetAsReadProgress()
-                }
-                .onErrorResumeNext {
-                    notificationListCallback.onSetAsReadComplete(OAppUtil.ON_FINISH_FAILED)
-                    Single.error(it)
-                }
-                .doOnError{
-                    notificationListCallback.onSetAsReadComplete(OAppUtil.ON_FINISH_FAILED)
-                    it.printStackTrace()
-                }
-                .subscribe(Consumer {
-                    notificationListCallback.onSetAsReadComplete(OAppUtil.ON_FINISH_SUCCEED)
-                }))
+        try {
+            compositeDisposable.add(APIRepository.create().setPushNotificationAsRead(spec, getHeaderAuth())
+                    .subscribeOn(Schedulers.io())
+                    .compose {
+                        it.observeOn(AndroidSchedulers.mainThread())
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe {
+                        notificationListCallback.onSetAsReadProgress()
+                    }
+                    .onErrorResumeNext {
+                        notificationListCallback.onSetAsReadComplete(OAppUtil.ON_FINISH_FAILED)
+                        Single.error(it)
+                    }
+                    .doOnError{
+                        notificationListCallback.onSetAsReadComplete(OAppUtil.ON_FINISH_FAILED)
+                        it.printStackTrace()
+                    }
+                    .subscribe { _, throwable ->
+                        val succeed = { notificationListCallback.onSetAsReadComplete(OAppUtil.ON_FINISH_SUCCEED) }
+                        val failed = { notificationListCallback.onSetAsReadComplete(OAppUtil.ON_FINISH_FAILED) }
+
+                        subscriberHandler(throwable, succeed, failed)
+                    }
+            )
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
     }
 
 }
