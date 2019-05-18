@@ -15,7 +15,6 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
@@ -24,86 +23,123 @@ class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
                       private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
 
     fun doLikeUserPost(postId: String, resultCode: Int, deviceToken: String) {
-        compositeDisposable.add(APIRepository.create().likeUserPost(LikedPostSpec(postId, deviceToken), getHeaderAuth())
-                .subscribeOn(Schedulers.io())
-                .compose {
-                    it.observeOn(AndroidSchedulers.mainThread())
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .onErrorResumeNext {
-                    interactionCallback.onIntegrationFailed()
-                    Single.error(it)
-                }
-                .doOnError{
-                    interactionCallback.onIntegrationFailed()
-                    it.printStackTrace()
-                }
-                .subscribe(Consumer {
-                    interactionCallback.onIntegrationSucceed(resultCode)
-                }))
+        try {
+            compositeDisposable.add(APIRepository.create().likeUserPost(LikedPostSpec(postId, deviceToken), getHeaderAuth())
+                    .subscribeOn(Schedulers.io())
+                    .compose {
+                        it.observeOn(AndroidSchedulers.mainThread())
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .onErrorResumeNext {
+                        interactionCallback.onIntegrationFailed()
+                        Single.error(it)
+                    }
+                    .doOnError{
+                        interactionCallback.onIntegrationFailed()
+                        it.printStackTrace()
+                    }
+                    .subscribe { _, throwable ->
+                        val succeed = { interactionCallback.onIntegrationSucceed(resultCode) }
+                        val failed = { interactionCallback.onIntegrationFailed() }
+
+                        subscriberHandler(throwable, succeed, failed)
+                    }
+            )
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
     }
 
     fun doDislikeUserPost(postId: String, resultCode: Int, deviceToken: String) {
-        compositeDisposable.add(APIRepository.create().unLikeUserPost(LikedPostSpec(postId, deviceToken), getHeaderAuth())
-                .subscribeOn(Schedulers.io())
-                .compose {
-                    it.observeOn(AndroidSchedulers.mainThread())
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .onErrorResumeNext {
-                    interactionCallback.onIntegrationFailed()
-                    Single.error(it)
-                }
-                .doOnError{
-                    interactionCallback.onIntegrationFailed()
-                    it.printStackTrace()
-                }
-                .subscribe(Consumer {
-                    interactionCallback.onIntegrationSucceed(resultCode)
-                }))
+        try {
+            compositeDisposable.add(APIRepository.create().unLikeUserPost(LikedPostSpec(postId, deviceToken), getHeaderAuth())
+                    .subscribeOn(Schedulers.io())
+                    .compose {
+                        it.observeOn(AndroidSchedulers.mainThread())
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .onErrorResumeNext {
+                        interactionCallback.onIntegrationFailed()
+                        Single.error(it)
+                    }
+                    .doOnError{
+                        interactionCallback.onIntegrationFailed()
+                        it.printStackTrace()
+                    }
+                    .subscribe { _, throwable ->
+                        val succeed = { interactionCallback.onIntegrationSucceed(resultCode) }
+                        val failed = { interactionCallback.onIntegrationFailed() }
+
+                        subscriberHandler(throwable, succeed, failed)
+                    }
+            )
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
     }
 
     fun geDetailPageContent(spec: DetailSpec) {
-        compositeDisposable.add(getAllContent(spec)
-                .subscribeOn(Schedulers.io())
-                .compose {
-                    it.observeOn(AndroidSchedulers.mainThread())
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe {
-                    view.showLoading()
-                }
-                .doOnError{
-                    view.hideLoading(OAppUtil.ON_FINISH_FAILED)
-                    it.printStackTrace()
-                }
-                .subscribe(Consumer {
-                    view.onDataResponse(it)
-                    view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
-                }))
+        try {
+            compositeDisposable.add(getAllContent(spec)
+                    .subscribeOn(Schedulers.io())
+                    .compose {
+                        it.observeOn(AndroidSchedulers.mainThread())
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe {
+                        view.showLoading()
+                    }
+                    .doOnError{
+                        view.hideLoading(OAppUtil.ON_FINISH_FAILED)
+                        it.printStackTrace()
+                    }
+                    .subscribe { detailResponseZip, throwable ->
+                        val succeed = {
+                            view.onDataResponse(detailResponseZip)
+                            view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
+                        }
+
+                        val failed = {
+                            view.hideLoading(OAppUtil.ON_FINISH_FAILED)
+                        }
+
+                        subscriberHandler(throwable, succeed, failed)
+                    }
+            )
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
     }
 
     fun blockUser(spec: UserBlockingSpec) {
-        compositeDisposable.add(APIRepository.create().blockedUser(spec, getHeaderAuth())
-                .subscribeOn(Schedulers.io())
-                .compose {
-                    it.observeOn(AndroidSchedulers.mainThread())
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe {
-                    userBlockingCallback.onProgress()
-                }
-                .onErrorResumeNext {
-                    userBlockingCallback.onFailed()
-                    Single.error(it)
-                }
-                .doOnError{
-                    userBlockingCallback.onFailed()
-                    it.printStackTrace()
-                }
-                .subscribe(Consumer {
-                    userBlockingCallback.onSucceed(it)
-                }))
+        try {
+            compositeDisposable.add(APIRepository.create().blockedUser(spec, getHeaderAuth())
+                    .subscribeOn(Schedulers.io())
+                    .compose {
+                        it.observeOn(AndroidSchedulers.mainThread())
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe {
+                        userBlockingCallback.onProgress()
+                    }
+                    .onErrorResumeNext {
+                        userBlockingCallback.onFailed()
+                        Single.error(it)
+                    }
+                    .doOnError{
+                        userBlockingCallback.onFailed()
+                        it.printStackTrace()
+                    }
+                    .subscribe { userBlockingResponse, throwable ->
+                        val succeed = { userBlockingCallback.onSucceed(userBlockingResponse) }
+                        val failed = { userBlockingCallback.onFailed() }
+
+                        subscriberHandler(throwable, succeed, failed)
+                    }
+            )
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
     }
 
     private fun getAllContent(detailSpec: DetailSpec) : Single<DetailResponseZip> {
