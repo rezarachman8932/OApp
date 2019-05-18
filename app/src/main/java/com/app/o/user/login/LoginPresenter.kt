@@ -9,7 +9,6 @@ import com.app.o.shared.util.OAppUtil
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 class LoginPresenter(private val view: OAppViewService<LoginResponse>,
@@ -17,27 +16,40 @@ class LoginPresenter(private val view: OAppViewService<LoginResponse>,
                      private val compositeDisposable: CompositeDisposable) : OAppPresenter() {
 
     private fun doLogin(loginSpec: LoginSpec) {
-        compositeDisposable.add(APIRepository.create().login(loginSpec)
-                .subscribeOn(Schedulers.io())
-                .compose {
-                    it.observeOn(AndroidSchedulers.mainThread())
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe {
-                    view.showLoading()
-                }
-                .onErrorResumeNext {
-                    view.hideLoading(OAppUtil.ON_FINISH_FAILED)
-                    Single.error(it)
-                }
-                .doOnError{
-                    view.hideLoading(OAppUtil.ON_FINISH_FAILED)
-                    it.printStackTrace()
-                }
-                .subscribe(Consumer {
-                    view.onDataResponse(it)
-                    view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
-                }))
+        try {
+            compositeDisposable.add(APIRepository.create().login(loginSpec)
+                    .subscribeOn(Schedulers.io())
+                    .compose {
+                        it.observeOn(AndroidSchedulers.mainThread())
+                    }
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe {
+                        view.showLoading()
+                    }
+                    .onErrorResumeNext {
+                        view.hideLoading(OAppUtil.ON_FINISH_FAILED)
+                        Single.error(it)
+                    }
+                    .doOnError{
+                        view.hideLoading(OAppUtil.ON_FINISH_FAILED)
+                        it.printStackTrace()
+                    }
+                    .subscribe { loginResponse, throwable ->
+                        val succeed = {
+                            view.onDataResponse(loginResponse)
+                            view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
+                        }
+
+                        val failed = {
+                            view.hideLoading(OAppUtil.ON_FINISH_FAILED)
+                        }
+
+                        subscriberHandler(throwable, succeed, failed)
+                    }
+            )
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+        }
     }
 
     fun validateLogin(username: String, password: String) {
