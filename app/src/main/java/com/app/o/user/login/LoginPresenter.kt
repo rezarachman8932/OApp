@@ -10,6 +10,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeoutException
 
 class LoginPresenter(private val view: OAppViewService<LoginResponse>,
                      private val callback: LoginCallback,
@@ -47,8 +48,10 @@ class LoginPresenter(private val view: OAppViewService<LoginResponse>,
                         subscriberHandler(throwable, succeed, failed)
                     }
             )
-        } catch (exception: Exception) {
-            exception.printStackTrace()
+        } catch (illegalException: IllegalStateException) {
+            illegalException.printStackTrace()
+        } catch (timeoutException: TimeoutException) {
+            timeoutException.printStackTrace()
         }
     }
 
