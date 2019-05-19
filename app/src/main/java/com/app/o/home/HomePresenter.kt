@@ -18,6 +18,7 @@ import com.app.o.user.logout.LogoutCallback
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function4
 import io.reactivex.schedulers.Schedulers
 
@@ -76,18 +77,11 @@ class HomePresenter(
                         view.hideLoading(OAppUtil.ON_FINISH_FAILED)
                         it.printStackTrace()
                     }
-                    .subscribe { homeResponseZip, throwable ->
-                        val successUnit: ()->Unit = {
-                            view.onDataResponse(homeResponseZip)
-                            view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
-                        }
-
-                        val errorUnit: ()->Unit = {
-                            view.hideLoading(OAppUtil.ON_FINISH_FAILED)
-                        }
-
-                        subscriberHandler(throwable, successUnit, errorUnit)
+                    .subscribe(Consumer {
+                        view.onDataResponse(it)
+                        view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
                     })
+            )
         } catch (exception: Exception) {
             exception.printStackTrace()
         }
