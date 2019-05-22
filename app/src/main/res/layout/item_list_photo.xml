@@ -21,18 +21,17 @@
                 android:id="@+id/item_layout_header"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:background="@color/colorTransparent"
                 app:aspectRatioHeight="3"
                 app:aspectRatioWidth="4">
                 <ImageView
                     android:id="@+id/item_image_thumbnail"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitCenter"/>
+                    android:layout_height="match_parent" />
                 <LinearLayout
                     android:id="@+id/item_layout_love"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorTransparent"
                     android:padding="@dimen/dip_12"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
@@ -56,8 +55,7 @@
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/dip_12"
-                    android:background="@color/colorTransparent">
+                    android:padding="@dimen/dip_12">
                     <ImageView
                         android:id="@+id/item_icon_type_post"
                         android:layout_width="wrap_content"
@@ -69,7 +67,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_margin="@dimen/dip_12">
+                android:layout_marginTop="@dimen/dip_12"
+                android:layout_marginLeft="@dimen/dip_12"
+                android:layout_marginRight="@dimen/dip_12"
+                android:layout_marginBottom="@dimen/dip_8">
                 <TextView
                     android:id="@+id/item_text_post_username"
                     android:layout_width="wrap_content"
@@ -83,13 +84,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dip_8"
                     android:layout_marginStart="@dimen/dip_8"
-                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:textStyle="bold"
                     android:textColor="@android:color/black"
-                    android:textSize="@dimen/sp_14" />
+                    android:textSize="@dimen/sp_14"
+                    android:singleLine="true" />
             </LinearLayout>
             <RelativeLayout
+                android:id="@+id/post_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dip_12"
@@ -106,21 +109,23 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/item_icon_clip"
                     android:layout_toEndOf="@id/item_icon_clip"
-                    android:layout_marginLeft="@dimen/dip_8"
-                    android:layout_marginStart="@dimen/dip_8"
+                    android:layout_marginLeft="@dimen/dip_6"
+                    android:layout_marginStart="@dimen/dip_6"
                     android:layout_centerVertical="true"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:textSize="@dimen/sp_14"
                     android:textColor="@color/colorGreen"
                     android:textStyle="bold" />
-                <TextView
-                    android:id="@+id/item_text_post_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:textSize="@dimen/sp_12"/>
             </RelativeLayout>
+            <TextView
+                android:id="@+id/item_text_post_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dip_2"
+                android:layout_marginLeft="@dimen/dip_12"
+                android:layout_marginRight="@dimen/dip_12"
+                android:textSize="@dimen/sp_10"/>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dip_1"

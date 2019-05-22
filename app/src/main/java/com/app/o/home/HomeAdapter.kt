@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import com.app.o.R
 import com.app.o.api.home.HomePostItem
@@ -54,9 +55,11 @@ class HomeAdapter(val context: Context) : RecyclerView.Adapter<HomeAdapter.ViewH
 //                    OAppMultimediaUtil.setImage(OAppMultimediaUtil.getImageUriFromBitmap(context, videoFrame).path, null, item_image_thumbnail)
                 }
 
-                item_image_thumbnail.visibility = View.VISIBLE
+                item_image_thumbnail.scaleType = ImageView.ScaleType.FIT_XY
             } else {
-                item_image_thumbnail.visibility = View.GONE
+                OAppMultimediaUtil.setImage(R.drawable.ic_logo, item_image_thumbnail)
+
+                item_image_thumbnail.scaleType = ImageView.ScaleType.FIT_CENTER
             }
 
             item_text_love_count.text = item.like_count.toString()

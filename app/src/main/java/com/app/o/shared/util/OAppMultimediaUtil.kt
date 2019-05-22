@@ -53,6 +53,12 @@ class OAppMultimediaUtil {
             }
         }
 
+        fun setImage(drawable: Int?, imageView: ImageView) {
+            if (drawable != null) {
+                Picasso.get().load(drawable).into(imageView)
+            }
+        }
+
         fun getImageUriFromBitmap(context: Context, bitmap: Bitmap): Uri {
             val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "", null)
             return Uri.parse(path)

@@ -8,7 +8,7 @@ import android.location.Location
 import android.os.Bundle
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
@@ -190,7 +190,7 @@ class HomeActivity : OAppActivity(), OAppViewService<HomeResponseZip>, OAppSearc
     }
 
     private fun initGrid() {
-        val layoutManager = LinearLayoutManager(this)
+        val layoutManager = GridLayoutManager(this, 2)
         recycler_view.layoutManager = layoutManager
         recycler_view.setHasFixedSize(true)
         recycler_view.itemAnimator = DefaultItemAnimator()

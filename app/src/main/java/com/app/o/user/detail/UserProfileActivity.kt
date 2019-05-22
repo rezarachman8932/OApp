@@ -3,7 +3,7 @@ package com.app.o.user.detail
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.GridLayoutManager
 import android.view.MenuItem
 import android.view.View
 import com.app.o.R
@@ -118,7 +118,7 @@ class UserProfileActivity : OAppActivity(), OAppViewService<UserProfileResponseZ
             }
         }
 
-        val layoutManager = LinearLayoutManager(this)
+        val layoutManager = GridLayoutManager(this, 2)
         recycler_view_posted_user.layoutManager = layoutManager
         recycler_view_posted_user.setHasFixedSize(true)
         recycler_view_posted_user.itemAnimator = DefaultItemAnimator()

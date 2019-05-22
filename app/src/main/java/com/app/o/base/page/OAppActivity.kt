@@ -43,6 +43,8 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
     private lateinit var mLocationManager: LocationManager
     private lateinit var mAlert: AlertDialog
 
+    private var failGettingLocationCount = 0
+
     private val mPermissions = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
 
     companion object {
@@ -146,21 +148,40 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         if (EasyPermissions.hasPermissions(this, *mPermissions)) {
             try {
                 val location = getLastKnownLocation()
+                val gpsEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                val networkEnabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
                 if (location != null) {
                     locationListener.onLocationChanged(location)
                 } else {
-                    val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                    startActivityForResult(intent, OAppUtil.ON_ENABLE_GPS_SETTING)
+                    if (failGettingLocationCount > 0) {
+                        val lastLocation: Location?
+
+                        when {
+                            gpsEnabled -> {
+                                lastLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                                locationListener.onLocationChanged(lastLocation)
+                            }
+                            networkEnabled -> {
+                                lastLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                                locationListener.onLocationChanged(lastLocation)
+                            }
+                            else -> {
+                                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                                startActivityForResult(intent, OAppUtil.ON_ENABLE_GPS_SETTING)
+                            }
+                        }
+                    } else {
+                        val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                        startActivityForResult(intent, OAppUtil.ON_ENABLE_GPS_SETTING)
+                    }
+
+                    failGettingLocationCount += 1
                 }
 
-                val gpsEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-                val networkEnabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-
-                if (gpsEnabled) {
-                    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_REFRESH_LOCATION, MIN_DISTANCE, locationListener)
-                } else if (networkEnabled) {
-                    mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_REFRESH_LOCATION, MIN_DISTANCE, locationListener)
+                when {
+                    gpsEnabled -> mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_REFRESH_LOCATION, MIN_DISTANCE, locationListener)
+                    networkEnabled -> mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_REFRESH_LOCATION, MIN_DISTANCE, locationListener)
                 }
             } catch (securityException: SecurityException) {
                 securityException.message
