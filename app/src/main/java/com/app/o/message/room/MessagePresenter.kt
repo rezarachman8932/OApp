@@ -6,6 +6,7 @@ import com.app.o.base.presenter.OAppPresenter
 import com.app.o.base.service.OAppSubmitMessageService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 class MessagePresenter(private val commentView: OAppSubmitMessageService,
@@ -26,12 +27,9 @@ class MessagePresenter(private val commentView: OAppSubmitMessageService,
                         commentView.onMessageNotSent()
                         it.printStackTrace()
                     }
-                    .subscribe { submitCommentResponse, throwable ->
-                        val succeed = { commentView.onMessageSent(submitCommentResponse) }
-                        val failed = { commentView.onMessageNotSent() }
-
-                        subscriberHandler(throwable, succeed, failed)
-                    }
+                    .subscribe(Consumer {
+                        commentView.onMessageSent(it)
+                    })
             )
         } catch (exception: Exception) {
             exception.printStackTrace()

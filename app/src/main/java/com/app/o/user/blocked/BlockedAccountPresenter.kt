@@ -9,6 +9,7 @@ import com.app.o.shared.util.OAppUtil
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 class BlockedAccountPresenter(private val view: OAppViewService<BlockedUserResponse>,
@@ -34,18 +35,11 @@ class BlockedAccountPresenter(private val view: OAppViewService<BlockedUserRespo
                         view.hideLoading(OAppUtil.ON_FINISH_FAILED)
                         it.printStackTrace()
                     }
-                    .subscribe { blockedUserResponse, throwable ->
-                        val succeed = {
-                            view.onDataResponse(blockedUserResponse)
-                            view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
-                        }
-
-                        val failed = {
-                            view.hideLoading(OAppUtil.ON_FINISH_FAILED)
-                        }
-
-                        subscriberHandler(throwable, succeed, failed)
+                    .subscribe(Consumer {
+                        view.onDataResponse(it)
+                        view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
                     })
+            )
         } catch (exception: Exception) {
             exception.printStackTrace()
         }
@@ -70,12 +64,10 @@ class BlockedAccountPresenter(private val view: OAppViewService<BlockedUserRespo
                         unBlockCallback.onFailed()
                         it.printStackTrace()
                     }
-                    .subscribe { userBlockingResponse, throwable ->
-                        val succeed = { unBlockCallback.onSucceed(userBlockingResponse) }
-                        val failed = { unBlockCallback.onFailed() }
-
-                        subscriberHandler(throwable, succeed, failed)
+                    .subscribe(Consumer {
+                        unBlockCallback.onSucceed(it)
                     })
+            )
         } catch (exception: Exception) {
             exception.printStackTrace()
         }

@@ -47,12 +47,10 @@ class HomePresenter(
                         logoutCallback.onLogoutFailed()
                         it.printStackTrace()
                     }
-                    .subscribe { _, throwable ->
-                        val logoutSucceed: ()->Unit = { logoutCallback.onLogoutSucceed() }
-                        val logoutFailed: ()->Unit = { logoutCallback.onLogoutFailed() }
-
-                        subscriberHandler(throwable, logoutSucceed, logoutFailed)
+                    .subscribe(Consumer {
+                        logoutCallback.onLogoutSucceed()
                     })
+            )
         } catch (exception: Exception) {
             exception.printStackTrace()
         }
@@ -106,12 +104,10 @@ class HomePresenter(
                         viewSearchService.onQueryFailed()
                         it.printStackTrace()
                     }
-                    .subscribe { homeResponse, throwable ->
-                        val queryCompleted: ()->Unit = { viewSearchService.onQueryCompleted(homeResponse) }
-                        val queryFailed: ()->Unit = { viewSearchService.onQueryFailed() }
-
-                        subscriberHandler(throwable, queryCompleted, queryFailed)
+                    .subscribe(Consumer {
+                        viewSearchService.onQueryCompleted(it)
                     })
+            )
         } catch (exception: Exception) {
             exception.printStackTrace()
         }

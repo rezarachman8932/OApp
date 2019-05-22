@@ -15,6 +15,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
@@ -38,12 +39,9 @@ class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
                         interactionCallback.onIntegrationFailed()
                         it.printStackTrace()
                     }
-                    .subscribe { _, throwable ->
-                        val succeed = { interactionCallback.onIntegrationSucceed(resultCode) }
-                        val failed = { interactionCallback.onIntegrationFailed() }
-
-                        subscriberHandler(throwable, succeed, failed)
-                    }
+                    .subscribe(Consumer {
+                        interactionCallback.onIntegrationSucceed(resultCode)
+                    })
             )
         } catch (exception: Exception) {
             exception.printStackTrace()
@@ -66,12 +64,9 @@ class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
                         interactionCallback.onIntegrationFailed()
                         it.printStackTrace()
                     }
-                    .subscribe { _, throwable ->
-                        val succeed = { interactionCallback.onIntegrationSucceed(resultCode) }
-                        val failed = { interactionCallback.onIntegrationFailed() }
-
-                        subscriberHandler(throwable, succeed, failed)
-                    }
+                    .subscribe(Consumer {
+                        interactionCallback.onIntegrationSucceed(resultCode)
+                    })
             )
         } catch (exception: Exception) {
             exception.printStackTrace()
@@ -93,18 +88,10 @@ class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
                         view.hideLoading(OAppUtil.ON_FINISH_FAILED)
                         it.printStackTrace()
                     }
-                    .subscribe { detailResponseZip, throwable ->
-                        val succeed = {
-                            view.onDataResponse(detailResponseZip)
-                            view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
-                        }
-
-                        val failed = {
-                            view.hideLoading(OAppUtil.ON_FINISH_FAILED)
-                        }
-
-                        subscriberHandler(throwable, succeed, failed)
-                    }
+                    .subscribe(Consumer {
+                        view.onDataResponse(it)
+                        view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
+                    })
             )
         } catch (exception: Exception) {
             exception.printStackTrace()
@@ -130,12 +117,9 @@ class DetailPresenter(private val view: OAppViewService<DetailResponseZip>,
                         userBlockingCallback.onFailed()
                         it.printStackTrace()
                     }
-                    .subscribe { userBlockingResponse, throwable ->
-                        val succeed = { userBlockingCallback.onSucceed(userBlockingResponse) }
-                        val failed = { userBlockingCallback.onFailed() }
-
-                        subscriberHandler(throwable, succeed, failed)
-                    }
+                    .subscribe(Consumer {
+                        userBlockingCallback.onSucceed(it)
+                    })
             )
         } catch (exception: Exception) {
             exception.printStackTrace()

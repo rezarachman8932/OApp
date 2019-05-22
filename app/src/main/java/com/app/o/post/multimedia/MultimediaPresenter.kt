@@ -7,6 +7,7 @@ import com.app.o.base.service.OAppViewService
 import com.app.o.shared.util.OAppUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -38,18 +39,10 @@ abstract class MultimediaPresenter(
                         view.hideLoading(OAppUtil.ON_FINISH_FAILED)
                         it.printStackTrace()
                     }
-                    .subscribe { createdPostResponse, throwable ->
-                        val succeed = {
-                            view.onDataResponse(createdPostResponse)
-                            view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
-                        }
-
-                        val failed = {
-                            view.hideLoading(OAppUtil.ON_FINISH_FAILED)
-                        }
-
-                        subscriberHandler(throwable, succeed, failed)
-                    }
+                    .subscribe(Consumer {
+                        view.onDataResponse(it)
+                        view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
+                    })
             )
         } catch (exception: Exception) {
             exception.printStackTrace()

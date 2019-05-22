@@ -9,6 +9,7 @@ import com.app.o.shared.util.OAppUtil
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 class NotificationListPresenter(private val view: OAppViewService<PushNotificationResponse>,
@@ -34,18 +35,10 @@ class NotificationListPresenter(private val view: OAppViewService<PushNotificati
                         view.hideLoading(OAppUtil.ON_FINISH_FAILED)
                         it.printStackTrace()
                     }
-                    .subscribe { pushNotificationResponse, throwable ->
-                        val succeed = {
-                            view.onDataResponse(pushNotificationResponse)
-                            view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
-                        }
-
-                        val failed = {
-                            view.hideLoading(OAppUtil.ON_FINISH_FAILED)
-                        }
-
-                        subscriberHandler(throwable, succeed, failed)
-                    }
+                    .subscribe(Consumer {
+                        view.onDataResponse(it)
+                        view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
+                    })
             )
         } catch (exception: Exception) {
             exception.printStackTrace()
@@ -71,12 +64,9 @@ class NotificationListPresenter(private val view: OAppViewService<PushNotificati
                         notificationListCallback.onSetAsReadComplete(OAppUtil.ON_FINISH_FAILED)
                         it.printStackTrace()
                     }
-                    .subscribe { _, throwable ->
-                        val succeed = { notificationListCallback.onSetAsReadComplete(OAppUtil.ON_FINISH_SUCCEED) }
-                        val failed = { notificationListCallback.onSetAsReadComplete(OAppUtil.ON_FINISH_FAILED) }
-
-                        subscriberHandler(throwable, succeed, failed)
-                    }
+                    .subscribe(Consumer {
+                        notificationListCallback.onSetAsReadComplete(OAppUtil.ON_FINISH_SUCCEED)
+                    })
             )
         } catch (exception: Exception) {
             exception.printStackTrace()

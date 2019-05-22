@@ -9,6 +9,7 @@ import com.app.o.shared.util.OAppUtil
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 class RegisterActivationPresenter(private val view: OAppViewService<ActivationTokenResponse>,
@@ -33,18 +34,10 @@ class RegisterActivationPresenter(private val view: OAppViewService<ActivationTo
                         view.hideLoading(OAppUtil.ON_FINISH_FAILED)
                         it.printStackTrace()
                     }
-                    .subscribe { activationTokenResponse, throwable ->
-                        val succeed = {
-                            view.onDataResponse(activationTokenResponse)
-                            view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
-                        }
-
-                        val failed = {
-                            view.hideLoading(OAppUtil.ON_FINISH_FAILED)
-                        }
-
-                        subscriberHandler(throwable, succeed, failed)
-                    }
+                    .subscribe(Consumer {
+                        view.onDataResponse(it)
+                        view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
+                    })
             )
         } catch (exception: Exception) {
             exception.printStackTrace()

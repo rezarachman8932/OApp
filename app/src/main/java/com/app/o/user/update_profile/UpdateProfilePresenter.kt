@@ -10,6 +10,7 @@ import com.app.o.shared.util.OAppUserUtil
 import com.app.o.shared.util.OAppUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
 
@@ -33,18 +34,10 @@ class UpdateProfilePresenter(private val view: OAppViewService<UserUpdateProfile
                         view.hideLoading(OAppUtil.ON_FINISH_FAILED)
                         it.printStackTrace()
                     }
-                    .subscribe { userUpdateProfileResponse, throwable ->
-                        val succeed = {
-                            view.onDataResponse(userUpdateProfileResponse)
-                            view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
-                        }
-
-                        val failed = {
-                            view.hideLoading(OAppUtil.ON_FINISH_FAILED)
-                        }
-
-                        subscriberHandler(throwable, succeed, failed)
-                    }
+                    .subscribe(Consumer {
+                        view.onDataResponse(it)
+                        view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
+                    })
             )
         } catch (exception: Exception) {
             exception.printStackTrace()
@@ -66,12 +59,9 @@ class UpdateProfilePresenter(private val view: OAppViewService<UserUpdateProfile
                         pickImageCallback.onFailedGettingImage()
                         it.printStackTrace()
                     }
-                    .subscribe { updateAvatarResponse, throwable ->
-                        val succeed = { pickImageCallback.onSucceedGettingImage(updateAvatarResponse) }
-                        val failed = { pickImageCallback.onFailedGettingImage() }
-
-                        subscriberHandler(throwable, succeed, failed)
-                    }
+                    .subscribe(Consumer {
+                        pickImageCallback.onSucceedGettingImage(it)
+                    })
             )
         } catch (exception: Exception) {
             exception.printStackTrace()
@@ -93,12 +83,9 @@ class UpdateProfilePresenter(private val view: OAppViewService<UserUpdateProfile
                         callback.onFailedGetCurrentProfile()
                         it.printStackTrace()
                     }
-                    .subscribe { userProfileResponse, throwable ->
-                        val succeed = { callback.onSucceedGetCurrentProfile(userProfileResponse) }
-                        val failed = { callback.onFailedGetCurrentProfile() }
-
-                        subscriberHandler(throwable, succeed, failed)
-                    }
+                    .subscribe(Consumer {
+                        callback.onSucceedGetCurrentProfile(it)
+                    })
             )
         } catch (exception: Exception) {
             exception.printStackTrace()

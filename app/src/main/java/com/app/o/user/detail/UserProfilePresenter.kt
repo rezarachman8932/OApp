@@ -12,6 +12,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
 class UserProfilePresenter(private val view: OAppViewService<UserProfileResponseZip>,
@@ -32,18 +33,10 @@ class UserProfilePresenter(private val view: OAppViewService<UserProfileResponse
                         view.hideLoading(OAppUtil.ON_FINISH_FAILED)
                         it.printStackTrace()
                     }
-                    .subscribe { userProfileResponseZip, throwable ->
-                        val succeed = {
-                            view.onDataResponse(userProfileResponseZip)
-                            view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
-                        }
-
-                        val failed = {
-                            view.hideLoading(OAppUtil.ON_FINISH_FAILED)
-                        }
-
-                        subscriberHandler(throwable, succeed, failed)
-                    }
+                    .subscribe(Consumer {
+                        view.onDataResponse(it)
+                        view.hideLoading(OAppUtil.ON_FINISH_SUCCEED)
+                    })
             )
         } catch (exception: Exception) {
             exception.printStackTrace()
