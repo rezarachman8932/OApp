@@ -118,31 +118,6 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
         }
     }
 
-    private val locationListener: LocationListener = object : LocationListener {
-        override fun onLocationChanged(location: Location) {
-            onLocationUpdated(location)
-        }
-        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
-        override fun onProviderEnabled(provider: String) {}
-        override fun onProviderDisabled(provider: String) {}
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun getLastKnownLocation(): Location? {
-        val providers = mLocationManager.getProviders(true)
-        var bestLocation: Location? = null
-
-        for (provider in providers) {
-            val loc = mLocationManager.getLastKnownLocation(provider) ?: continue
-
-            if (bestLocation == null || loc.accuracy < bestLocation.accuracy) {
-                bestLocation = loc
-            }
-        }
-
-        return bestLocation
-    }
-
     @SuppressLint("MissingPermission")
     protected fun requestCurrentLocation() {
         if (EasyPermissions.hasPermissions(this, *mPermissions)) {
@@ -160,11 +135,19 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
                         when {
                             gpsEnabled -> {
                                 lastLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                                locationListener.onLocationChanged(lastLocation)
+                                if (lastLocation != null) {
+                                    locationListener.onLocationChanged(lastLocation)
+                                } else {
+
+                                }
                             }
                             networkEnabled -> {
                                 lastLocation = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-                                locationListener.onLocationChanged(lastLocation)
+                                if (lastLocation != null) {
+                                    locationListener.onLocationChanged(lastLocation)
+                                } else {
+
+                                }
                             }
                             else -> {
                                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
@@ -310,6 +293,31 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
                 .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOption)
                 .build()
         mGoogleAPIClient.connect()
+    }
+
+    private val locationListener: LocationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            onLocationUpdated(location)
+        }
+        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+        override fun onProviderEnabled(provider: String) {}
+        override fun onProviderDisabled(provider: String) {}
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLastKnownLocation(): Location? {
+        val providers = mLocationManager.getProviders(true)
+        var bestLocation: Location? = null
+
+        for (provider in providers) {
+            val loc = mLocationManager.getLastKnownLocation(provider) ?: continue
+
+            if (bestLocation == null || loc.accuracy < bestLocation.accuracy) {
+                bestLocation = loc
+            }
+        }
+
+        return bestLocation
     }
 
     private fun signOutGoogle(homePresenter: HomePresenter) {

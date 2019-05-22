@@ -130,7 +130,6 @@
     <string name="text_registration_token_resend_footer">Still have not got your registration token?</string>
     <string name="text_registration_token_resend_footer_click_here"><u>Click here</u>.</string>
     <string name="text_registration_token_validation_failed">Failed verifying your token</string>
-
     <string name="text_block_user_progress">Blocking your connection..</string>
     <string name="text_block_user_success">You have blocked your connection. Bye!</string>
     <string name="text_block_user_failed">An error occurred while was blocking your connection.</string>
