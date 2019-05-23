@@ -55,7 +55,7 @@ class HomeAdapter(val context: Context) : RecyclerView.Adapter<HomeAdapter.ViewH
 //                    OAppMultimediaUtil.setImage(OAppMultimediaUtil.getImageUriFromBitmap(context, videoFrame).path, null, item_image_thumbnail)
                 }
 
-                item_image_thumbnail.scaleType = ImageView.ScaleType.FIT_XY
+                item_image_thumbnail.scaleType = ImageView.ScaleType.CENTER_CROP
             } else {
                 OAppMultimediaUtil.setImage(R.drawable.ic_logo, item_image_thumbnail)
 

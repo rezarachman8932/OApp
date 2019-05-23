@@ -138,7 +138,8 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
                                 if (lastLocation != null) {
                                     locationListener.onLocationChanged(lastLocation)
                                 } else {
-
+                                    finish()
+                                    startActivity(intent)
                                 }
                             }
                             networkEnabled -> {
@@ -146,7 +147,8 @@ abstract class OAppActivity : AppCompatActivity(), EasyPermissions.PermissionCal
                                 if (lastLocation != null) {
                                     locationListener.onLocationChanged(lastLocation)
                                 } else {
-
+                                    finish()
+                                    startActivity(intent)
                                 }
                             }
                             else -> {
